@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import java.util.HashMap?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.MapValueFactory?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Arc?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
+
+<HBox minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets><URL value="@styles.css" /></stylesheets>
+   <children>
+      <!-- ================= SIDEBAR ================= -->
+      <VBox minWidth="248.0" prefWidth="248.0" styleClass="sidebar">
+         <padding><Insets bottom="14.0" left="14.0" right="14.0" top="14.0" /></padding>
+         <children>
+            <VBox prefHeight="731.0" prefWidth="248.0" styleClass="side-panel" VBox.vgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="brand-box">
+                     <padding><Insets bottom="14.0" left="8.0" right="8.0" top="10.0" /></padding>
+                     <children>
+                        <Pane maxHeight="38" maxWidth="38" minHeight="38" minWidth="38" prefHeight="38" prefWidth="38">
+                           <children>
+                           <Ellipse centerX="27.9" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="0.0" />
+                           <Ellipse centerX="23.5" centerY="26.7" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="60.0" />
+                           <Ellipse centerX="14.5" centerY="26.7" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="120.0" />
+                           <Ellipse centerX="10.1" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="180.0" />
+                           <Ellipse centerX="14.5" centerY="11.3" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="240.0" />
+                           <Ellipse centerX="23.5" centerY="11.3" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="300.0" />
+                           <Circle centerX="19.0" centerY="19.0" fill="#FFE08A" radius="4.2" />
+                           </children>
+                        </Pane>
+                        <VBox><children>
+                           <Label styleClass="brand-title" text="Sassy's" />
+                           <Label styleClass="brand-sub" text="Creation" />
+                        </children></VBox>
+                     </children>
+                  </HBox>
+                  <Label styleClass="side-section" text="MENU" />
+                  <VBox spacing="4.0">
+                     <padding><Insets bottom="14.0" top="2.0" /></padding>
+                     <children>
+                     <Button fx:id="navDashboard" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goDashboard" styleClass="nav-btn, nav-active" text="Dashboard"><graphic><Region styleClass="ico, ico-dashboard" /></graphic></Button>
+                     <StackPane>
+                        <children>
+                           <Button fx:id="navOrders" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goOrders" styleClass="nav-btn" text="Orders"><graphic><Region styleClass="ico, ico-cart" /></graphic></Button>
+                           <Label fx:id="lblNavOrdersBadge" mouseTransparent="true" styleClass="nav-badge" text="4" StackPane.alignment="CENTER_RIGHT">
+                              <StackPane.margin><Insets right="14.0" /></StackPane.margin>
+                           </Label>
+                        </children>
+                     </StackPane>
+                     <Button fx:id="navStandSale" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goStandSale" styleClass="nav-btn" text="Stand Sale"><graphic><Region styleClass="ico, ico-store" /></graphic></Button>
+                     <Button fx:id="navInventory" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goInventory" styleClass="nav-btn" text="Inventory"><graphic><Region styleClass="ico, ico-box" /></graphic></Button>
+                     </children>
+                  </VBox>
+                  <Region VBox.vgrow="ALWAYS" />
+                  <Button fx:id="btnLogout" focusTraversable="false" managed="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-logout" text="Log out" visible="false"><graphic><Region styleClass="ico, ico-logout" /></graphic>
+                     <VBox.margin><Insets bottom="8.0" /></VBox.margin>
+                  </Button>
+                  <VBox spacing="2.0" styleClass="side-footer">
+                     <children>
+                        <Label styleClass="side-footer-sub" text="Handmade Crochet" />
+                        <Label styleClass="side-footer-title" text="and Bouquets" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="side-footer-pill" text="Sassy's">
+                           <VBox.margin><Insets top="10.0" /></VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+
+      <!-- ================= MAIN AREA ================= -->
+      <StackPane HBox.hgrow="ALWAYS">
+         <children>
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="220" prefWidth="220" StackPane.alignment="TOP_RIGHT">
+               <StackPane.margin><Insets top="40.0" /></StackPane.margin>
+               <clip><Rectangle height="220" width="220" /></clip>
+               <children>
+               <Ellipse centerX="212.5" centerY="61.4" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="15.0" />
+               <Ellipse centerX="181.4" centerY="92.5" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="75.0" />
+               <Ellipse centerX="138.9" centerY="81.1" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="135.0" />
+               <Ellipse centerX="127.5" centerY="38.6" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="195.0" />
+               <Ellipse centerX="158.6" centerY="7.5" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="255.0" />
+               <Ellipse centerX="201.1" centerY="18.9" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="315.0" />
+               <Circle centerX="170.0" centerY="50.0" fill="#FFE08A" opacity="0.95" radius="11.0" />
+               </children>
+            </Pane>
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="360" prefWidth="360" StackPane.alignment="BOTTOM_RIGHT">
+               <clip><Rectangle height="360" width="360" /></clip>
+               <children>
+               <Ellipse centerX="433.5" centerY="352.4" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="10.0" />
+               <Ellipse centerX="399.3" centerY="411.6" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="50.0" />
+               <Ellipse centerX="335.0" centerY="435.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="90.0" />
+               <Ellipse centerX="270.7" centerY="411.6" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="130.0" />
+               <Ellipse centerX="236.5" centerY="352.4" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="170.0" />
+               <Ellipse centerX="248.4" centerY="285.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="210.0" />
+               <Ellipse centerX="300.8" centerY="241.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="250.0" />
+               <Ellipse centerX="369.2" centerY="241.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="290.0" />
+               <Ellipse centerX="421.6" centerY="285.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="330.0" />
+               <Ellipse centerX="388.7" centerY="366.0" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="30.0" />
+               <Ellipse centerX="356.2" centerY="393.3" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="70.0" />
+               <Ellipse centerX="313.8" centerY="393.3" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="110.0" />
+               <Ellipse centerX="281.3" centerY="366.0" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="150.0" />
+               <Ellipse centerX="273.9" centerY="324.2" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="190.0" />
+               <Ellipse centerX="295.1" centerY="287.5" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="230.0" />
+               <Ellipse centerX="335.0" centerY="273.0" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="270.0" />
+               <Ellipse centerX="374.9" centerY="287.5" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="310.0" />
+               <Ellipse centerX="396.1" centerY="324.2" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="350.0" />
+               <Circle centerX="335.0" centerY="335.0" fill="#FFE08A" opacity="0.95" radius="22.0" />
+               </children>
+            </Pane>
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="200" prefWidth="200" StackPane.alignment="BOTTOM_LEFT">
+               <clip><Rectangle height="200" width="200" /></clip>
+               <children>
+               <Ellipse centerX="71.2" centerY="194.6" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="40.0" />
+               <Ellipse centerX="28.0" centerY="210.3" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="100.0" />
+               <Ellipse centerX="-7.2" centerY="180.7" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="160.0" />
+               <Ellipse centerX="0.8" centerY="135.4" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="220.0" />
+               <Ellipse centerX="44.0" centerY="119.7" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="280.0" />
+               <Ellipse centerX="79.2" centerY="149.3" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="340.0" />
+               <Ellipse centerX="45.8" centerY="191.8" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="70.0" />
+               <Ellipse centerX="17.7" centerY="186.8" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="130.0" />
+               <Ellipse centerX="7.9" centerY="160.0" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="190.0" />
+               <Ellipse centerX="26.2" centerY="138.2" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="250.0" />
+               <Ellipse centerX="54.3" centerY="143.2" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="310.0" />
+               <Ellipse centerX="64.1" centerY="170.0" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="370.0" />
+               <Circle centerX="36.0" centerY="165.0" fill="#FFE08A" opacity="0.95" radius="11.0" />
+               </children>
+            </Pane>
+      <VBox>
+         <children>
+            <!-- top bar -->
+            <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="topbar">
+               <padding><Insets left="28.0" right="28.0" /></padding>
+               <children>
+                  
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label styleClass="avatar" text="A" />
+                  <MenuButton fx:id="mbAccount" mnemonicParsing="false" styleClass="account-menu" text="Admin Officer">
+                     <items>
+                        <MenuItem fx:id="miChangePassword" mnemonicParsing="false" onAction="#handleOpenChangePassword" styleClass="account-item" text="Change password"><graphic><Region styleClass="ico, ico-key" /></graphic></MenuItem>
+                        <MenuItem fx:id="miAbout" mnemonicParsing="false" onAction="#handleOpenAbout" styleClass="account-item" text="About"><graphic><Region styleClass="ico, ico-info" /></graphic></MenuItem>
+                        <SeparatorMenuItem />
+                        <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#handleLogout" styleClass="account-item" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
+                     </items>
+                  </MenuButton>
+               </children>
+            </HBox>
+            <VBox spacing="16.0" VBox.vgrow="ALWAYS">
+               <padding><Insets bottom="24.0" left="28.0" right="28.0" top="22.0" /></padding>
+               <children>
+                  <HBox alignment="TOP_LEFT">
+                     <children>
+                        <VBox><children>
+                           <Label styleClass="page-title" text="Dashboard" />
+                           <Label styleClass="page-sub" text="Overview of Sassy's Creation orders, sales and stock" />
+                           <HBox alignment="CENTER_LEFT" maxHeight="48.0" maxWidth="360.0" minHeight="48.0" minWidth="200.0" prefHeight="48.0" prefWidth="340.0" styleClass="search-box">
+                              <VBox.margin><Insets top="12.0" /></VBox.margin>
+                     <children>
+                        <TextField fx:id="txtSearch" promptText="Search something..." HBox.hgrow="ALWAYS" />
+                        <Region styleClass="ico, ico-search" />
+                     </children>
+                  </HBox>
+                        </children></VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <ComboBox fx:id="cbDashYear" prefWidth="120.0" style="-fx-background-color: white;" value="2026"><items><FXCollections fx:factory="observableArrayList"><String fx:value="2026" /><String fx:value="2025" /><String fx:value="2024" /></FXCollections></items></ComboBox>
+                     </children>
+                  </HBox>
+                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="clear-scroll" VBox.vgrow="ALWAYS">
+                     <content>
+                        <VBox spacing="14.0">
+                           <padding><Insets bottom="16.0" left="4.0" right="4.0" top="4.0" /></padding>
+                           <children>
+
+                  <!-- Good Morning banner -->
+                  <HBox alignment="CENTER_LEFT" fillHeight="false" spacing="6.0">
+                     <children>
+                  <StackPane maxWidth="1.7976931348623157E308" minHeight="170.0" minWidth="0.0" prefHeight="170.0" styleClass="banner" HBox.hgrow="ALWAYS">
+                     <children>
+
+                        <VBox alignment="CENTER_LEFT" spacing="8.0">
+                           <padding><Insets bottom="20.0" left="34.0" right="34.0" top="20.0" /></padding>
+                           <children>
+                              <Label styleClass="banner-title" text="Good Morning, Admin" />
+                              <Label maxWidth="572.0" prefHeight="19.0" prefWidth="572.0" styleClass="banner-sub" text="Here is what is happening with your orders, stand sales and stock. Let's get started." wrapText="true" />
+                              <Button fx:id="btnReviewOrders" focusTraversable="false" mnemonicParsing="false" onAction="#goOrders" styleClass="banner-btn" text="Review orders">
+                                 <VBox.margin><Insets top="6.0" /></VBox.margin>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children>
+                  </StackPane>
+                  <ImageView fitHeight="215.0" pickOnBounds="true" preserveRatio="true" smooth="true">
+                     <image><Image url="@../../../drawables/sassys-logo.png" /></image>
+                  </ImageView>
+                     </children>
+                  </HBox>
+
+                  <!-- stat cards -->
+                  <HBox spacing="14.0"><children>
+                     <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" HBox.hgrow="ALWAYS">
+                        <children>
+                           <HBox alignment="CENTER_LEFT"><children>
+                              <Label styleClass="stat-label" text="Total Orders" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Label styleClass="icon-box, icon-box-sm, icon-pink"><graphic><Region styleClass="ico, ico-cart" /></graphic></Label>
+                           </children></HBox>
+                           <Label fx:id="lblOrders" styleClass="stat-value" text="6" />
+                           <Label styleClass="stat-note" text="4 pending" wrapText="true" />
+                        </children>
+                     </VBox>
+                     <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" HBox.hgrow="ALWAYS">
+                        <children>
+                           <HBox alignment="CENTER_LEFT"><children>
+                              <Label styleClass="stat-label" text="Products Listed" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Label styleClass="icon-box, icon-box-sm, icon-blue"><graphic><Region styleClass="ico, ico-box" /></graphic></Label>
+                           </children></HBox>
+                           <Label fx:id="lblProducts" styleClass="stat-value" text="44" />
+                           <Label styleClass="stat-note" text="3 out of stock" wrapText="true" />
+                        </children>
+                     </VBox>
+                     <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" HBox.hgrow="ALWAYS">
+                        <children>
+                           <HBox alignment="CENTER_LEFT"><children>
+                              <Label styleClass="stat-label" text="Stand Revenue" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Label styleClass="icon-box, icon-box-sm, icon-gold"><graphic><Region styleClass="ico, ico-trend" /></graphic></Label>
+                           </children></HBox>
+                           <Label fx:id="lblRevenue" styleClass="stat-value" text="₱1,210.00" />
+                           <Label styleClass="stat-note" text="9 stand sales recorded" wrapText="true" />
+                        </children>
+                     </VBox>
+                     <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" HBox.hgrow="ALWAYS">
+                        <children>
+                           <HBox alignment="CENTER_LEFT"><children>
+                              <Label styleClass="stat-label" text="Pending Order Value" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Label styleClass="icon-box, icon-box-sm, icon-red"><graphic><Region styleClass="ico, ico-warning" /></graphic></Label>
+                           </children></HBox>
+                           <Label fx:id="lblPending" styleClass="stat-value" text="₱1,560.00" />
+                           <Label styleClass="stat-note" text="4 orders awaiting pickup or meetup" wrapText="true" />
+                        </children>
+                     </VBox>
+                  </children></HBox>
+
+                  <!-- row 1: revenue chart + reminder -->
+                  <GridPane hgap="14.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="68.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="32.0" />
+                     </columnConstraints>
+                     <children>
+                        <VBox minWidth="0.0" spacing="6.0" styleClass="card" GridPane.columnIndex="0">
+                           <children>
+                              <Label styleClass="card-title" text="Stand Revenue by Day" />
+                              <StackPane VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <BarChart fx:id="revenueChart" animated="false" barGap="0.0" categoryGap="26.0" legendVisible="false" styleClass="revenue-chart">
+                                       <xAxis><CategoryAxis /></xAxis>
+                                       <yAxis><NumberAxis minorTickVisible="false" tickLabelsVisible="false" tickMarkVisible="false" /></yAxis>
+                                    </BarChart>
+                                    <!-- design-time preview only: hidden so it never covers the real chart -->
+                                    <HBox fx:id="barSample" alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="34.0" style="-fx-background-color: white; -fx-padding: 12 12 6 12;">
+                                       <children>
+<VBox alignment="BOTTOM_CENTER" spacing="5.0"><children>
+<Rectangle arcHeight="40.0" arcWidth="40.0" height="86.0" styleClass="sample-bar, sample-hatch" width="40.0" />
+<Label alignment="CENTER" style="-fx-font-size: 11px; -fx-text-fill: #6F6570;" text="Sat&#10;04-25" textAlignment="CENTER" />
+</children></VBox>
+<VBox alignment="BOTTOM_CENTER" spacing="5.0"><children>
+<Rectangle arcHeight="40.0" arcWidth="40.0" height="131.0" styleClass="sample-bar, sample-mid" width="40.0" />
+<Label alignment="CENTER" style="-fx-font-size: 11px; -fx-text-fill: #6F6570;" text="Sun&#10;04-26" textAlignment="CENTER" />
+</children></VBox>
+<VBox alignment="BOTTOM_CENTER" spacing="5.0"><children>
+<Rectangle arcHeight="40.0" arcWidth="40.0" height="73.0" styleClass="sample-bar, sample-light" width="40.0" />
+<Label alignment="CENTER" style="-fx-font-size: 11px; -fx-text-fill: #6F6570;" text="Mon&#10;04-27" textAlignment="CENTER" />
+</children></VBox>
+<VBox alignment="BOTTOM_CENTER" spacing="5.0"><children>
+<Rectangle arcHeight="40.0" arcWidth="40.0" height="38.0" styleClass="sample-bar, sample-hatch" width="40.0" />
+<Label alignment="CENTER" style="-fx-font-size: 11px; -fx-text-fill: #6F6570;" text="Wed&#10;04-29" textAlignment="CENTER" />
+</children></VBox>
+<VBox alignment="BOTTOM_CENTER" spacing="5.0"><children>
+<Rectangle arcHeight="40.0" arcWidth="40.0" height="38.0" styleClass="sample-bar, sample-hatch" width="40.0" />
+<Label alignment="CENTER" style="-fx-font-size: 11px; -fx-text-fill: #6F6570;" text="Fri&#10;05-01" textAlignment="CENTER" />
+</children></VBox>
+<VBox alignment="BOTTOM_CENTER" spacing="5.0"><children>
+<Rectangle arcHeight="40.0" arcWidth="40.0" height="220.0" styleClass="sample-bar, sample-dark" width="40.0" />
+<Label alignment="CENTER" style="-fx-font-size: 11px; -fx-text-fill: #6F6570;" text="Sat&#10;05-02" textAlignment="CENTER" />
+</children></VBox>
+<VBox alignment="BOTTOM_CENTER" spacing="5.0"><children>
+<Rectangle arcHeight="40.0" arcWidth="40.0" height="89.0" styleClass="sample-bar, sample-hatch" width="40.0" />
+<Label alignment="CENTER" style="-fx-font-size: 11px; -fx-text-fill: #6F6570;" text="Sun&#10;05-03" textAlignment="CENTER" />
+</children></VBox>
+
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </VBox>
+                        <VBox minWidth="0.0" spacing="14.0" styleClass="card" GridPane.columnIndex="1">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="12.0">
+                                 <children>
+                                    <Label styleClass="bell-circle"><graphic><Region styleClass="ico, ico-bell" /></graphic></Label>
+                                    <Label styleClass="card-title" text="Reminder" />
+                                 </children>
+                              </HBox>
+                              <VBox alignment="CENTER_LEFT" spacing="18.0" styleClass="reminder-panel" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="lblReminderTitle" styleClass="reminder-big" text="4 orders awaiting pickup" wrapText="true" />
+                                    <Label styleClass="reminder-note" text="Don't forget to confirm pickup or meetup times with your customers." wrapText="true" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                                       <rowConstraints><RowConstraints minHeight="360.0" prefHeight="360.0" vgrow="NEVER" /></rowConstraints>
+                  </GridPane>
+
+                  <!-- row 2: low stock + orders by status + quick actions -->
+                  <GridPane hgap="14.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="38.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="32.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="30.0" />
+                     </columnConstraints>
+                     <children>
+                        <VBox minWidth="0.0" spacing="10.0" styleClass="card" GridPane.columnIndex="0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label minWidth="-Infinity" styleClass="card-title" text="Low stock warnings" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Hyperlink fx:id="linkLowStockAll" focusTraversable="false" mnemonicParsing="false" onAction="#handleOpenLowStock" styleClass="view-all-pill" text="View all" />
+                                 </children>
+                              </HBox>
+                              <VBox styleClass="low-table-wrap" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <TableView fx:id="tvLowStock" fixedCellSize="44.0" focusTraversable="false" minHeight="176.0" prefHeight="176.0" styleClass="low-table" VBox.vgrow="ALWAYS">
+                                       <placeholder><Label text="No low stock items" /></placeholder>
+                                       <items><FXCollections fx:factory="observableArrayList">
+<HashMap Category="Keychain" Name="Customized Keychain"><stock><Label styleClass="badge-low" text="0 · Out of stock" /></stock></HashMap>
+<HashMap Category="Crochet" Name="Swimwear - Customize"><stock><Label styleClass="badge-low" text="0 · Out of stock" /></stock></HashMap>
+<HashMap Category="Crochet" Name="Hat - Customize"><stock><Label styleClass="badge-low" text="0 · Out of stock" /></stock></HashMap>
+                                       </FXCollections></items>
+                                       <columns>
+                                          <TableColumn fx:id="colLowName" prefWidth="170.0" text="Product"><cellValueFactory><MapValueFactory key="Name" /></cellValueFactory></TableColumn>
+                                          <TableColumn fx:id="colLowCat" prefWidth="90.0" text="Category"><cellValueFactory><MapValueFactory key="Category" /></cellValueFactory></TableColumn>
+                                          <TableColumn fx:id="colLowStock" prefWidth="120.0" text="Stock"><cellValueFactory><MapValueFactory key="stock" /></cellValueFactory></TableColumn>
+                                       </columns>
+                                       <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
+                                    </TableView>
+                                    <!-- design-time preview leftovers, kept hidden so existing controller references still resolve -->
+                                    <VBox fx:id="lowStockSample" managed="false" visible="false" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+
+                        <VBox minWidth="0.0" spacing="6.0" styleClass="card" GridPane.columnIndex="1">
+                           <children>
+                              <Label styleClass="card-title" text="Orders by Status" />
+                              <Label fx:id="lblOrdersYear" managed="false" maxWidth="1.7976931348623157E308" styleClass="stat-note" text="Year 2026" visible="false" />
+                              <StackPane VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <!-- design-time preview only (gauge): hidden at run time so it never covers the real chart -->
+                                    <HBox fx:id="pieSample" alignment="CENTER" mouseTransparent="true">
+                                       <children>
+                                          <VBox alignment="CENTER" spacing="14.0">
+                                             <children>
+                                                <StackPane maxHeight="124.0" maxWidth="230.0" minHeight="124.0" minWidth="230.0" prefHeight="124.0" prefWidth="230.0">
+                                                   <children>
+                                                      <Pane maxHeight="124.0" maxWidth="230.0" minHeight="124.0" minWidth="230.0" prefHeight="124.0" prefWidth="230.0">
+                                                         <children>
+                                                            <Arc centerX="115.0" centerY="115.0" fill="TRANSPARENT" length="120.0" radiusX="95.0" radiusY="95.0" startAngle="60.0" stroke="#C22A62" strokeLineCap="BUTT" strokeWidth="36.0" type="OPEN" />
+                                                            <Arc centerX="115.0" centerY="115.0" fill="TRANSPARENT" length="30.0" radiusX="95.0" radiusY="95.0" startAngle="30.0" stroke="#E8A0BC" strokeLineCap="BUTT" strokeWidth="36.0" type="OPEN" />
+                                                            <Arc centerX="115.0" centerY="115.0" fill="TRANSPARENT" length="30.0" radiusX="95.0" radiusY="95.0" startAngle="0.0" stroke="#DDD0D6" strokeLineCap="BUTT" strokeWidth="36.0" type="OPEN" />
+                                                         </children>
+                                                      </Pane>
+                                                      <VBox alignment="BOTTOM_CENTER" maxHeight="70.0" StackPane.alignment="BOTTOM_CENTER">
+                                                         <children>
+                                                            <Label styleClass="gauge-pct" text="67%" />
+                                                            <Label styleClass="stat-note" text="Pending" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </StackPane>
+                                                <HBox alignment="CENTER" spacing="14.0">
+                                                   <children>
+                                                      <Label text="Pending  4" textFill="#5B5159"><graphic><Circle fill="#C22A62" radius="5.0" /></graphic></Label>
+                                                      <Label text="Done  1" textFill="#5B5159"><graphic><Circle fill="#E8A0BC" radius="5.0" /></graphic></Label>
+                                                      <Label text="Cancelled  1" textFill="#5B5159"><graphic><Circle fill="#DDD0D6" radius="5.0" /></graphic></Label>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <PieChart fx:id="statusChart" labelsVisible="false" legendSide="BOTTOM" styleClass="status-chart" />
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </VBox>
+
+                        <VBox minWidth="0.0" spacing="4.0" styleClass="card, quick-card" GridPane.columnIndex="2">
+                           <children>
+                              <Label styleClass="quick-title" text="Quick actions" />
+                              <Label styleClass="quick-sub" text="Jump straight to a task" />
+                              <Region VBox.vgrow="ALWAYS" />
+                              <VBox spacing="10.0">
+                                 <children>
+                                    <Button fx:id="btnQuickOrder" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goOrders" styleClass="quick-btn, quick-btn-primary" text="New order"><graphic><Region styleClass="ico, ico-add" /></graphic></Button>
+                                    <Button fx:id="btnQuickSale" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goStandSale" styleClass="quick-btn" text="Record stand sale"><graphic><Region styleClass="ico, ico-add" /></graphic></Button>
+                                    <Button fx:id="btnQuickProduct" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goInventory" styleClass="quick-btn" text="Add product"><graphic><Region styleClass="ico, ico-add" /></graphic></Button>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                                       <rowConstraints><RowConstraints minHeight="320.0" prefHeight="320.0" vgrow="NEVER" /></rowConstraints>
+                  </GridPane>
+                           </children>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+         </children>
+      </StackPane>
+   </children>
+</HBox>

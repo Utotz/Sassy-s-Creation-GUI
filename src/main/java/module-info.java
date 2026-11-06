@@ -5,6 +5,7 @@ module com.sassyscreation.sassyscreationgui {
     requires java.sql;
     requires org.mariadb.jdbc;
 
+    requires java.prefs;
     opens com.sassyscreation.sassyscreationgui to javafx.fxml;
     exports com.sassyscreation.sassyscreationgui;
 }
