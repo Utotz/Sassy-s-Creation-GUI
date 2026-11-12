@@ -36,7 +36,10 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.shape.Rectangle?>
 
-<HBox minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:controller="com.sassyscreation.sassyscreationgui.DashboardController"
+      minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0"
+      styleClass="root-pane, dash-v2"
+      xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets><URL value="@styles.css" /></stylesheets>
    <children>
       <!-- ================= SIDEBAR ================= -->
@@ -222,7 +225,7 @@
                      </children>
                   </StackPane>
                   <ImageView fitHeight="215.0" pickOnBounds="true" preserveRatio="true" smooth="true">
-                     <image><Image url="@../../../drawables/sassys-logo.png" /></image>
+                     <image><Image url="@sassys-logo.png" /></image>
                   </ImageView>
                      </children>
                   </HBox>
@@ -287,11 +290,12 @@
                               <Label styleClass="card-title" text="Stand Revenue by Day" />
                               <StackPane VBox.vgrow="ALWAYS">
                                  <children>
+                                    <!-- plain chart: hidden by the controller, kept so the fx:id still resolves -->
                                     <BarChart fx:id="revenueChart" animated="false" barGap="0.0" categoryGap="26.0" legendVisible="false" styleClass="revenue-chart">
                                        <xAxis><CategoryAxis /></xAxis>
                                        <yAxis><NumberAxis minorTickVisible="false" tickLabelsVisible="false" tickMarkVisible="false" /></yAxis>
                                     </BarChart>
-                                    <!-- design-time preview only: hidden so it never covers the real chart -->
+                                    <!-- pill bars: the controller rebuilds these from the data -->
                                     <HBox fx:id="barSample" alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="34.0" style="-fx-background-color: white; -fx-padding: 12 12 6 12;">
                                        <children>
 <VBox alignment="BOTTOM_CENTER" spacing="5.0"><children>
@@ -395,7 +399,7 @@
                               <Label fx:id="lblOrdersYear" managed="false" maxWidth="1.7976931348623157E308" styleClass="stat-note" text="Year 2026" visible="false" />
                               <StackPane VBox.vgrow="ALWAYS">
                                  <children>
-                                    <!-- design-time preview only (gauge): hidden at run time so it never covers the real chart -->
+                                    <!-- semicircle gauge: the controller sets the arcs, percentage and legend from the data -->
                                     <HBox fx:id="pieSample" alignment="CENTER" mouseTransparent="true">
                                        <children>
                                           <VBox alignment="CENTER" spacing="14.0">
@@ -404,14 +408,14 @@
                                                    <children>
                                                       <Pane maxHeight="124.0" maxWidth="230.0" minHeight="124.0" minWidth="230.0" prefHeight="124.0" prefWidth="230.0">
                                                          <children>
-                                                            <Arc centerX="115.0" centerY="115.0" fill="TRANSPARENT" length="120.0" radiusX="95.0" radiusY="95.0" startAngle="60.0" stroke="#C22A62" strokeLineCap="BUTT" strokeWidth="36.0" type="OPEN" />
-                                                            <Arc centerX="115.0" centerY="115.0" fill="TRANSPARENT" length="30.0" radiusX="95.0" radiusY="95.0" startAngle="30.0" stroke="#E8A0BC" strokeLineCap="BUTT" strokeWidth="36.0" type="OPEN" />
-                                                            <Arc centerX="115.0" centerY="115.0" fill="TRANSPARENT" length="30.0" radiusX="95.0" radiusY="95.0" startAngle="0.0" stroke="#DDD0D6" strokeLineCap="BUTT" strokeWidth="36.0" type="OPEN" />
+                                                            <Arc fx:id="arcPending" centerX="115.0" centerY="115.0" fill="TRANSPARENT" length="120.0" radiusX="95.0" radiusY="95.0" startAngle="60.0" stroke="#C22A62" strokeLineCap="BUTT" strokeWidth="36.0" type="OPEN" />
+                                                            <Arc fx:id="arcDone" centerX="115.0" centerY="115.0" fill="TRANSPARENT" length="30.0" radiusX="95.0" radiusY="95.0" startAngle="30.0" stroke="#E8A0BC" strokeLineCap="BUTT" strokeWidth="36.0" type="OPEN" />
+                                                            <Arc fx:id="arcCancelled" centerX="115.0" centerY="115.0" fill="TRANSPARENT" length="30.0" radiusX="95.0" radiusY="95.0" startAngle="0.0" stroke="#DDD0D6" strokeLineCap="BUTT" strokeWidth="36.0" type="OPEN" />
                                                          </children>
                                                       </Pane>
                                                       <VBox alignment="BOTTOM_CENTER" maxHeight="70.0" StackPane.alignment="BOTTOM_CENTER">
                                                          <children>
-                                                            <Label styleClass="gauge-pct" text="67%" />
+                                                            <Label fx:id="lblGaugePct" styleClass="gauge-pct" text="67%" />
                                                             <Label styleClass="stat-note" text="Pending" />
                                                          </children>
                                                       </VBox>
@@ -419,15 +423,16 @@
                                                 </StackPane>
                                                 <HBox alignment="CENTER" spacing="14.0">
                                                    <children>
-                                                      <Label text="Pending  4" textFill="#5B5159"><graphic><Circle fill="#C22A62" radius="5.0" /></graphic></Label>
-                                                      <Label text="Done  1" textFill="#5B5159"><graphic><Circle fill="#E8A0BC" radius="5.0" /></graphic></Label>
-                                                      <Label text="Cancelled  1" textFill="#5B5159"><graphic><Circle fill="#DDD0D6" radius="5.0" /></graphic></Label>
+                                                      <Label fx:id="lblLegendPending" text="Pending  4" textFill="#5B5159"><graphic><Circle fill="#C22A62" radius="5.0" /></graphic></Label>
+                                                      <Label fx:id="lblLegendDone" text="Done  1" textFill="#5B5159"><graphic><Circle fill="#E8A0BC" radius="5.0" /></graphic></Label>
+                                                      <Label fx:id="lblLegendCancelled" text="Cancelled  1" textFill="#5B5159"><graphic><Circle fill="#DDD0D6" radius="5.0" /></graphic></Label>
                                                    </children>
                                                 </HBox>
                                              </children>
                                           </VBox>
                                        </children>
                                     </HBox>
+                                    <!-- plain pie chart: hidden by the controller, kept so the fx:id still resolves -->
                                     <PieChart fx:id="statusChart" labelsVisible="false" legendSide="BOTTOM" styleClass="status-chart" />
                                  </children>
                               </StackPane>

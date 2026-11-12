@@ -5,9 +5,13 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -135,16 +139,21 @@ public class LoginController implements Initializable {
         return username.equals("admin") && password.equals("admin123");
     }
 
+    /** Loads DASHBOARD.fxml and swaps it into the current window. */
     private void openMainScreen() {
-        // TODO: load your dashboard/main FXML here and swap the scene, e.g.
-        // Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
-        // Stage stage = (Stage) btnLogin.getScene().getWindow();
-        // stage.getScene().setRoot(root);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Login");
-        alert.setHeaderText(null);
-        alert.setContentText("Login successful!");
-        alert.showAndWait();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DASHBOARD.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) btnLogin.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Sassy's Creation - Dashboard");
+            stage.setMaximized(true);   // remove this line if you don't want it maximized
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            lblError.setText("Could not open the dashboard.");
+        }
     }
 
     private void startLockout() {
