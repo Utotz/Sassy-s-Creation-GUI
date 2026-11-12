@@ -1,4 +1,4 @@
-package com.sassyscreation.sassyscreationgui;
+package com.sassyscreation.sassyscreationgui.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

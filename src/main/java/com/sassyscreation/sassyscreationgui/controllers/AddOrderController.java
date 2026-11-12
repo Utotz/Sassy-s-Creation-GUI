@@ -1,4 +1,4 @@
-package com.sassyscreation.sassyscreationgui;
+package com.sassyscreation.sassyscreationgui.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,17 +15,22 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
-import java.net.URL;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 
 public class AddOrderController {
+
+    /** Folder (inside resources) where all the FXML files live. */
+    private static final String FXML_PATH = "/com/sassyscreation/sassyscreationgui/";
 
     // ---- FXML file names (adjust to match your resources folder) ----
     private static final String FXML_DASHBOARD       = "DASHBOARD.fxml";
@@ -144,7 +149,7 @@ public class AddOrderController {
             return;
         }
         tfPrice.setText(p.getPrice().toPlainString());
-        lblStockNote.setText("In stock: " + p.getStock() + "  •  " + STOCK_NOTE_DEFAULT);
+        lblStockNote.setText("In stock: " + p.getStock() + "  \u2022  " + STOCK_NOTE_DEFAULT);
     }
 
     private void commitSpinner() {
@@ -241,17 +246,19 @@ public class AddOrderController {
     @FXML
     private void handleLogout() {
         // TODO: clear your session / current user here
+        currentStage().setMaximized(false);
         navigate(FXML_LOGIN);
     }
 
     @FXML
     private void handleOpenAbout() {
-        openModal(FXML_ABOUT, "About");
+        // borderless = true -> no Windows title bar, rounded transparent window
+        openModal(FXML_ABOUT, "About", true);
     }
 
     @FXML
     private void handleOpenChangePassword() {
-        openModal(FXML_CHANGE_PASSWORD, "Change password");
+        openModal(FXML_CHANGE_PASSWORD, "Change password", false);
     }
 
     /** Updates the sidebar badge on "Orders"; hides it when the count is 0. */
@@ -260,9 +267,13 @@ public class AddOrderController {
         lblNavOrdersBadge.setVisible(count > 0);
     }
 
+    private Stage currentStage() {
+        return (Stage) btnSaveOrder.getScene().getWindow();
+    }
+
     private void navigate(String fxml) {
         try {
-            URL resource = getClass().getResource(fxml);
+            URL resource = getClass().getResource(FXML_PATH + fxml);
             if (resource == null) {
                 error(fxml + " was not found in the resources folder.");
                 return;
@@ -276,20 +287,25 @@ public class AddOrderController {
         }
     }
 
-    private void openModal(String fxml, String title) {
+    private void openModal(String fxml, String title, boolean borderless) {
         try {
-            URL resource = getClass().getResource(fxml);
+            URL resource = getClass().getResource(FXML_PATH + fxml);
             if (resource == null) {
                 error(fxml + " was not found in the resources folder.");
                 return;
             }
             Parent root = new FXMLLoader(resource).load();
-            Stage dialog = new Stage();
+            Stage dialog = new Stage(borderless ? StageStyle.TRANSPARENT : StageStyle.DECORATED);
             dialog.setTitle(title);
-            dialog.initOwner(btnSaveOrder.getScene().getWindow());
+            dialog.initOwner(currentStage());
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.setResizable(false);
-            dialog.setScene(new Scene(root));
+
+            Scene scene = new Scene(root);
+            if (borderless) {
+                scene.setFill(Color.TRANSPARENT);
+            }
+            dialog.setScene(scene);
             dialog.showAndWait();
         } catch (IOException | RuntimeException e) {
             e.printStackTrace();

@@ -1,4 +1,4 @@
-package com.sassyscreation.sassyscreationgui;
+package com.sassyscreation.sassyscreationgui.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +29,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -42,6 +43,9 @@ import java.util.ResourceBundle;
  * Fields that don't exist in the loaded FXML simply stay null.
  */
 public class InventoryController implements Initializable {
+
+    /** Folder (inside resources) where all the FXML files live. */
+    private static final String FXML_PATH = "/com/sassyscreation/sassyscreationgui/";
 
     // ---- sidebar ----
     @FXML private Button navDashboard;
@@ -703,7 +707,6 @@ public class InventoryController implements Initializable {
 
     @FXML
     private void goStandSale() {
-        // Change the file name if your stand sale screen is named differently
         switchScreen("STANDSALE.fxml", "Stand Sale");
     }
 
@@ -723,7 +726,8 @@ public class InventoryController implements Initializable {
 
     @FXML
     private void handleOpenAbout() {
-        openDialog("ABOUT.fxml", "About");
+        // borderless = true -> no Windows title bar, rounded transparent window
+        openDialog("ABOUT.fxml", "About", true);
     }
 
     @FXML
@@ -751,7 +755,7 @@ public class InventoryController implements Initializable {
     /** Replaces the content of the current window with another FXML screen. */
     private void switchScreen(String fxmlName, String title) {
         try {
-            URL resource = getClass().getResource(fxmlName);
+            URL resource = getClass().getResource(FXML_PATH + fxmlName);
             if (resource == null) {
                 showError("Screen not found", fxmlName + " could not be found in the resources folder.");
                 return;
@@ -766,21 +770,35 @@ public class InventoryController implements Initializable {
         }
     }
 
-    /** Opens an FXML screen in a pop-up window on top of this screen. */
+    /** Opens an FXML screen in a normal pop-up window (with title bar). */
     private void openDialog(String fxmlName, String title) {
+        openDialog(fxmlName, title, false);
+    }
+
+    /**
+     * Opens an FXML screen in a pop-up window on top of this screen.
+     *
+     * @param borderless true = no title bar, transparent background (for rounded dialogs like About)
+     */
+    private void openDialog(String fxmlName, String title, boolean borderless) {
         try {
-            URL resource = getClass().getResource(fxmlName);
+            URL resource = getClass().getResource(FXML_PATH + fxmlName);
             if (resource == null) {
                 showError("Screen not found", fxmlName + " could not be found in the resources folder.");
                 return;
             }
             Parent root = new FXMLLoader(resource).load();
 
-            Stage dialog = new Stage();
+            Stage dialog = new Stage(borderless ? StageStyle.TRANSPARENT : StageStyle.DECORATED);
             dialog.initOwner(currentStage());
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.setTitle("Sassy's Creation - " + title);
-            dialog.setScene(new Scene(root));
+
+            Scene scene = new Scene(root);
+            if (borderless) {
+                scene.setFill(Color.TRANSPARENT);
+            }
+            dialog.setScene(scene);
             dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
@@ -802,5 +820,14 @@ public class InventoryController implements Initializable {
         alert.setHeaderText(header);
         alert.setContentText(message == null ? "Unknown error. Check the console for details." : message);
         alert.showAndWait();
+    }
+
+    /** Called by AddProductController to add a new product. */
+    public static void addProduct(String name, String category, double price, int stock) {
+        int nextId = ALL_PRODUCTS.stream()
+                .mapToInt(p -> ((Number) p.get("ID")).intValue())
+                .max().orElse(0) + 1;
+        // TODO: also INSERT the product into the database
+        ALL_PRODUCTS.add(product(nextId, name, category, price, stock));
     }
 }

@@ -1,4 +1,4 @@
-package com.sassyscreation.sassyscreationgui;
+package com.sassyscreation.sassyscreationgui.controllers;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -36,6 +36,9 @@ public class LoginController implements Initializable {
     @FXML private Label lblAttempts;
 
     // ---- settings ----
+    /** Folder (inside resources) where all the FXML files live. */
+    private static final String FXML_PATH = "/com/sassyscreation/sassyscreationgui/";
+
     private static final int MAX_ATTEMPTS = 3;
     private static final int LOCKOUT_SECONDS = 30;
     private static final String PREF_USERNAME = "savedUsername";
@@ -142,8 +145,13 @@ public class LoginController implements Initializable {
     /** Loads DASHBOARD.fxml and swaps it into the current window. */
     private void openMainScreen() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("DASHBOARD.fxml"));
-            Parent root = loader.load();
+            URL resource = getClass().getResource(FXML_PATH + "DASHBOARD.fxml");
+            if (resource == null) {
+                lblError.setText("DASHBOARD.fxml was not found in the resources folder.");
+                return;
+            }
+
+            Parent root = new FXMLLoader(resource).load();
 
             Stage stage = (Stage) btnLogin.getScene().getWindow();
             stage.setScene(new Scene(root));

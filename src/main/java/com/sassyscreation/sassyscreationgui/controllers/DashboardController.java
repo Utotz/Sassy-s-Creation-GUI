@@ -1,5 +1,7 @@
-package com.sassyscreation.sassyscreationgui;
+package com.sassyscreation.sassyscreationgui.controllers;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,6 +23,7 @@ import javafx.stage.StageStyle;
 
 import java.net.URL;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +31,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
+
+    /** Folder (inside resources) where all the FXML files live. */
+    private static final String FXML_PATH = "/com/sassyscreation/sassyscreationgui/";
 
     // ---- sidebar ----
     @FXML private Button navDashboard;
@@ -99,6 +105,8 @@ public class DashboardController implements Initializable {
         hide(statusChart);
         hide(lowStockSample);
 
+        setUpLowStockTable();
+
         // Reload the numbers/charts whenever the year changes
         cbDashYear.valueProperty().addListener((obs, oldYear, newYear) -> {
             if (newYear != null) {
@@ -144,6 +152,45 @@ public class DashboardController implements Initializable {
 
         // Orders by status
         renderStatusGauge(pendingOrders, doneOrders, cancelledOrders);
+
+        // Low stock list
+        loadLowStock();
+    }
+
+    // =====================================================================
+    //  Low stock table
+    // =====================================================================
+
+    /** Tells each column which key of the row map to show (no FXML MapValueFactory needed). */
+    private void setUpLowStockTable() {
+        if (tvLowStock == null) {
+            return;
+        }
+        colLowName.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().get("name")));
+        colLowCat.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().get("category")));
+        colLowStock.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().get("stock")));
+    }
+
+    /**
+     * TEMPORARY: sample low-stock items.
+     * Replace with a database query (products where stock <= threshold).
+     */
+    private void loadLowStock() {
+        if (tvLowStock == null) {
+            return;
+        }
+        tvLowStock.setItems(FXCollections.observableArrayList(
+                lowStockItem("Sunflower - Fuzzy Wire", "Flowers", 6),
+                lowStockItem("Baby Mushroom Keychain", "Keychains", 8),
+                lowStockItem("Gypsophila", "Flowers", 12)));
+    }
+
+    private Map<String, Object> lowStockItem(String name, String category, int stock) {
+        Map<String, Object> m = new HashMap<>();
+        m.put("name", name);
+        m.put("category", category);
+        m.put("stock", stock);
+        return m;
     }
 
     // =====================================================================
@@ -255,7 +302,6 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void goStandSale() {
-        // Change the file name if your stand sale screen is named differently
         switchScreen("STANDSALE.fxml", "Stand Sale");
     }
 
@@ -293,8 +339,7 @@ public class DashboardController implements Initializable {
 
         Optional<ButtonType> result = confirm.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            Stage stage = currentStage();
-            stage.setMaximized(false);
+            currentStage().setMaximized(false);
             switchScreen("LOGIN.fxml", "Login");
         }
     }
@@ -310,7 +355,7 @@ public class DashboardController implements Initializable {
     /** Replaces the content of the current window with another FXML screen. */
     private void switchScreen(String fxmlName, String title) {
         try {
-            URL resource = getClass().getResource(fxmlName);
+            URL resource = getClass().getResource(FXML_PATH + fxmlName);
             if (resource == null) {
                 showError("Screen not found", fxmlName + " could not be found in the resources folder.");
                 return;
@@ -337,7 +382,7 @@ public class DashboardController implements Initializable {
      */
     private void openDialog(String fxmlName, String title, boolean borderless) {
         try {
-            URL resource = getClass().getResource(fxmlName);
+            URL resource = getClass().getResource(FXML_PATH + fxmlName);
             if (resource == null) {
                 showError("Screen not found", fxmlName + " could not be found in the resources folder.");
                 return;

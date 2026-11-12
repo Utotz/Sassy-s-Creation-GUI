@@ -18,7 +18,7 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.shape.Rectangle?>
 
-<StackPane fx:controller="com.sassyscreation.sassyscreationgui.LoginController" minHeight="640.0" minWidth="1000.0" prefHeight="720.0" prefWidth="1180.0" styleClass="root-pane, fl-bg" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:controller="com.sassyscreation.sassyscreationgui.controllers.LoginController" minHeight="640.0" minWidth="1000.0" prefHeight="720.0" prefWidth="1180.0" styleClass="root-pane, fl-bg" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets><URL value="@styles.css" /></stylesheets>
    <children>
       <!-- decorative flowers, anchored to the corners (drawn from plain shapes, no images needed) -->
