@@ -1,58 +1,42 @@
-# ================================
-# Java / Maven build output
-# ================================
 target/
-out/
-build/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+.kotlin
 
-# ================================
-# IntelliJ IDEA
-# ================================
-.idea/
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
 *.iml
 *.ipr
-*.iws
 
-# ================================
-# Eclipse (if a teammate uses it)
-# ================================
+### Eclipse ###
+.apt_generated
 .classpath
+.factorypath
 .project
-.settings/
+.settings
+.springBeans
+.sts4-cache
 
-# ================================
-# Other Java IDE build output
-# ================================
-/nbbuild/
-/nbdist/
-/dist/
+### NetBeans ###
 /nbproject/private/
-.nb-gradle/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# ================================
-# Logs and JVM crash reports
-# ================================
-*.log
-hs_err_pid*
-replay_pid*
+### VS Code ###
+.vscode/
 
-# ================================
-# Local environment / secrets
-# ================================
-.env
-.env.*
-!.env.example
-
-# ================================
-# Operating system files
-# ================================
+### Mac OS ###
 .DS_Store
-Thumbs.db
-Desktop.ini
 
-# ================================
-# Editor and temporary files
-# ================================
-*.tmp
-*.swp
-*~
+# Local IntelliJ configuration
+.idea/
