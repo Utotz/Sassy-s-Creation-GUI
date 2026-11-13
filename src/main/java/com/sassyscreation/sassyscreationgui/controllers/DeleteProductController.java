@@ -32,7 +32,7 @@ public class DeleteProductController {
     // CHANGE THIS to match the actual file name of your delete-product FXML
     // (it must sit in src/main/resources/com/sassyscreation/sassyscreationgui/)
     private static final String FXML_PATH =
-            "/com/sassyscreation/sassyscreationgui/delete-product.fxml";
+            "/com/sassyscreation/sassyscreationgui/DELETEPRODUCT.fxml";
 
     // ---- fields from the FXML ----
     @FXML private Label dID;

@@ -341,19 +341,24 @@ public class StandSaleController implements Initializable {
         updateSummary();
     }
 
+    /** Shows the custom "Delete this sale?" dialog (DeleteSaleController / DELETESALE.fxml). */
     private void deleteSale(Map<String, Object> row) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Delete sale");
-        confirm.setHeaderText("Delete this sale?");
-        confirm.setContentText(row.get("Qty") + " x " + row.get("Product")
-                + "\nThe quantity will be returned to stock.");
+        int qty = (Integer) row.get("Qty");
+        String productName = String.valueOf(row.get("Product"));
 
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        boolean confirmed = DeleteSaleController.show(
+                tvSales.getScene().getWindow(),
+                String.valueOf(row.get("Date")),
+                productName,
+                qty,
+                peso(((Number) row.get("Price")).doubleValue()),
+                peso(((Number) row.get("Total")).doubleValue()));
+
+        if (confirmed) {
             // TODO: also DELETE the sale and restore the stock in the database
-            Product p = products.get(String.valueOf(row.get("Product")));
+            Product p = products.get(productName);
             if (p != null) {
-                p.stock += (Integer) row.get("Qty");
+                p.stock += qty;
             }
             allSales.remove(row);
             updateForm();

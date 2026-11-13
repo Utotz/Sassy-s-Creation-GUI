@@ -160,7 +160,7 @@ public class OrdersController implements Initializable {
 
                 Button edit = iconButton("ico-edit", "Edit", "btn-icon", "btn-edit");
                 edit.setText("Edit");
-                edit.setOnAction(e -> openOrderForm(row));
+                edit.setOnAction(e -> openAddOrder(row));
 
                 Button delete = iconButton("ico-delete", "Delete", "btn-icon", "btn-icon-danger");
                 delete.setOnAction(e -> deleteOrder(row));
@@ -243,9 +243,9 @@ public class OrdersController implements Initializable {
         alert.showAndWait();
     }
 
-    private void openOrderForm(Map<String, Object> o) {
-        // TODO: pass the order into the form's controller once ORDERFORM.fxml has one
-        openDialog("ORDERFORM.fxml", "Edit order");
+    private void openAddOrder(Map<String, Object> o) {
+        // TODO: pass the order into the form's controller once ADDORDER.fxml has one
+        openDialog("ADDORDER.fxml", "Edit order");
     }
 
     private void deleteOrder(Map<String, Object> o) {
@@ -267,8 +267,14 @@ public class OrdersController implements Initializable {
     // =====================================================================
 
     @FXML
-    private void handleOpenAddOrder() {
-        openDialog("ORDERFORM.fxml", "Add order");
+    private void handleOpenAddOrder() {   // keep your existing method name
+        try {
+            URL url = getClass().getResource("/com/sassyscreation/sassyscreationgui/ADDORDER.fxml");
+            Parent root = new FXMLLoader(url).load();
+            navOrders.getScene().setRoot(root);   // use any node field the controller already has
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

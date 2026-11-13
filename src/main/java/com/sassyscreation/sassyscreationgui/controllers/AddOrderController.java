@@ -40,7 +40,6 @@ public class AddOrderController {
     private static final String FXML_LOGIN           = "LOGIN.fxml";
     private static final String FXML_ABOUT           = "ABOUT.fxml";
     private static final String FXML_CHANGE_PASSWORD = "CHANGEPASSWORD.fxml";
-
     private static final String STOCK_NOTE_DEFAULT = "Stock is deducted when the order is saved";
 
     // ---- Sidebar ----

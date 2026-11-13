@@ -32,7 +32,7 @@ public class DeleteOrderController {
     // CHANGE THIS to match the actual file name of your delete-order FXML
     // (it must sit in src/main/resources/com/sassyscreation/sassyscreationgui/)
     private static final String FXML_PATH =
-            "/com/sassyscreation/sassyscreationgui/delete-order.fxml";
+            "/com/sassyscreation/sassyscreationgui/DELETEORDER.fxml";
 
     // ---- fields from the FXML ----
     @FXML private Label dID;
