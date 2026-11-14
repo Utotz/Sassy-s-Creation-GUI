@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.shape.Rectangle?>
 
-<StackPane prefHeight="290" prefWidth="340" styleClass="dialog-root" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:controller="com.sassyscreation.sassyscreationgui.controllers.LoadingDialogController" prefHeight="290" prefWidth="340" styleClass="dialog-root" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets><URL value="@styles.css" /></stylesheets>
    <children>
       <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="117.8" prefWidth="117.8" StackPane.alignment="TOP_LEFT">

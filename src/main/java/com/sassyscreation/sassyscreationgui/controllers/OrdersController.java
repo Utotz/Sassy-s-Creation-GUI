@@ -21,7 +21,6 @@ import javafx.stage.StageStyle;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class OrdersController implements Initializable {
@@ -65,12 +64,21 @@ public class OrdersController implements Initializable {
     @FXML private TableColumn<Map<String, Object>, Object> colStatus;
     @FXML private TableColumn<Map<String, Object>, Object> colActions;
 
-    private final ObservableList<Map<String, Object>> allOrders = FXCollections.observableArrayList();
+    // Shared (static) so EditOrderController can read and change the same orders
+    static final ObservableList<Map<String, Object>> allOrders = FXCollections.observableArrayList();
+
+    /** The order row currently being edited on the Edit Order screen (set before opening it). */
+    static Map<String, Object> editingRow = null;
+
+    private static boolean dataLoaded = false;
     private FilteredList<Map<String, Object>> filteredOrders;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadOrders();
+        if (!dataLoaded) {
+            loadOrders();
+            dataLoaded = true;
+        }
         setUpTable();
         setUpFilters();
         updateSummary();
@@ -105,6 +113,7 @@ public class OrdersController implements Initializable {
         m.put("type", type);
         m.put("date", date);
         m.put("status", status);
+        m.put("qty", 1);
         m.put("actions", "actions");   // placeholder so the Actions column has a value
         return m;
     }
@@ -232,27 +241,28 @@ public class OrdersController implements Initializable {
     //  Row actions
     // =====================================================================
 
+    /** Shows the custom "Order #N" dialog (OrderDetailsController / ORDERDETAILS.fxml). */
     private void showOrderDetails(Map<String, Object> o) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Order details");
-        alert.setHeaderText("Order #" + o.get("id"));
-        alert.setContentText(
-                "Customer: " + o.get("fb") + "\n"
-                        + "Product: " + o.get("product") + "\n"
-                        + "Color: " + o.get("color") + "\n"
-                        + "Price: " + peso(((Number) o.get("price")).doubleValue()) + "\n"
-                        + "Type: " + o.get("type") + "\n"
-                        + "Date: " + o.get("date") + "\n"
-                        + "Status: " + o.get("status"));
-        alert.showAndWait();
+        boolean editRequested = OrderDetailsController.show(
+                currentStage(),
+                o.get("id"),
+                String.valueOf(o.get("fb")),
+                String.valueOf(o.get("product")),
+                String.valueOf(o.get("color")),
+                String.valueOf(o.get("type")),
+                peso(((Number) o.get("price")).doubleValue()),
+                String.valueOf(o.get("date")),
+                String.valueOf(o.get("status")));
+
+        if (editRequested) {
+            editOrder(o);   // the user pressed "Edit order" in the details dialog
+        }
     }
 
-    /**
-     * Edit opens the same full-screen form as "Add order" (no extra pop-up window).
-     * TODO: pre-fill the form with this order - AddOrderController needs a setOrder(...) method first.
-     */
+    /** Opens the Edit Order screen (EDITORDER.fxml / EditOrderController) for the chosen row. */
     private void editOrder(Map<String, Object> o) {
-        switchScreen("ADDORDER.fxml", "Edit order");
+        editingRow = o;
+        switchScreen("ORDERFORM.fxml", "Edit order");
     }
 
     private void deleteOrder(Map<String, Object> o) {
@@ -326,13 +336,8 @@ public class OrdersController implements Initializable {
 
     @FXML
     private void handleLogout() {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Log out");
-        confirm.setHeaderText(null);
-        confirm.setContentText("Are you sure you want to log out?");
-
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        // Custom confirmation dialog (EXITCONFIRM.fxml) instead of the plain JavaFX Alert
+        if (ExitDialogController.show(currentStage())) {
             currentStage().setMaximized(false);
             switchScreen("LOGIN.fxml", "Login");
         }
@@ -401,10 +406,6 @@ public class OrdersController implements Initializable {
     }
 
     private void showError(String header, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(header);
-        alert.setContentText(message == null ? "Unknown error. Check the console for details." : message);
-        alert.showAndWait();
+        ErrorDialogController.show(currentStage(), header, message);
     }
 }

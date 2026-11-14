@@ -175,6 +175,11 @@ public class InventoryController implements Initializable {
         PRODUCTS.add(new Product(nextId++, name, category, price, stock));
     }
 
+    /** The shared product list (read by LowStockController and other screens). */
+    public static ObservableList<Product> getProducts() {
+        return PRODUCTS;
+    }
+
     // ---------------------------------------------------------------
     // FXML fields - sidebar
     // ---------------------------------------------------------------

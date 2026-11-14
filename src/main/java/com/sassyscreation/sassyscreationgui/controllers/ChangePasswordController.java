@@ -2,7 +2,9 @@ package com.sassyscreation.sassyscreationgui.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -10,7 +12,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
-import java.io.IOException;
+import java.net.URL;
 
 /**
  * Controller for the "Change password" dialog.
@@ -18,13 +20,15 @@ import java.io.IOException;
  * The FXML has no fx:controller attribute, so this controller is attached in code
  * by {@link #show(Window)}. Call that from the miChangePassword handler in
  * DashboardController, OrdersController, InventoryController, StandSaleController, etc.
+ * (do NOT open this FXML with a plain openDialog(...) or the buttons will do nothing).
  */
 public class ChangePasswordController {
 
-    // CHANGE THIS to match the actual file name of your change-password FXML
-    // (it must sit in src/main/resources/com/sassyscreation/sassyscreationgui/)
-    private static final String FXML_PATH =
-            "/com/sassyscreation/sassyscreationgui/change-password.fxml";
+    private static final String FXML_FOLDER = "/com/sassyscreation/sassyscreationgui/";
+
+    // CHANGE THESE to match the actual file names in src/main/resources/com/sassyscreation/sassyscreationgui/
+    private static final String CHANGE_PASSWORD_FXML = "CHANGEPASSWORD.fxml";
+    private static final String PASSWORD_CHANGED_FXML = "PASSWORDCHANGED.fxml";
 
     // ---- fields from the FXML ----
     @FXML private PasswordField pfCurrentPassword;
@@ -41,7 +45,13 @@ public class ChangePasswordController {
     /** Opens the dialog as a modal window on top of {@code owner}. */
     public static void show(Window owner) {
         try {
-            FXMLLoader loader = new FXMLLoader(ChangePasswordController.class.getResource(FXML_PATH));
+            URL resource = ChangePasswordController.class.getResource(FXML_FOLDER + CHANGE_PASSWORD_FXML);
+            if (resource == null) {
+                showAlert("Screen not found", CHANGE_PASSWORD_FXML + " could not be found in the resources folder.");
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(resource);
             loader.setController(new ChangePasswordController());
             Scene scene = new Scene(loader.load());
 
@@ -52,8 +62,9 @@ public class ChangePasswordController {
             stage.setResizable(false);
             stage.setScene(scene);
             stage.showAndWait();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            showAlert("Could not open Change password", e.getMessage());
         }
     }
 
@@ -95,7 +106,7 @@ public class ChangePasswordController {
         }
 
         if (updatePassword(newPass)) {
-            close();
+            showPasswordChanged();
         } else {
             showError("Could not update the password. Please try again.");
         }
@@ -119,6 +130,42 @@ public class ChangePasswordController {
     }
 
     // ---------------------------------------------------------------
+    // Success screen
+    // ---------------------------------------------------------------
+
+    /**
+     * Closes this dialog and shows the full-window "Password changed" screen
+     * in the main window that opened the dialog.
+     */
+    private void showPasswordChanged() {
+        Stage dialog = (Stage) btnSavePassword.getScene().getWindow();
+        Window owner = dialog.getOwner();
+
+        try {
+            URL resource = getClass().getResource(FXML_FOLDER + PASSWORD_CHANGED_FXML);
+            if (resource == null) {
+                // Fallback so the user always gets a confirmation
+                dialog.close();
+                showInfo("Password changed", "Your password was changed successfully.");
+                return;
+            }
+
+            Parent root = new FXMLLoader(resource).load();
+            dialog.close();
+
+            if (owner instanceof Stage main) {
+                main.setMaximized(false);
+                main.getScene().setRoot(root);
+                main.setTitle("Sassy's Creation - Password changed");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            dialog.close();
+            showInfo("Password changed", "Your password was changed successfully.");
+        }
+    }
+
+    // ---------------------------------------------------------------
     // Helpers
     // ---------------------------------------------------------------
 
@@ -128,5 +175,21 @@ public class ChangePasswordController {
 
     private void close() {
         ((Stage) btnCancelPassword.getScene().getWindow()).close();
+    }
+
+    private void showInfo(String header, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Change password");
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private static void showAlert(String header, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(header);
+        alert.setContentText(message == null ? "Unknown error. Check the console for details." : message);
+        alert.showAndWait();
     }
 }

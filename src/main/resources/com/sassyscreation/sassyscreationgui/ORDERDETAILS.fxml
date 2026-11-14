@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.shape.Rectangle?>
 
-<StackPane prefHeight="640" prefWidth="460" styleClass="dialog-root" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:controller="com.sassyscreation.sassyscreationgui.controllers.OrderDetailsController" prefHeight="640" prefWidth="460" styleClass="dialog-root" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets><URL value="@styles.css" /></stylesheets>
    <children>
       <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="190" prefWidth="190" StackPane.alignment="TOP_LEFT">
