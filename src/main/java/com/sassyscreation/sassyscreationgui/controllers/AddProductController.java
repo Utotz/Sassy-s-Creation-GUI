@@ -16,7 +16,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
- * Controller for the "Add Product" screen (ADD_PRODUCT.fxml - use your own file name).
+ * Controller for the "Add Product" screen (ADDPRODUCT.fxml - use your own file name).
+ * Validation errors are shown with the custom ErrorDialogController popup.
  */
 public class AddProductController implements Initializable {
 
@@ -87,6 +88,13 @@ public class AddProductController implements Initializable {
         String category = cbProdCategory.getValue();
         String priceText = tfProdPrice.getText() == null ? "" : tfProdPrice.getText().trim();
 
+        // Nothing filled in at all -> one general message
+        if (name.isEmpty() && category == null && priceText.isEmpty()) {
+            showWarning("Please check your input", "Please fill in all required fields.");
+            tfProdName.requestFocus();
+            return;
+        }
+
         if (name.isEmpty()) {
             showWarning("Missing name", "Please enter a product name.");
             tfProdName.requestFocus();
@@ -124,6 +132,7 @@ public class AddProductController implements Initializable {
         ok.setTitle("Product saved");
         ok.setHeaderText(null);
         ok.setContentText("\"" + name + "\" was added to the inventory.");
+        ok.initOwner(currentStage());
         ok.showAndWait();
 
         goInventory();
@@ -190,6 +199,7 @@ public class AddProductController implements Initializable {
         confirm.setTitle("Log out");
         confirm.setHeaderText(null);
         confirm.setContentText("Are you sure you want to log out?");
+        confirm.initOwner(currentStage());
 
         Optional<ButtonType> result = confirm.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -254,19 +264,14 @@ public class AddProductController implements Initializable {
         }
     }
 
+    /** Validation problems: shown with the custom red error dialog. */
     private void showWarning(String header, String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Add Product");
-        alert.setHeaderText(header);
-        alert.setContentText(message);
-        alert.showAndWait();
+        ErrorDialogController.show(currentStage(), header, message);
     }
 
+    /** Unexpected errors: same custom dialog. */
     private void showError(String header, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(header);
-        alert.setContentText(message == null ? "Unknown error. Check the console for details." : message);
-        alert.showAndWait();
+        ErrorDialogController.show(currentStage(), header,
+                message == null ? "Unknown error. Check the console for details." : message);
     }
 }

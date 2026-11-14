@@ -173,52 +173,61 @@ public class AddOrderController {
         LocalDate date  = dpDate.getValue();
         String status   = cbStatus.getValue();
 
+        String priceInput = tfPrice.getText() == null ? "" : tfPrice.getText().trim();
+
+        // Nothing filled in at all -> one general message
+        if (customer.isEmpty() && product == null && color.isEmpty() && priceInput.isEmpty()) {
+            warn("Please fill in all required fields.");
+            tfFbName.requestFocus();
+            return;
+        }
+
         if (customer.isEmpty()) {
-            warn("Please enter the customer name.");
+            warn("Missing customer", "Please enter the customer name.");
             tfFbName.requestFocus();
             return;
         }
         if (product == null) {
-            warn("Please select a product.");
+            warn("Missing product", "Please select a product.");
             cbOrderProduct.requestFocus();
             return;
         }
         if (qty < 1) {
-            warn("Quantity must be at least 1.");
+            warn("Invalid quantity", "Quantity must be at least 1.");
             spOrderQty.requestFocus();
             return;
         }
         if (qty > product.getStock()) {
-            warn("Not enough stock. Available: " + product.getStock());
+            warn("Not enough stock", "Available: " + product.getStock());
             spOrderQty.requestFocus();
             return;
         }
         if (date == null) {
-            warn("Please pick a date.");
+            warn("Missing date", "Please pick a date.");
             dpDate.requestFocus();
             return;
         }
         if (status == null || status.isBlank()) {
-            warn("Please select a status.");
+            warn("Missing status", "Please select a status.");
             cbStatus.requestFocus();
             return;
         }
 
         // Price: defaults to catalog price when left blank
         BigDecimal price;
-        String priceText = tfPrice.getText() == null ? "" : tfPrice.getText().trim().replace(",", "");
+        String priceText = priceInput.replace(",", "");
         if (priceText.isEmpty()) {
             price = product.getPrice();
         } else {
             try {
                 price = new BigDecimal(priceText);
             } catch (NumberFormatException e) {
-                warn("Agreed price must be a valid number.");
+                warn("Invalid price", "Agreed price must be a valid number.");
                 tfPrice.requestFocus();
                 return;
             }
             if (price.signum() < 0) {
-                warn("Agreed price cannot be negative.");
+                warn("Invalid price", "Agreed price cannot be negative.");
                 tfPrice.requestFocus();
                 return;
             }
@@ -320,18 +329,31 @@ public class AddOrderController {
     }
 
     // =====================================================================
-    // Alerts
+    // Dialogs
     // =====================================================================
-    private void warn(String msg)  { show(Alert.AlertType.WARNING, "Check your input", msg); }
-    private void info(String msg)  { show(Alert.AlertType.INFORMATION, "Success", msg); }
-    private void error(String msg) { show(Alert.AlertType.ERROR, "Error", msg); }
 
-    private void show(Alert.AlertType type, String title, String msg) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
+    /** Validation problem with the default title ("Please check your input"). */
+    private void warn(String msg) {
+        ErrorDialogController.show(currentStage(), msg);
+    }
+
+    /** Validation problem with its own title. */
+    private void warn(String title, String msg) {
+        ErrorDialogController.show(currentStage(), title, msg);
+    }
+
+    /** Unexpected error (screen could not be opened, etc.). */
+    private void error(String msg) {
+        ErrorDialogController.show(currentStage(), "Error", msg);
+    }
+
+    /** Success message - stays a normal information alert. */
+    private void info(String msg) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
         alert.setHeaderText(null);
         alert.setContentText(msg);
-        alert.initOwner(btnSaveOrder.getScene().getWindow());
+        alert.initOwner(currentStage());
         alert.showAndWait();
     }
 }

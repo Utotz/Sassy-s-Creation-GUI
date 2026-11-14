@@ -122,7 +122,7 @@ public class OrdersController implements Initializable {
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText(String.format("\u20B1%,.2f", ((Number) item).doubleValue()));
+                    setText(peso(((Number) item).doubleValue()));
                 }
             }
         });
@@ -160,7 +160,7 @@ public class OrdersController implements Initializable {
 
                 Button edit = iconButton("ico-edit", "Edit", "btn-icon", "btn-edit");
                 edit.setText("Edit");
-                edit.setOnAction(e -> openAddOrder(row));
+                edit.setOnAction(e -> editOrder(row));
 
                 Button delete = iconButton("ico-delete", "Delete", "btn-icon", "btn-icon-danger");
                 delete.setOnAction(e -> deleteOrder(row));
@@ -224,6 +224,10 @@ public class OrdersController implements Initializable {
         return allOrders.stream().filter(o -> status.equals(o.get("status"))).count();
     }
 
+    private static String peso(double value) {
+        return String.format("\u20B1%,.2f", value);
+    }
+
     // =====================================================================
     //  Row actions
     // =====================================================================
@@ -236,27 +240,32 @@ public class OrdersController implements Initializable {
                 "Customer: " + o.get("fb") + "\n"
                         + "Product: " + o.get("product") + "\n"
                         + "Color: " + o.get("color") + "\n"
-                        + "Price: " + String.format("\u20B1%,.2f", ((Number) o.get("price")).doubleValue()) + "\n"
+                        + "Price: " + peso(((Number) o.get("price")).doubleValue()) + "\n"
                         + "Type: " + o.get("type") + "\n"
                         + "Date: " + o.get("date") + "\n"
                         + "Status: " + o.get("status"));
         alert.showAndWait();
     }
 
-    private void openAddOrder(Map<String, Object> o) {
-        // TODO: pass the order into the form's controller once ADDORDER.fxml has one
-        openDialog("ADDORDER.fxml", "Edit order");
+    /**
+     * Edit opens the same full-screen form as "Add order" (no extra pop-up window).
+     * TODO: pre-fill the form with this order - AddOrderController needs a setOrder(...) method first.
+     */
+    private void editOrder(Map<String, Object> o) {
+        switchScreen("ADDORDER.fxml", "Edit order");
     }
 
     private void deleteOrder(Map<String, Object> o) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Delete order");
-        confirm.setHeaderText("Delete order #" + o.get("id") + "?");
-        confirm.setContentText(o.get("fb") + " - " + o.get("product") + "\nThis cannot be undone.");
+        boolean confirmed = DeleteOrderController.show(
+                tvOrders.getScene().getWindow(),
+                o.get("id"),
+                String.valueOf(o.get("fb")),
+                String.valueOf(o.get("product")),
+                peso(((Number) o.get("price")).doubleValue()),
+                String.valueOf(o.get("status")));
 
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            // TODO: also delete the row from the database
+        if (confirmed) {
+            // TODO: also delete the row from the database and restore the product stock
             allOrders.remove(o);
             updateSummary();
         }
@@ -267,14 +276,8 @@ public class OrdersController implements Initializable {
     // =====================================================================
 
     @FXML
-    private void handleOpenAddOrder() {   // keep your existing method name
-        try {
-            URL url = getClass().getResource("/com/sassyscreation/sassyscreationgui/ADDORDER.fxml");
-            Parent root = new FXMLLoader(url).load();
-            navOrders.getScene().setRoot(root);   // use any node field the controller already has
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void handleOpenAddOrder() {
+        switchScreen("ADDORDER.fxml", "Add order");
     }
 
     @FXML

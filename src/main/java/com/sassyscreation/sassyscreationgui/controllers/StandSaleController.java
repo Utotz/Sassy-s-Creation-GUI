@@ -69,7 +69,7 @@ public class StandSaleController implements Initializable {
     @FXML private TableColumn<Map<String, Object>, Object> colSaleActions;
 
     /** A sellable product with its price and remaining stock. */
-    private static class Product {
+    static class Product {
         final String name;
         final double price;
         int stock;
@@ -81,13 +81,22 @@ public class StandSaleController implements Initializable {
         }
     }
 
-    private final Map<String, Product> products = new LinkedHashMap<>();
-    private final ObservableList<Map<String, Object>> allSales = FXCollections.observableArrayList();
+    // Shared (static) so EditSaleController can read and change the same data
+    static final Map<String, Product> products = new LinkedHashMap<>();
+    static final ObservableList<Map<String, Object>> allSales = FXCollections.observableArrayList();
+
+    /** The sale row currently being edited on the Edit Sale screen (set before opening it). */
+    static Map<String, Object> editingRow = null;
+
+    private static boolean dataLoaded = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadProducts();
-        loadSales();
+        if (!dataLoaded) {
+            loadProducts();
+            loadSales();
+            dataLoaded = true;
+        }
         setUpForm();
         setUpTable();
         updateForm();
@@ -295,50 +304,10 @@ public class StandSaleController implements Initializable {
         return b;
     }
 
+    /** Opens the Edit Sale screen (EDITSALE.fxml / EditSaleController) for the chosen row. */
     private void editSale(Map<String, Object> row) {
-        int oldQty = (Integer) row.get("Qty");
-        String name = String.valueOf(row.get("Product"));
-
-        TextInputDialog dialog = new TextInputDialog(String.valueOf(oldQty));
-        dialog.setTitle("Edit sale");
-        dialog.setHeaderText("Edit quantity for " + name);
-        dialog.setContentText("Quantity sold:");
-
-        Optional<String> result = dialog.showAndWait();
-        if (result.isEmpty()) {
-            return;
-        }
-
-        int newQty;
-        try {
-            newQty = Integer.parseInt(result.get().trim());
-        } catch (NumberFormatException e) {
-            showWarning("Invalid quantity", "Please enter a whole number.");
-            return;
-        }
-        if (newQty < 1) {
-            showWarning("Invalid quantity", "Quantity must be at least 1.");
-            return;
-        }
-
-        Product p = products.get(name);
-        int diff = newQty - oldQty;
-        if (p != null) {
-            if (diff > p.stock) {
-                showWarning("Not enough stock", "Only " + p.stock + " more available.");
-                return;
-            }
-            p.stock -= diff;   // negative diff gives stock back
-        }
-
-        // TODO: also UPDATE the sale and the stock in the database
-        double price = ((Number) row.get("Price")).doubleValue();
-        row.put("Qty", newQty);
-        row.put("Total", newQty * price);
-
-        tvSales.refresh();
-        updateForm();
-        updateSummary();
+        editingRow = row;
+        switchScreen("EDITSALE.fxml", "Edit Sale");
     }
 
     /** Shows the custom "Delete this sale?" dialog (DeleteSaleController / DELETESALE.fxml). */
@@ -429,13 +398,7 @@ public class StandSaleController implements Initializable {
 
     @FXML
     private void handleLogout() {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Log out");
-        confirm.setHeaderText(null);
-        confirm.setContentText("Are you sure you want to log out?");
-
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        if (ExitDialogController.show(currentStage())) {
             currentStage().setMaximized(false);
             switchScreen("LOGIN.fxml", "Login");
         }
@@ -504,18 +467,10 @@ public class StandSaleController implements Initializable {
     }
 
     private void showWarning(String header, String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Stand Sale");
-        alert.setHeaderText(header);
-        alert.setContentText(message);
-        alert.showAndWait();
+        ErrorDialogController.show(currentStage(), header, message);
     }
 
     private void showError(String header, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(header);
-        alert.setContentText(message == null ? "Unknown error. Check the console for details." : message);
-        alert.showAndWait();
+        ErrorDialogController.show(currentStage(), header, message);
     }
 }

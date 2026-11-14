@@ -66,8 +66,11 @@ import java.util.stream.Collectors;
  * Works with BOTH FXML files (the list/table one and the grid/cards one) - fields that
  * only exist in one of them are simply null in the other.
  *
- * "Add product" now opens the ADD_PRODUCT.fxml screen (no more built-in popup).
+ * "Add product" opens the ADD_PRODUCT.fxml screen (no more built-in popup).
  * AddProductController calls InventoryController.addProduct(...) when you press Save.
+ *
+ * Dialogs: logout uses ExitDialogController, delete uses DeleteProductController,
+ * warnings and errors use ErrorDialogController.
  */
 public class InventoryController implements Initializable {
 
@@ -618,14 +621,8 @@ public class InventoryController implements Initializable {
 
     @FXML
     private void handleLogout() {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Log out");
-        confirm.setHeaderText(null);
-        confirm.setContentText("Are you sure you want to log out?");
-        confirm.initOwner(ownerWindow());
-
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        // Custom confirmation dialog (EXITCONFIRM.fxml) instead of the plain JavaFX Alert
+        if (ExitDialogController.show(ownerWindow())) {
             // TODO: clear your session / current user here
             currentStage().setMaximized(false);
             switchScreen(FXML_LOGIN, "Login");
@@ -779,17 +776,24 @@ public class InventoryController implements Initializable {
     }
 
     // =====================================================================
-    // Alerts
+    // Messages
     // =====================================================================
-    private void warn(String header, String msg) { alert(Alert.AlertType.WARNING, "Inventory", header, msg); }
-    private void info(String header, String msg) { alert(Alert.AlertType.INFORMATION, "Inventory", header, msg); }
-    private void error(String header, String msg) { alert(Alert.AlertType.ERROR, "Error", header, msg); }
 
-    private void alert(Alert.AlertType type, String title, String header, String msg) {
-        Alert a = new Alert(type);
-        a.setTitle(title);
+    /** Warnings and errors use the custom error dialog (ERRORDIALOG.fxml). */
+    private void warn(String header, String msg) {
+        ErrorDialogController.show(ownerWindow(), header, msg);
+    }
+
+    private void error(String header, String msg) {
+        ErrorDialogController.show(ownerWindow(), header, msg);
+    }
+
+    /** Plain information message (for example "Export complete"). */
+    private void info(String header, String msg) {
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setTitle("Inventory");
         a.setHeaderText(header);
-        a.setContentText(msg == null ? "Unknown error. Check the console for details." : msg);
+        a.setContentText(msg);
         a.initOwner(ownerWindow());
         a.showAndWait();
     }

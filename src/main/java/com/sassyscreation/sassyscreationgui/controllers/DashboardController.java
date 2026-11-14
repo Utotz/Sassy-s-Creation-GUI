@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
@@ -332,13 +331,8 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void handleLogout() {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Log out");
-        confirm.setHeaderText(null);
-        confirm.setContentText("Are you sure you want to log out?");
-
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        // Custom confirmation dialog (EXITCONFIRM.fxml) instead of the plain JavaFX Alert
+        if (ExitDialogController.show(currentStage())) {
             currentStage().setMaximized(false);
             switchScreen("LOGIN.fxml", "Login");
         }
@@ -407,10 +401,6 @@ public class DashboardController implements Initializable {
     }
 
     private void showError(String header, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(header);
-        alert.setContentText(message == null ? "Unknown error. Check the console for details." : message);
-        alert.showAndWait();
+        ErrorDialogController.show(currentStage(), header, message);
     }
 }
