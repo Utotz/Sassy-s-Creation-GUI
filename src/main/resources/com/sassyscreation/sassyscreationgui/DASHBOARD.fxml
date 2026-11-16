@@ -225,7 +225,7 @@
                      </children>
                   </StackPane>
                   <ImageView fitHeight="215.0" pickOnBounds="true" preserveRatio="true" smooth="true">
-                     <image><Image url="@sassys-logo.png" /></image>
+                     <image><Image url="@../../../drawables/sassys-logo.png" /></image>
                   </ImageView>
                      </children>
                   </HBox>
