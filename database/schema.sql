@@ -3,7 +3,10 @@
 CREATE DATABASE IF NOT EXISTS sassys_creation_db;
 USE sassys_creation_db;
 
+<<<<<<< HEAD
 DROP TABLE IF EXISTS orders;
+=======
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
 DROP TABLE IF EXISTS products;
 
 CREATE TABLE products (
@@ -13,6 +16,7 @@ CREATE TABLE products (
                           price               DECIMAL(10,2) NOT NULL,
                           stock_quantity      INT NOT NULL DEFAULT 0,
                           low_stock_threshold INT NOT NULL DEFAULT 3,
+<<<<<<< HEAD
                           is_customizable BOOLEAN NOT NULL DEFAULT FALSE,
                           CONSTRAINT chk_price CHECK (price >= 0),
                           CONSTRAINT chk_stock CHECK (stock_quantity >= 0)
@@ -50,4 +54,8 @@ CREATE TABLE orders (
                             FOREIGN KEY (product_id)
                                 REFERENCES products(product_id)
                                 ON DELETE RESTRICT
+=======
+                          CONSTRAINT chk_price CHECK (price >= 0),
+                          CONSTRAINT chk_stock CHECK (stock_quantity >= 0)
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
 );

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -40,3 +41,63 @@ build/
 
 # Local IntelliJ configuration
 .idea/
+=======
+# ================================
+# Java / Maven build output
+# ================================
+target/
+out/
+build/
+
+# ================================
+# IntelliJ IDEA
+# ================================
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# ================================
+# Eclipse (if a teammate uses it)
+# ================================
+.classpath
+.project
+.settings/
+
+# ================================
+# Other Java IDE build output
+# ================================
+/nbbuild/
+/nbdist/
+/dist/
+/nbproject/private/
+.nb-gradle/
+
+# ================================
+# Logs and JVM crash reports
+# ================================
+*.log
+hs_err_pid*
+replay_pid*
+
+# ================================
+# Local environment / secrets
+# ================================
+.env
+.env.*
+!.env.example
+
+# ================================
+# Operating system files
+# ================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ================================
+# Editor and temporary files
+# ================================
+*.tmp
+*.swp
+*~
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa

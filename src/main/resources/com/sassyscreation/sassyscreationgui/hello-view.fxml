@@ -10,7 +10,11 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
 
+<<<<<<< HEAD
     <Label fx:id="welcomeText" text="MR. Salon Pass" />
+=======
+    <Label fx:id="welcomeText" text="MR. Salon Pass Coca Bills" />
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
     <Button onAction="#onHelloButtonClick" text="TAP ME" />
    <effect>
       <Blend />

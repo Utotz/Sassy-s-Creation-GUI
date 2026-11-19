@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<<<<<<< HEAD
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+=======
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -22,7 +25,11 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.shape.Rectangle?>
 
+<<<<<<< HEAD
 <HBox minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2, page-v3" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+=======
+<HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.EditSaleController" minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
    <stylesheets><URL value="@styles.css" /></stylesheets>
    <children>
       <!-- ================= SIDEBAR ================= -->
@@ -46,7 +53,11 @@
                            </children>
                         </Pane>
                         <VBox><children>
+<<<<<<< HEAD
                            <Label styleClass="brand-title" text="Sassy’s" />
+=======
+                           <Label styleClass="brand-title" text="Sassy's" />
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                            <Label styleClass="brand-sub" text="Creation" />
                         </children></VBox>
                      </children>
@@ -72,6 +83,7 @@
                   <Button fx:id="btnLogout" focusTraversable="false" managed="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-logout" text="Log out" visible="false"><graphic><Region styleClass="ico, ico-logout" /></graphic>
                      <VBox.margin><Insets bottom="8.0" /></VBox.margin>
                   </Button>
+<<<<<<< HEAD
                   <!-- Admin Officer card (moved here from the top bar) -->
                   <MenuButton fx:id="mbAccount" contentDisplay="GRAPHIC_ONLY" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="TOP" styleClass="side-user">
                      <graphic>
@@ -94,6 +106,17 @@
                         <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#handleLogout" styleClass="account-item" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
                      </items>
                   </MenuButton>
+=======
+                  <VBox spacing="2.0" styleClass="side-footer">
+                     <children>
+                        <Label styleClass="side-footer-sub" text="Handmade Crochet" />
+                        <Label styleClass="side-footer-title" text="and Bouquets" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="side-footer-pill" text="Sassy's">
+                           <VBox.margin><Insets top="10.0" /></VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                </children>
             </VBox>
          </children>
@@ -157,8 +180,27 @@
             </Pane>
       <VBox>
          <children>
+<<<<<<< HEAD
             <VBox spacing="24.0" VBox.vgrow="ALWAYS">
                <padding><Insets bottom="24.0" left="28.0" right="28.0" top="56.0" /></padding>
+=======
+            <HBox alignment="CENTER_RIGHT" spacing="8.0" styleClass="topbar">
+               <padding><Insets left="28.0" right="28.0" /></padding>
+               <children>
+                  <Label styleClass="avatar" text="A" />
+                  <MenuButton fx:id="mbAccount" mnemonicParsing="false" styleClass="account-menu" text="Admin Officer">
+                     <items>
+                        <MenuItem fx:id="miChangePassword" mnemonicParsing="false" onAction="#handleOpenChangePassword" text="Change password"><graphic><Region styleClass="ico, ico-key" /></graphic></MenuItem>
+                        <MenuItem fx:id="miAbout" mnemonicParsing="false" onAction="#handleOpenAbout" text="About"><graphic><Region styleClass="ico, ico-info" /></graphic></MenuItem>
+                        <SeparatorMenuItem />
+                        <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#handleLogout" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
+                     </items>
+                  </MenuButton>
+               </children>
+            </HBox>
+            <VBox spacing="24.0" VBox.vgrow="ALWAYS">
+               <padding><Insets bottom="24.0" left="28.0" right="28.0" top="22.0" /></padding>
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                <children>
                   <HBox alignment="TOP_LEFT">
                      <children>
@@ -170,6 +212,7 @@
                         <Button fx:id="btnBackSales" mnemonicParsing="false" onAction="#goStandSale" styleClass="btn-ghost" text="Back" ><graphic><Region styleClass="ico, ico-back" /></graphic></Button>
                      </children>
                   </HBox>
+<<<<<<< HEAD
                   <VBox spacing="22.0" style="-fx-padding: 28;" styleClass="card">
                      <children>
                         <GridPane hgap="28.0" vgap="22.0">
@@ -196,6 +239,40 @@
                      <Button fx:id="btnCancelSale" onAction="#goStandSale" prefHeight="44.0" style="-fx-padding: 0 28;" styleClass="btn-ghost" text="Cancel" />
                      <Button fx:id="btnSaveSale" onAction="#handleSaveSale" prefHeight="44.0" style="-fx-padding: 0 28;" styleClass="btn-primary" text="Save sale" />
                   </children></HBox>
+=======
+                  <VBox spacing="24.0" style="-fx-padding: 28;" styleClass="card">
+                     <children>
+                        <HBox alignment="BOTTOM_LEFT" spacing="28.0"><children>
+                           <VBox prefWidth="500.0" spacing="8.0" HBox.hgrow="ALWAYS"><children>
+                              <Label styleClass="form-label" text="Product" />
+                              <ComboBox fx:id="cbEditSaleProduct" maxWidth="1.7976931348623157E308" prefHeight="44.0" promptText="Select product" value="Gypsophila" />
+                           </children></VBox>
+                           <VBox prefWidth="260.0" spacing="8.0" HBox.hgrow="ALWAYS"><children>
+                              <Label styleClass="form-label" text="Qty Sold" />
+                              <Spinner fx:id="spEditQty" editable="true" initialValue="5" max="999" maxWidth="1.7976931348623157E308" min="1" prefHeight="44.0" />
+                           </children></VBox>
+                        </children></HBox>
+                        <HBox alignment="BOTTOM_LEFT" spacing="28.0"><children>
+                           <VBox prefWidth="320.0" spacing="8.0" HBox.hgrow="ALWAYS"><children>
+                              <Label styleClass="form-label" text="Unit Price" />
+                              <TextField fx:id="tfEditUnitPrice" editable="false" prefHeight="44.0" style="-fx-background-color: #F3EFF1;" text="30.00" />
+                           </children></VBox>
+                           <VBox prefWidth="320.0" spacing="8.0" HBox.hgrow="ALWAYS"><children>
+                              <Label styleClass="form-label" text="Date" />
+                              <DatePicker fx:id="dpSaleDate" maxWidth="1.7976931348623157E308" prefHeight="44.0" />
+                           </children></VBox>
+                           <VBox minWidth="170.0" spacing="8.0"><children>
+                              <Label styleClass="form-label" text="Total" />
+                              <Label fx:id="lblEditSaleTotal" style="-fx-font-size: 22px; -fx-text-fill: #2B8A5A;" styleClass="stat-value" text="₱150.00" />
+                           </children></VBox>
+                        </children></HBox>
+                        <HBox spacing="12.0"><children>
+                           <Button fx:id="btnCancelSale" onAction="#goStandSale" prefHeight="44.0" style="-fx-padding: 0 28;" styleClass="btn-ghost" text="Cancel" />
+                           <Button fx:id="btnSaveSale" onAction="#handleSaveSale" prefHeight="44.0" style="-fx-padding: 0 28;" styleClass="btn-primary" text="Save sale" />
+                        </children></HBox>
+                     </children>
+                  </VBox>
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                </children>
             </VBox>
          </children>

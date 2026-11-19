@@ -1,5 +1,6 @@
 package com.sassyscreation.sassyscreationgui.controllers;
 
+<<<<<<< HEAD
 import com.sassyscreation.sassyscreationgui.util.Transitions;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,16 +21,36 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+=======
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+<<<<<<< HEAD
 import java.io.IOException;
+=======
+import java.net.URL;
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+<<<<<<< HEAD
 
 public class StandSaleController {
 
@@ -49,15 +70,40 @@ public class StandSaleController {
     @FXML private Button navOrders;
     @FXML private Button navStandSale;
     @FXML private Button navInventory;
+=======
+import java.util.ResourceBundle;
+
+public class StandSaleController implements Initializable {
+
+    /** Folder (inside resources) where all the FXML files live. */
+    private static final String FXML_PATH = "/com/sassyscreation/sassyscreationgui/";
+
+    // ---- sidebar ----
+    @FXML private Button navDashboard;
+    @FXML private Button navOrders;
+    @FXML private Label lblNavOrdersBadge;
+    @FXML private Button navStandSale;
+    @FXML private Button navInventory;
+    @FXML private Button btnLogout;
+
+    // ---- top bar ----
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
     @FXML private MenuButton mbAccount;
     @FXML private MenuItem miChangePassword;
     @FXML private MenuItem miAbout;
     @FXML private MenuItem miLogout;
 
+<<<<<<< HEAD
     // header
     @FXML private Button btnExportSales;
 
     // record a sale card
+=======
+    // ---- header ----
+    @FXML private Button btnExportSales;
+
+    // ---- record a sale form ----
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
     @FXML private ComboBox<String> cbSaleProduct;
     @FXML private Spinner<Integer> spQty;
     @FXML private TextField tfUnitPrice;
@@ -65,6 +111,7 @@ public class StandSaleController {
     @FXML private Label lblStockInfo;
     @FXML private Button btnRecordSale;
 
+<<<<<<< HEAD
     // totals above the table
     @FXML private Label lblSaleCount;
     @FXML private Label lblSaleRevenue;
@@ -72,10 +119,19 @@ public class StandSaleController {
     // sales history table
     @FXML private TableView<Map<String, Object>> tvSales;
     @FXML private TableColumn<Map<String, Object>, Object> colSaleDate;
+=======
+    // ---- summary bar ----
+    @FXML private Label lblSaleCount;
+    @FXML private Label lblSaleRevenue;
+
+    // ---- sales history table ----
+    @FXML private TableView<Map<String, Object>> tvSales;
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
     @FXML private TableColumn<Map<String, Object>, Object> colSaleProduct;
     @FXML private TableColumn<Map<String, Object>, Object> colSaleQty;
     @FXML private TableColumn<Map<String, Object>, Object> colSalePrice;
     @FXML private TableColumn<Map<String, Object>, Object> colSaleTotal;
+<<<<<<< HEAD
     @FXML private TableColumn<Map<String, Object>, Object> colSaleActions;
 
     // TODO: replace this with the products from the database (ProductDAO)
@@ -399,6 +455,13 @@ public class StandSaleController {
 
     // a simple holder for the sample data above
     private static class Product {
+=======
+    @FXML private TableColumn<Map<String, Object>, Object> colSaleDate;
+    @FXML private TableColumn<Map<String, Object>, Object> colSaleActions;
+
+    /** A sellable product with its price and remaining stock. */
+    static class Product {
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
         final String name;
         final double price;
         int stock;
@@ -409,4 +472,401 @@ public class StandSaleController {
             this.stock = stock;
         }
     }
+<<<<<<< HEAD
 }
+=======
+
+    // Shared (static) so EditSaleController can read and change the same data
+    static final Map<String, Product> products = new LinkedHashMap<>();
+    static final ObservableList<Map<String, Object>> allSales = FXCollections.observableArrayList();
+
+    /** The sale row currently being edited on the Edit Sale screen (set before opening it). */
+    static Map<String, Object> editingRow = null;
+
+    private static boolean dataLoaded = false;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        if (!dataLoaded) {
+            loadProducts();
+            loadSales();
+            dataLoaded = true;
+        }
+        setUpForm();
+        setUpTable();
+        updateForm();
+        updateSummary();
+    }
+
+    // =====================================================================
+    //  Data
+    // =====================================================================
+
+    /**
+     * TEMPORARY: sample products. Replace with a database query
+     * (name, unit price and current stock from your inventory table).
+     */
+    private void loadProducts() {
+        addProduct("Rose Keychain", 50.00, 20);
+        addProduct("Mini Daisy Keychain - Fuzzy Wire", 20.00, 15);
+        addProduct("Gypsophila", 30.00, 12);
+        addProduct("Baby Mushroom Keychain", 80.00, 8);
+        addProduct("Sunflower - Fuzzy Wire", 55.00, 6);
+    }
+
+    private void addProduct(String name, double price, int stock) {
+        products.put(name, new Product(name, price, stock));
+    }
+
+    /**
+     * TEMPORARY: sample sales history that matches the design.
+     * Replace with a database query (SELECT from your stand sales table).
+     */
+    private void loadSales() {
+        allSales.setAll(
+                sale("Rose Keychain", 2, 50.00, "2026-04-25"),
+                sale("Mini Daisy Keychain - Fuzzy Wire", 3, 20.00, "2026-04-25"),
+                sale("Gypsophila", 5, 30.00, "2026-04-26"),
+                sale("Baby Mushroom Keychain", 1, 80.00, "2026-04-26"),
+                sale("Sunflower - Fuzzy Wire", 2, 55.00, "2026-04-27"),
+                sale("Gypsophila", 1, 30.00, "2026-04-29"),
+                sale("Gypsophila", 1, 30.00, "2026-05-01"),
+                sale("Rose Keychain", 10, 50.00, "2026-05-02"),
+                sale("Gypsophila", 5, 30.00, "2026-05-03"));
+    }
+
+    // Keys must match the MapValueFactory keys in the FXML (case-sensitive)
+    private Map<String, Object> sale(String product, int qty, double price, String date) {
+        Map<String, Object> m = new HashMap<>();
+        m.put("Product", product);
+        m.put("Qty", qty);
+        m.put("Price", price);
+        m.put("Total", qty * price);
+        m.put("Date", date);
+        m.put("actions", "actions");   // placeholder so the Actions column has a value
+        return m;
+    }
+
+    // =====================================================================
+    //  Record a sale form
+    // =====================================================================
+
+    private void setUpForm() {
+        cbSaleProduct.setItems(FXCollections.observableArrayList(products.keySet()));
+        if (cbSaleProduct.getValue() == null || !products.containsKey(cbSaleProduct.getValue())) {
+            cbSaleProduct.getSelectionModel().selectFirst();
+        }
+
+        spQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 999, 1));
+
+        // Keep typed numbers in the spinner when the field loses focus
+        spQty.getEditor().focusedProperty().addListener((obs, was, isNow) -> {
+            if (!isNow) {
+                commitSpinnerText();
+            }
+        });
+
+        cbSaleProduct.valueProperty().addListener((obs, o, n) -> updateForm());
+        spQty.valueProperty().addListener((obs, o, n) -> updateForm());
+    }
+
+    private void commitSpinnerText() {
+        try {
+            int typed = Integer.parseInt(spQty.getEditor().getText().trim());
+            typed = Math.max(1, Math.min(999, typed));
+            spQty.getValueFactory().setValue(typed);
+        } catch (NumberFormatException e) {
+            spQty.getEditor().setText(String.valueOf(spQty.getValue()));
+        }
+    }
+
+    /** Refreshes unit price, total and the stock note for the selected product and quantity. */
+    private void updateForm() {
+        Product p = products.get(cbSaleProduct.getValue());
+        if (p == null) {
+            tfUnitPrice.setText("");
+            lblSaleTotal.setText(peso(0));
+            lblStockInfo.setText("Select a product");
+            return;
+        }
+
+        int qty = spQty.getValue() == null ? 1 : spQty.getValue();
+        tfUnitPrice.setText(String.format("%.2f", p.price));
+        lblSaleTotal.setText(peso(qty * p.price));
+
+        if (p.stock <= 0) {
+            lblStockInfo.setText("Out of stock");
+        } else {
+            lblStockInfo.setText("Current stock: " + p.stock + " (deducted automatically)");
+        }
+    }
+
+    @FXML
+    private void handleRecordSale() {
+        commitSpinnerText();
+
+        Product p = products.get(cbSaleProduct.getValue());
+        if (p == null) {
+            showWarning("No product selected", "Please choose a product first.");
+            return;
+        }
+
+        int qty = spQty.getValue();
+        if (qty < 1) {
+            showWarning("Invalid quantity", "Quantity must be at least 1.");
+            return;
+        }
+        if (qty > p.stock) {
+            showWarning("Not enough stock",
+                    "Only " + p.stock + " of \"" + p.name + "\" left in stock.");
+            return;
+        }
+
+        // TODO: also INSERT the sale and UPDATE the stock in the database
+        p.stock -= qty;
+        allSales.add(0, sale(p.name, qty, p.price, LocalDate.now().toString()));
+
+        spQty.getValueFactory().setValue(1);
+        updateForm();
+        updateSummary();
+
+        Alert info = new Alert(Alert.AlertType.INFORMATION);
+        info.setTitle("Sale recorded");
+        info.setHeaderText(null);
+        info.setContentText(qty + " x " + p.name + " recorded: " + peso(qty * p.price));
+        info.showAndWait();
+    }
+
+    // =====================================================================
+    //  Sales table
+    // =====================================================================
+
+    private void setUpTable() {
+        colSalePrice.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(Object item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : peso(((Number) item).doubleValue()));
+            }
+        });
+
+        colSaleTotal.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(Object item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : peso(((Number) item).doubleValue()));
+            }
+        });
+
+        colSaleActions.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(Object item, boolean empty) {
+                super.updateItem(item, empty);
+                Map<String, Object> row = getTableRow() == null ? null : getTableRow().getItem();
+                if (empty || row == null) {
+                    setGraphic(null);
+                    return;
+                }
+
+                Button edit = iconButton("ico-edit", "Edit", "btn-icon", "btn-edit");
+                edit.setText("Edit");
+                edit.setOnAction(e -> editSale(row));
+
+                Button delete = iconButton("ico-delete", "Delete", "btn-icon", "btn-icon-danger");
+                delete.setOnAction(e -> deleteSale(row));
+
+                HBox box = new HBox(10, edit, delete);
+                box.setAlignment(Pos.CENTER_LEFT);
+                setGraphic(box);
+            }
+        });
+
+        // Replaces the sample rows hard-coded in the FXML
+        SortedList<Map<String, Object>> sorted = new SortedList<>(allSales);
+        sorted.comparatorProperty().bind(tvSales.comparatorProperty());
+        tvSales.setItems(sorted);
+    }
+
+    private Button iconButton(String icon, String tooltip, String... styleClasses) {
+        Button b = new Button();
+        b.setFocusTraversable(false);
+        b.setMnemonicParsing(false);
+        b.getStyleClass().addAll(styleClasses);
+        Region graphic = new Region();
+        graphic.getStyleClass().addAll("ico", icon);
+        b.setGraphic(graphic);
+        b.setTooltip(new Tooltip(tooltip));
+        return b;
+    }
+
+    /** Opens the Edit Sale screen (EDITSALE.fxml / EditSaleController) for the chosen row. */
+    private void editSale(Map<String, Object> row) {
+        editingRow = row;
+        switchScreen("EDITSALE.fxml", "Edit Sale");
+    }
+
+    /** Shows the custom "Delete this sale?" dialog (DeleteSaleController / DELETESALE.fxml). */
+    private void deleteSale(Map<String, Object> row) {
+        int qty = (Integer) row.get("Qty");
+        String productName = String.valueOf(row.get("Product"));
+
+        boolean confirmed = DeleteSaleController.show(
+                tvSales.getScene().getWindow(),
+                String.valueOf(row.get("Date")),
+                productName,
+                qty,
+                peso(((Number) row.get("Price")).doubleValue()),
+                peso(((Number) row.get("Total")).doubleValue()));
+
+        if (confirmed) {
+            // TODO: also DELETE the sale and restore the stock in the database
+            Product p = products.get(productName);
+            if (p != null) {
+                p.stock += qty;
+            }
+            allSales.remove(row);
+            updateForm();
+            updateSummary();
+        }
+    }
+
+    private void updateSummary() {
+        double revenue = allSales.stream()
+                .mapToDouble(s -> ((Number) s.get("Total")).doubleValue())
+                .sum();
+
+        lblSaleCount.setText("Total Stand Sales: " + allSales.size());
+        lblSaleRevenue.setText(peso(revenue));
+    }
+
+    private String peso(double amount) {
+        return String.format("\u20B1%,.2f", amount);
+    }
+
+    // =====================================================================
+    //  Header
+    // =====================================================================
+
+    @FXML
+    private void handleOpenExport() {
+        openDialog("EXPORTDIALOG.fxml", "Export sales");
+    }
+
+    // =====================================================================
+    //  Navigation (sidebar)
+    // =====================================================================
+
+    @FXML
+    private void goDashboard() {
+        switchScreen("DASHBOARD.fxml", "Dashboard");
+    }
+
+    @FXML
+    private void goOrders() {
+        switchScreen("ORDERS.fxml", "Orders");
+    }
+
+    @FXML
+    private void goStandSale() {
+        // Already on the stand sale screen
+    }
+
+    @FXML
+    private void goInventory() {
+        switchScreen("INVENTORY_LIST.fxml", "Inventory");
+    }
+
+    // =====================================================================
+    //  Account menu
+    // =====================================================================
+
+    @FXML
+    private void handleOpenChangePassword() {
+        openDialog("CHANGEPASSWORD.fxml", "Change password");
+    }
+
+    @FXML
+    private void handleOpenAbout() {
+        // borderless = true -> no Windows title bar, rounded transparent window
+        openDialog("ABOUT.fxml", "About", true);
+    }
+
+    @FXML
+    private void handleLogout() {
+        if (ExitDialogController.show(currentStage())) {
+            currentStage().setMaximized(false);
+            switchScreen("LOGIN.fxml", "Login");
+        }
+    }
+
+    // =====================================================================
+    //  Helpers
+    // =====================================================================
+
+    private Stage currentStage() {
+        return (Stage) navStandSale.getScene().getWindow();
+    }
+
+    /** Replaces the content of the current window with another FXML screen. */
+    private void switchScreen(String fxmlName, String title) {
+        try {
+            URL resource = getClass().getResource(FXML_PATH + fxmlName);
+            if (resource == null) {
+                showError("Screen not found", fxmlName + " could not be found in the resources folder.");
+                return;
+            }
+            Parent root = new FXMLLoader(resource).load();
+            Stage stage = currentStage();
+            stage.getScene().setRoot(root);
+            stage.setTitle("Sassy's Creation - " + title);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Could not open " + title, e.getMessage());
+        }
+    }
+
+    /** Opens an FXML screen in a normal pop-up window (with title bar). */
+    private void openDialog(String fxmlName, String title) {
+        openDialog(fxmlName, title, false);
+    }
+
+    /**
+     * Opens an FXML screen in a pop-up window on top of this screen.
+     *
+     * @param borderless true = no title bar, transparent background (for rounded dialogs like About)
+     */
+    private void openDialog(String fxmlName, String title, boolean borderless) {
+        try {
+            URL resource = getClass().getResource(FXML_PATH + fxmlName);
+            if (resource == null) {
+                showError("Screen not found", fxmlName + " could not be found in the resources folder.");
+                return;
+            }
+            Parent root = new FXMLLoader(resource).load();
+
+            Stage dialog = new Stage(borderless ? StageStyle.TRANSPARENT : StageStyle.DECORATED);
+            dialog.initOwner(currentStage());
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.setTitle("Sassy's Creation - " + title);
+
+            Scene scene = new Scene(root);
+            if (borderless) {
+                scene.setFill(Color.TRANSPARENT);
+            }
+            dialog.setScene(scene);
+            dialog.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Could not open " + title, e.getMessage());
+        }
+    }
+
+    private void showWarning(String header, String message) {
+        ErrorDialogController.show(currentStage(), header, message);
+    }
+
+    private void showError(String header, String message) {
+        ErrorDialogController.show(currentStage(), header, message);
+    }
+}
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa

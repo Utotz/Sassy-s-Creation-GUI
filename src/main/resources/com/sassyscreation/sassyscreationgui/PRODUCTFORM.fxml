@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<<<<<<< HEAD
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.image.ImageView?>
+=======
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.collections.FXCollections?>
@@ -24,7 +27,11 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.shape.Rectangle?>
 
+<<<<<<< HEAD
 <HBox minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2, page-v3" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+=======
+<HBox minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
    <stylesheets><URL value="@styles.css" /></stylesheets>
    <children>
       <!-- ================= SIDEBAR ================= -->
@@ -48,7 +55,11 @@
                            </children>
                         </Pane>
                         <VBox><children>
+<<<<<<< HEAD
                            <Label styleClass="brand-title" text="Sassy’s" />
+=======
+                           <Label styleClass="brand-title" text="Sassy's" />
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                            <Label styleClass="brand-sub" text="Creation" />
                         </children></VBox>
                      </children>
@@ -74,6 +85,7 @@
                   <Button fx:id="btnLogout" focusTraversable="false" managed="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-logout" text="Log out" visible="false"><graphic><Region styleClass="ico, ico-logout" /></graphic>
                      <VBox.margin><Insets bottom="8.0" /></VBox.margin>
                   </Button>
+<<<<<<< HEAD
                   <!-- Admin Officer card (moved here from the top bar) -->
                   <MenuButton fx:id="mbAccount" contentDisplay="GRAPHIC_ONLY" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="TOP" styleClass="side-user">
                      <graphic>
@@ -96,6 +108,17 @@
                         <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#handleLogout" styleClass="account-item" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
                      </items>
                   </MenuButton>
+=======
+                  <VBox spacing="2.0" styleClass="side-footer">
+                     <children>
+                        <Label styleClass="side-footer-sub" text="Handmade Crochet" />
+                        <Label styleClass="side-footer-title" text="and Bouquets" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="side-footer-pill" text="Sassy's">
+                           <VBox.margin><Insets top="10.0" /></VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                </children>
             </VBox>
          </children>
@@ -159,8 +182,27 @@
             </Pane>
       <VBox>
          <children>
+<<<<<<< HEAD
             <VBox spacing="24.0" VBox.vgrow="ALWAYS">
                <padding><Insets bottom="24.0" left="28.0" right="28.0" top="56.0" /></padding>
+=======
+            <HBox alignment="CENTER_RIGHT" spacing="8.0" styleClass="topbar">
+               <padding><Insets left="28.0" right="28.0" /></padding>
+               <children>
+                  <Label styleClass="avatar" text="A" />
+                  <MenuButton fx:id="mbAccount" mnemonicParsing="false" styleClass="account-menu" text="Admin Officer">
+                     <items>
+                        <MenuItem fx:id="miChangePassword" mnemonicParsing="false" onAction="#handleOpenChangePassword" text="Change password"><graphic><Region styleClass="ico, ico-key" /></graphic></MenuItem>
+                        <MenuItem fx:id="miAbout" mnemonicParsing="false" onAction="#handleOpenAbout" text="About"><graphic><Region styleClass="ico, ico-info" /></graphic></MenuItem>
+                        <SeparatorMenuItem />
+                        <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#handleLogout" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
+                     </items>
+                  </MenuButton>
+               </children>
+            </HBox>
+            <VBox spacing="24.0" VBox.vgrow="ALWAYS">
+               <padding><Insets bottom="24.0" left="28.0" right="28.0" top="22.0" /></padding>
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                <children>
                   <HBox alignment="TOP_LEFT">
                      <children>
@@ -174,6 +216,7 @@
                   </HBox>
                   <VBox spacing="25.0" style="-fx-padding: 28 28 28 28;" styleClass="card">
                      <children>
+<<<<<<< HEAD
                         <HBox alignment="TOP_LEFT" spacing="28.0"><children>
                            <StackPane fx:id="boxProductPhoto" maxHeight="150.0" maxWidth="160.0" minHeight="150.0" minWidth="160.0" prefHeight="150.0" prefWidth="160.0" styleClass="photo-drop">
                               <children>
@@ -197,6 +240,16 @@
                            <Button fx:id="btnCancelProduct" onAction="#goInventory" prefHeight="45.0" style="-fx-padding: 0 24;" styleClass="btn-ghost" text="Cancel" />
                            <Button fx:id="btnSaveProduct" onAction="#handleSaveProduct" prefHeight="45.0" style="-fx-padding: 0 24;" styleClass="btn-primary" text="Save product" />
                                           </children></HBox>
+=======
+                        <HBox spacing="28.0"><children><VBox prefWidth="500.0" spacing="8.0" HBox.hgrow="ALWAYS"><children><Label styleClass="form-label" text="Product name" /><TextField fx:id="tfProdName" prefHeight="43.0" promptText="e.g. Daisy - Crochet" text="Rose - Crochet" /></children></VBox><VBox prefWidth="500.0" spacing="8.0" HBox.hgrow="ALWAYS"><children><Label styleClass="form-label" text="Category" /><ComboBox fx:id="cbProdCategory" maxWidth="1.7976931348623157E308" prefHeight="43.0" promptText="Select category" value="Bouquet"><items><FXCollections fx:factory="observableArrayList"><String fx:value="Bouquet" /><String fx:value="Crochet" /><String fx:value="Keychain" /></FXCollections></items></ComboBox></children></VBox></children></HBox>
+                        <HBox spacing="28.0"><children><VBox prefWidth="500.0" spacing="8.0" HBox.hgrow="ALWAYS"><children><Label styleClass="form-label" text="Selling price (PHP)" /><TextField fx:id="tfProdPrice" prefHeight="43.0" promptText="0.00" text="100.00" /></children></VBox><VBox prefWidth="500.0" spacing="8.0" HBox.hgrow="ALWAYS"><children><Label styleClass="form-label" text="Stock quantity" /><Spinner fx:id="spStock" editable="true" initialValue="10" max="9999" maxWidth="1.7976931348623157E308" min="0" prefHeight="43.0" /></children></VBox></children></HBox>
+                        <HBox spacing="12.0"><children>
+                           <Button fx:id="btnCancelProduct" onAction="#goInventory" prefHeight="45.0" style="-fx-padding: 0 24;" styleClass="btn-ghost" text="Cancel" />
+                           <Button fx:id="btnSaveProduct" onAction="#handleSaveProduct" prefHeight="45.0" style="-fx-padding: 0 24;" styleClass="btn-primary" text="Save product" />
+                        </children></HBox>
+                     </children>
+                  </VBox>
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                </children>
             </VBox>
          </children>

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<<<<<<< HEAD
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.image.ImageView?>
+=======
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.collections.FXCollections?>
@@ -24,7 +27,11 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.shape.Rectangle?>
 
+<<<<<<< HEAD
 <HBox minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2, page-v3" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+=======
+<HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.AddProductController" minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
    <stylesheets><URL value="@styles.css" /></stylesheets>
    <children>
       <!-- ================= SIDEBAR ================= -->
@@ -38,6 +45,7 @@
                      <children>
                         <Pane maxHeight="38" maxWidth="38" minHeight="38" minWidth="38" prefHeight="38" prefWidth="38">
                            <children>
+<<<<<<< HEAD
                            <Ellipse centerX="27.9" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="0.0" />
                            <Ellipse centerX="23.5" centerY="26.7" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="60.0" />
                            <Ellipse centerX="14.5" centerY="26.7" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="120.0" />
@@ -49,6 +57,19 @@
                         </Pane>
                         <VBox><children>
                            <Label styleClass="brand-title" text="Sassy’s" />
+=======
+                              <Ellipse centerX="27.9" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="0.0" />
+                              <Ellipse centerX="23.5" centerY="26.7" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="60.0" />
+                              <Ellipse centerX="14.5" centerY="26.7" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="120.0" />
+                              <Ellipse centerX="10.1" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="180.0" />
+                              <Ellipse centerX="14.5" centerY="11.3" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="240.0" />
+                              <Ellipse centerX="23.5" centerY="11.3" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="300.0" />
+                              <Circle centerX="19.0" centerY="19.0" fill="#FFE08A" radius="4.2" />
+                           </children>
+                        </Pane>
+                        <VBox><children>
+                           <Label styleClass="brand-title" text="Sassy's" />
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                            <Label styleClass="brand-sub" text="Creation" />
                         </children></VBox>
                      </children>
@@ -57,6 +78,7 @@
                   <VBox spacing="4.0">
                      <padding><Insets bottom="14.0" top="2.0" /></padding>
                      <children>
+<<<<<<< HEAD
                      <Button fx:id="navDashboard" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goDashboard" styleClass="nav-btn" text="Dashboard"><graphic><Region styleClass="ico, ico-dashboard" /></graphic></Button>
                      <StackPane>
                         <children>
@@ -68,12 +90,26 @@
                      </StackPane>
                      <Button fx:id="navStandSale" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goStandSale" styleClass="nav-btn" text="Stand Sale"><graphic><Region styleClass="ico, ico-store" /></graphic></Button>
                      <Button fx:id="navInventory" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goInventory" styleClass="nav-btn, nav-active" text="Inventory"><graphic><Region styleClass="ico, ico-box" /></graphic></Button>
+=======
+                        <Button fx:id="navDashboard" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goDashboard" styleClass="nav-btn" text="Dashboard"><graphic><Region styleClass="ico, ico-dashboard" /></graphic></Button>
+                        <StackPane>
+                           <children>
+                              <Button fx:id="navOrders" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goOrders" styleClass="nav-btn" text="Orders"><graphic><Region styleClass="ico, ico-cart" /></graphic></Button>
+                              <Label fx:id="lblNavOrdersBadge" mouseTransparent="true" styleClass="nav-badge" text="4" StackPane.alignment="CENTER_RIGHT">
+                                 <StackPane.margin><Insets right="14.0" /></StackPane.margin>
+                              </Label>
+                           </children>
+                        </StackPane>
+                        <Button fx:id="navStandSale" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goStandSale" styleClass="nav-btn" text="Stand Sale"><graphic><Region styleClass="ico, ico-store" /></graphic></Button>
+                        <Button fx:id="navInventory" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goInventory" styleClass="nav-btn, nav-active" text="Inventory"><graphic><Region styleClass="ico, ico-box" /></graphic></Button>
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                      </children>
                   </VBox>
                   <Region VBox.vgrow="ALWAYS" />
                   <Button fx:id="btnLogout" focusTraversable="false" managed="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-logout" text="Log out" visible="false"><graphic><Region styleClass="ico, ico-logout" /></graphic>
                      <VBox.margin><Insets bottom="8.0" /></VBox.margin>
                   </Button>
+<<<<<<< HEAD
                   <!-- Admin Officer card (moved here from the top bar) -->
                   <MenuButton fx:id="mbAccount" contentDisplay="GRAPHIC_ONLY" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="TOP" styleClass="side-user">
                      <graphic>
@@ -96,6 +132,17 @@
                         <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#handleLogout" styleClass="account-item" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
                      </items>
                   </MenuButton>
+=======
+                  <VBox spacing="2.0" styleClass="side-footer">
+                     <children>
+                        <Label styleClass="side-footer-sub" text="Handmade Crochet" />
+                        <Label styleClass="side-footer-title" text="and Bouquets" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="side-footer-pill" text="Sassy's">
+                           <VBox.margin><Insets top="10.0" /></VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                </children>
             </VBox>
          </children>
@@ -106,6 +153,7 @@
             <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="220" prefWidth="220" StackPane.alignment="TOP_RIGHT">
                <clip><Rectangle height="220" width="220" /></clip>
                <children>
+<<<<<<< HEAD
                <Ellipse centerX="212.5" centerY="61.4" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="15.0" />
                <Ellipse centerX="181.4" centerY="92.5" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="75.0" />
                <Ellipse centerX="138.9" centerY="81.1" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="135.0" />
@@ -113,11 +161,21 @@
                <Ellipse centerX="158.6" centerY="7.5" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="255.0" />
                <Ellipse centerX="201.1" centerY="18.9" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="315.0" />
                <Circle centerX="170.0" centerY="50.0" fill="#FFE08A" opacity="0.95" radius="11.0" />
+=======
+                  <Ellipse centerX="212.5" centerY="61.4" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="15.0" />
+                  <Ellipse centerX="181.4" centerY="92.5" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="75.0" />
+                  <Ellipse centerX="138.9" centerY="81.1" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="135.0" />
+                  <Ellipse centerX="127.5" centerY="38.6" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="195.0" />
+                  <Ellipse centerX="158.6" centerY="7.5" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="255.0" />
+                  <Ellipse centerX="201.1" centerY="18.9" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="315.0" />
+                  <Circle centerX="170.0" centerY="50.0" fill="#FFE08A" opacity="0.95" radius="11.0" />
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                </children>
             </Pane>
             <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="360" prefWidth="360" StackPane.alignment="BOTTOM_RIGHT">
                <clip><Rectangle height="360" width="360" /></clip>
                <children>
+<<<<<<< HEAD
                <Ellipse centerX="433.5" centerY="352.4" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="10.0" />
                <Ellipse centerX="399.3" centerY="411.6" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="50.0" />
                <Ellipse centerX="335.0" centerY="435.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="90.0" />
@@ -137,11 +195,33 @@
                <Ellipse centerX="374.9" centerY="287.5" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="310.0" />
                <Ellipse centerX="396.1" centerY="324.2" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="350.0" />
                <Circle centerX="335.0" centerY="335.0" fill="#FFE08A" opacity="0.95" radius="22.0" />
+=======
+                  <Ellipse centerX="433.5" centerY="352.4" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="10.0" />
+                  <Ellipse centerX="399.3" centerY="411.6" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="50.0" />
+                  <Ellipse centerX="335.0" centerY="435.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="90.0" />
+                  <Ellipse centerX="270.7" centerY="411.6" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="130.0" />
+                  <Ellipse centerX="236.5" centerY="352.4" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="170.0" />
+                  <Ellipse centerX="248.4" centerY="285.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="210.0" />
+                  <Ellipse centerX="300.8" centerY="241.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="250.0" />
+                  <Ellipse centerX="369.2" centerY="241.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="290.0" />
+                  <Ellipse centerX="421.6" centerY="285.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="330.0" />
+                  <Ellipse centerX="388.7" centerY="366.0" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="30.0" />
+                  <Ellipse centerX="356.2" centerY="393.3" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="70.0" />
+                  <Ellipse centerX="313.8" centerY="393.3" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="110.0" />
+                  <Ellipse centerX="281.3" centerY="366.0" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="150.0" />
+                  <Ellipse centerX="273.9" centerY="324.2" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="190.0" />
+                  <Ellipse centerX="295.1" centerY="287.5" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="230.0" />
+                  <Ellipse centerX="335.0" centerY="273.0" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="270.0" />
+                  <Ellipse centerX="374.9" centerY="287.5" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="310.0" />
+                  <Ellipse centerX="396.1" centerY="324.2" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="350.0" />
+                  <Circle centerX="335.0" centerY="335.0" fill="#FFE08A" opacity="0.95" radius="22.0" />
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                </children>
             </Pane>
             <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="200" prefWidth="200" StackPane.alignment="BOTTOM_LEFT">
                <clip><Rectangle height="200" width="200" /></clip>
                <children>
+<<<<<<< HEAD
                <Ellipse centerX="71.2" centerY="194.6" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="40.0" />
                <Ellipse centerX="28.0" centerY="210.3" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="100.0" />
                <Ellipse centerX="-7.2" centerY="180.7" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="160.0" />
@@ -202,6 +282,67 @@
          </children>
       </VBox>
          </children>
+=======
+                  <Ellipse centerX="71.2" centerY="194.6" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="40.0" />
+                  <Ellipse centerX="28.0" centerY="210.3" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="100.0" />
+                  <Ellipse centerX="-7.2" centerY="180.7" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="160.0" />
+                  <Ellipse centerX="0.8" centerY="135.4" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="220.0" />
+                  <Ellipse centerX="44.0" centerY="119.7" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="280.0" />
+                  <Ellipse centerX="79.2" centerY="149.3" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="340.0" />
+                  <Ellipse centerX="45.8" centerY="191.8" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="70.0" />
+                  <Ellipse centerX="17.7" centerY="186.8" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="130.0" />
+                  <Ellipse centerX="7.9" centerY="160.0" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="190.0" />
+                  <Ellipse centerX="26.2" centerY="138.2" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="250.0" />
+                  <Ellipse centerX="54.3" centerY="143.2" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="310.0" />
+                  <Ellipse centerX="64.1" centerY="170.0" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="370.0" />
+                  <Circle centerX="36.0" centerY="165.0" fill="#FFE08A" opacity="0.95" radius="11.0" />
+               </children>
+            </Pane>
+            <VBox>
+               <children>
+                  <HBox alignment="CENTER_RIGHT" spacing="8.0" styleClass="topbar">
+                     <padding><Insets left="28.0" right="28.0" /></padding>
+                     <children>
+                        <Label styleClass="avatar" text="A" />
+                        <MenuButton fx:id="mbAccount" mnemonicParsing="false" styleClass="account-menu" text="Admin Officer">
+                           <items>
+                              <MenuItem fx:id="miChangePassword" mnemonicParsing="false" onAction="#handleOpenChangePassword" text="Change password"><graphic><Region styleClass="ico, ico-key" /></graphic></MenuItem>
+                              <MenuItem fx:id="miAbout" mnemonicParsing="false" onAction="#handleOpenAbout" text="About"><graphic><Region styleClass="ico, ico-info" /></graphic></MenuItem>
+                              <SeparatorMenuItem />
+                              <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#handleLogout" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
+                           </items>
+                        </MenuButton>
+                     </children>
+                  </HBox>
+                  <VBox spacing="24.0" VBox.vgrow="ALWAYS">
+                     <padding><Insets bottom="24.0" left="28.0" right="28.0" top="22.0" /></padding>
+                     <children>
+                        <HBox alignment="TOP_LEFT">
+                           <children>
+                              <VBox><children>
+                                 <Label styleClass="page-title" text="Add Product" />
+                                 <Label styleClass="page-sub" text="Name, category, price and stock" />
+                              </children></VBox>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button fx:id="btnBackInv" mnemonicParsing="false" onAction="#goInventory" styleClass="btn-ghost" text="Back" ><graphic><Region styleClass="ico, ico-back" /></graphic></Button>
+                           </children>
+                        </HBox>
+                        <VBox spacing="25.0" style="-fx-padding: 28 28 28 28;" styleClass="card">
+                           <children>
+                              <HBox spacing="28.0"><children><VBox prefWidth="500.0" spacing="8.0" HBox.hgrow="ALWAYS"><children><Label styleClass="form-label" text="Product name" /><TextField fx:id="tfProdName" prefHeight="43.0" promptText="e.g. Daisy - Crochet" /></children></VBox><VBox prefWidth="500.0" spacing="8.0" HBox.hgrow="ALWAYS"><children><Label styleClass="form-label" text="Category" /><ComboBox fx:id="cbProdCategory" maxWidth="1.7976931348623157E308" prefHeight="43.0" promptText="Select category"><items><FXCollections fx:factory="observableArrayList"><String fx:value="Bouquet" /><String fx:value="Crochet" /><String fx:value="Keychain" /></FXCollections></items></ComboBox></children></VBox></children></HBox>
+                              <HBox spacing="28.0"><children><VBox prefWidth="500.0" spacing="8.0" HBox.hgrow="ALWAYS"><children><Label styleClass="form-label" text="Selling price (PHP)" /><TextField fx:id="tfProdPrice" prefHeight="43.0" promptText="0.00" /></children></VBox><VBox prefWidth="500.0" spacing="8.0" HBox.hgrow="ALWAYS"><children><Label styleClass="form-label" text="Stock quantity" /><Spinner fx:id="spStock" editable="true" initialValue="0" max="9999" maxWidth="1.7976931348623157E308" min="0" prefHeight="43.0" /></children></VBox></children></HBox>
+                              <HBox spacing="12.0"><children>
+                                 <Button fx:id="btnCancelProduct" onAction="#goInventory" prefHeight="45.0" style="-fx-padding: 0 24;" styleClass="btn-ghost" text="Cancel" />
+                                 <Button fx:id="btnSaveProduct" onAction="#handleSaveProduct" prefHeight="45.0" style="-fx-padding: 0 24;" styleClass="btn-primary" text="Save product" />
+                              </children></HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
       </StackPane>
    </children>
 </HBox>

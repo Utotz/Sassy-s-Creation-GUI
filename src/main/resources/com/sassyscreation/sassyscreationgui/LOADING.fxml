@@ -14,12 +14,89 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.shape.Rectangle?>
 
+<<<<<<< HEAD
 <StackPane prefHeight="290" prefWidth="340" styleClass="dialog-root, page-v3" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets><URL value="@styles.css" /></stylesheets>
    <children>
       <VBox alignment="CENTER">
    <children>
       <VBox alignment="CENTER" maxWidth="300.0" spacing="4.0" styleClass="dialog-card">
+=======
+<StackPane fx:controller="com.sassyscreation.sassyscreationgui.controllers.LoadingDialogController" prefHeight="290" prefWidth="340" styleClass="dialog-root" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets><URL value="@styles.css" /></stylesheets>
+   <children>
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="117.8" prefWidth="117.8" StackPane.alignment="TOP_LEFT">
+         <clip><Rectangle height="117.8" width="117.8" /></clip>
+         <children>
+               <Ellipse centerX="49.9" centerY="28.4" fill="#F8BBD0" opacity="0.72" radiusX="26.0" radiusY="12.4" rotate="20.0" />
+               <Ellipse centerX="31.3" centerY="48.7" fill="#F8BBD0" opacity="0.72" radiusX="26.0" radiusY="12.4" rotate="65.0" />
+               <Ellipse centerX="3.8" centerY="49.9" fill="#F8BBD0" opacity="0.72" radiusX="26.0" radiusY="12.4" rotate="110.0" />
+               <Ellipse centerX="-16.5" centerY="31.3" fill="#F8BBD0" opacity="0.72" radiusX="26.0" radiusY="12.4" rotate="155.0" />
+               <Ellipse centerX="-17.7" centerY="3.8" fill="#F8BBD0" opacity="0.72" radiusX="26.0" radiusY="12.4" rotate="200.0" />
+               <Ellipse centerX="0.9" centerY="-16.5" fill="#F8BBD0" opacity="0.72" radiusX="26.0" radiusY="12.4" rotate="245.0" />
+               <Ellipse centerX="28.4" centerY="-17.7" fill="#F8BBD0" opacity="0.72" radiusX="26.0" radiusY="12.4" rotate="290.0" />
+               <Ellipse centerX="48.7" centerY="0.9" fill="#F8BBD0" opacity="0.72" radiusX="26.0" radiusY="12.4" rotate="335.0" />
+               <Ellipse centerX="32.6" centerY="31.2" fill="#E64980" opacity="0.26" radiusX="16.1" radiusY="8.1" rotate="42.5" />
+               <Ellipse centerX="17.1" centerY="38.4" fill="#E64980" opacity="0.26" radiusX="16.1" radiusY="8.1" rotate="87.5" />
+               <Ellipse centerX="1.1" centerY="32.6" fill="#E64980" opacity="0.26" radiusX="16.1" radiusY="8.1" rotate="132.5" />
+               <Ellipse centerX="-6.2" centerY="17.1" fill="#E64980" opacity="0.26" radiusX="16.1" radiusY="8.1" rotate="177.5" />
+               <Ellipse centerX="-0.3" centerY="1.1" fill="#E64980" opacity="0.26" radiusX="16.1" radiusY="8.1" rotate="222.5" />
+               <Ellipse centerX="15.1" centerY="-6.2" fill="#E64980" opacity="0.26" radiusX="16.1" radiusY="8.1" rotate="267.5" />
+               <Ellipse centerX="31.2" centerY="-0.3" fill="#E64980" opacity="0.26" radiusX="16.1" radiusY="8.1" rotate="312.5" />
+               <Ellipse centerX="38.4" centerY="15.1" fill="#E64980" opacity="0.26" radiusX="16.1" radiusY="8.1" rotate="357.5" />
+               <Circle centerX="16.1" centerY="16.1" fill="#FFE08A" opacity="0.95" radius="8.7" />
+         </children>
+      </Pane>
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="130.2" prefWidth="130.2" StackPane.alignment="BOTTOM_RIGHT">
+         <clip><Rectangle height="130.2" width="130.2" /></clip>
+         <children>
+               <Ellipse centerX="151.9" centerY="120.8" fill="#F8BBD0" opacity="0.72" radiusX="28.5" radiusY="13.6" rotate="10.0" />
+               <Ellipse centerX="136.1" centerY="145.6" fill="#F8BBD0" opacity="0.72" radiusX="28.5" radiusY="13.6" rotate="55.0" />
+               <Ellipse centerX="107.4" centerY="151.9" fill="#F8BBD0" opacity="0.72" radiusX="28.5" radiusY="13.6" rotate="100.0" />
+               <Ellipse centerX="82.6" centerY="136.1" fill="#F8BBD0" opacity="0.72" radiusX="28.5" radiusY="13.6" rotate="145.0" />
+               <Ellipse centerX="76.2" centerY="107.4" fill="#F8BBD0" opacity="0.72" radiusX="28.5" radiusY="13.6" rotate="190.0" />
+               <Ellipse centerX="92.0" centerY="82.6" fill="#F8BBD0" opacity="0.72" radiusX="28.5" radiusY="13.6" rotate="235.0" />
+               <Ellipse centerX="120.8" centerY="76.2" fill="#F8BBD0" opacity="0.72" radiusX="28.5" radiusY="13.6" rotate="280.0" />
+               <Ellipse centerX="145.6" centerY="92.0" fill="#F8BBD0" opacity="0.72" radiusX="28.5" radiusY="13.6" rotate="325.0" />
+               <Ellipse centerX="134.2" centerY="126.9" fill="#E64980" opacity="0.26" radiusX="17.7" radiusY="8.9" rotate="32.5" />
+               <Ellipse centerX="119.2" centerY="137.3" fill="#E64980" opacity="0.26" radiusX="17.7" radiusY="8.9" rotate="77.5" />
+               <Ellipse centerX="101.3" centerY="134.2" fill="#E64980" opacity="0.26" radiusX="17.7" radiusY="8.9" rotate="122.5" />
+               <Ellipse centerX="90.8" centerY="119.2" fill="#E64980" opacity="0.26" radiusX="17.7" radiusY="8.9" rotate="167.5" />
+               <Ellipse centerX="94.0" centerY="101.3" fill="#E64980" opacity="0.26" radiusX="17.7" radiusY="8.9" rotate="212.5" />
+               <Ellipse centerX="108.9" centerY="90.8" fill="#E64980" opacity="0.26" radiusX="17.7" radiusY="8.9" rotate="257.5" />
+               <Ellipse centerX="126.9" centerY="94.0" fill="#E64980" opacity="0.26" radiusX="17.7" radiusY="8.9" rotate="302.5" />
+               <Ellipse centerX="137.3" centerY="108.9" fill="#E64980" opacity="0.26" radiusX="17.7" radiusY="8.9" rotate="347.5" />
+               <Circle centerX="114.1" centerY="114.1" fill="#FFE08A" opacity="0.95" radius="9.3" />
+         </children>
+      </Pane>
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="68.2" prefWidth="68.2" StackPane.alignment="TOP_RIGHT">
+         <clip><Rectangle height="68.2" width="68.2" /></clip>
+         <children>
+               <Ellipse centerX="67.7" centerY="21.5" fill="#F8BBD0" opacity="0.72" radiusX="11.8" radiusY="5.6" rotate="15.0" />
+               <Ellipse centerX="56.3" centerY="32.9" fill="#F8BBD0" opacity="0.72" radiusX="11.8" radiusY="5.6" rotate="75.0" />
+               <Ellipse centerX="40.7" centerY="28.8" fill="#F8BBD0" opacity="0.72" radiusX="11.8" radiusY="5.6" rotate="135.0" />
+               <Ellipse centerX="36.5" centerY="13.2" fill="#F8BBD0" opacity="0.72" radiusX="11.8" radiusY="5.6" rotate="195.0" />
+               <Ellipse centerX="47.9" centerY="1.8" fill="#F8BBD0" opacity="0.72" radiusX="11.8" radiusY="5.6" rotate="255.0" />
+               <Ellipse centerX="63.5" centerY="6.0" fill="#F8BBD0" opacity="0.72" radiusX="11.8" radiusY="5.6" rotate="315.0" />
+               <Circle centerX="52.1" centerY="17.4" fill="#FFE08A" opacity="0.95" radius="4.3" />
+         </children>
+      </Pane>
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="80.6" prefWidth="80.6" StackPane.alignment="BOTTOM_LEFT">
+         <clip><Rectangle height="80.6" width="80.6" /></clip>
+         <children>
+               <Ellipse centerX="32.8" centerY="76.4" fill="#F8BBD0" opacity="0.72" radiusX="13.6" radiusY="6.2" rotate="40.0" />
+               <Ellipse centerX="15.4" centerY="82.8" fill="#F8BBD0" opacity="0.72" radiusX="13.6" radiusY="6.2" rotate="100.0" />
+               <Ellipse centerX="1.1" centerY="70.8" fill="#F8BBD0" opacity="0.72" radiusX="13.6" radiusY="6.2" rotate="160.0" />
+               <Ellipse centerX="4.4" centerY="52.5" fill="#F8BBD0" opacity="0.72" radiusX="13.6" radiusY="6.2" rotate="220.0" />
+               <Ellipse centerX="21.8" centerY="46.2" fill="#F8BBD0" opacity="0.72" radiusX="13.6" radiusY="6.2" rotate="280.0" />
+               <Ellipse centerX="36.1" centerY="58.1" fill="#F8BBD0" opacity="0.72" radiusX="13.6" radiusY="6.2" rotate="340.0" />
+               <Circle centerX="18.6" centerY="64.5" fill="#FFE08A" opacity="0.95" radius="5.0" />
+         </children>
+      </Pane>
+      <VBox alignment="CENTER">
+   <children>
+      <VBox alignment="CENTER" maxWidth="300.0" spacing="10.0" styleClass="dialog-card">
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
          <children>
             <!-- falling + bouncing flowers (animated GIF, plays automatically) -->
             <ImageView fitHeight="150.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
@@ -27,8 +104,12 @@
             </ImageView>
             <!-- kept hidden so existing controller references to piLoading still work -->
             <ProgressBar fx:id="piLoading" managed="false" prefWidth="1.0" progress="0.0" visible="false" />
+<<<<<<< HEAD
             <Label fx:id="lblLoading" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="dialog-title-dark" text="Please wait..." />
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="page-sub" text="A flower blooms again and again" textAlignment="CENTER" wrapText="true" />
+=======
+            <Label fx:id="lblLoading" styleClass="dialog-text" text="Please wait..." />
+>>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
          </children>
       </VBox>
    </children>
