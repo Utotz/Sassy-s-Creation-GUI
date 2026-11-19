@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<<<<<<< HEAD
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
-=======
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import java.util.HashMap?>
@@ -33,11 +30,10 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.shape.Rectangle?>
 
-<<<<<<< HEAD
-<HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.OrdersController" minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2, page-v3" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
-=======
-<HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.OrdersController" minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
+<HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.OrdersController"
+      minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0"
+      styleClass="root-pane, dash-v2, page-v3"
+      xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets><URL value="@styles.css" /></stylesheets>
    <children>
       <!-- ================= SIDEBAR ================= -->
@@ -61,11 +57,7 @@
                            </children>
                         </Pane>
                         <VBox><children>
-<<<<<<< HEAD
                            <Label styleClass="brand-title" text="Sassy’s" />
-=======
-                           <Label styleClass="brand-title" text="Sassy's" />
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                            <Label styleClass="brand-sub" text="Creation" />
                         </children></VBox>
                      </children>
@@ -91,7 +83,6 @@
                   <Button fx:id="btnLogout" focusTraversable="false" managed="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-logout" text="Log out" visible="false"><graphic><Region styleClass="ico, ico-logout" /></graphic>
                      <VBox.margin><Insets bottom="8.0" /></VBox.margin>
                   </Button>
-<<<<<<< HEAD
                   <!-- Admin Officer card (moved here from the top bar) -->
                   <MenuButton fx:id="mbAccount" contentDisplay="GRAPHIC_ONLY" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="TOP" styleClass="side-user">
                      <graphic>
@@ -114,17 +105,6 @@
                         <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#handleLogout" styleClass="account-item" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
                      </items>
                   </MenuButton>
-=======
-                  <VBox spacing="2.0" styleClass="side-footer">
-                     <children>
-                        <Label styleClass="side-footer-sub" text="Handmade Crochet" />
-                        <Label styleClass="side-footer-title" text="and Bouquets" />
-                        <Label maxWidth="1.7976931348623157E308" styleClass="side-footer-pill" text="Sassy's">
-                           <VBox.margin><Insets top="10.0" /></VBox.margin>
-                        </Label>
-                     </children>
-                  </VBox>
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                </children>
             </VBox>
          </children>
@@ -188,35 +168,13 @@
             </Pane>
       <VBox>
          <children>
-<<<<<<< HEAD
             <VBox spacing="16.0" VBox.vgrow="ALWAYS">
                <padding><Insets bottom="24.0" left="28.0" right="28.0" top="56.0" /></padding>
-=======
-            <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="topbar">
-               <padding><Insets left="28.0" right="28.0" /></padding>
-               <children>
-                  
-                  <Region HBox.hgrow="ALWAYS" />
-                  <Label styleClass="avatar" text="A" />
-                  <MenuButton fx:id="mbAccount" mnemonicParsing="false" styleClass="account-menu" text="Admin Officer">
-                     <items>
-                        <MenuItem fx:id="miChangePassword" styleClass="account-item" mnemonicParsing="false" onAction="#handleOpenChangePassword" text="Change password"><graphic><Region styleClass="ico, ico-key" /></graphic></MenuItem>
-                        <MenuItem fx:id="miAbout" styleClass="account-item" mnemonicParsing="false" onAction="#handleOpenAbout" text="About"><graphic><Region styleClass="ico, ico-info" /></graphic></MenuItem>
-                        <SeparatorMenuItem />
-                        <MenuItem fx:id="miLogout" styleClass="account-item" mnemonicParsing="false" onAction="#handleLogout" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
-                     </items>
-                  </MenuButton>
-               </children>
-            </HBox>
-            <VBox spacing="16.0" VBox.vgrow="ALWAYS">
-               <padding><Insets bottom="24.0" left="28.0" right="28.0" top="22.0" /></padding>
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                <children>
                   <HBox alignment="TOP_LEFT">
                      <children>
                         <VBox><children>
                            <Label styleClass="page-title" text="Orders" />
-<<<<<<< HEAD
                            <Label styleClass="page-sub" text="Pickups and meetups from your customers" />
                         </children></VBox>
                         <Region HBox.hgrow="ALWAYS" />
@@ -241,36 +199,11 @@
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" managed="false" styleClass="footer-bar" visible="false"><children>
-=======
-                           <Label styleClass="page-sub" text="Customer Reservations, Pickups and Meetups" />
-                           <HBox alignment="CENTER_LEFT" spacing="12.0">
-                              <VBox.margin><Insets top="12.0" /></VBox.margin>
-                              <children>
-                                 <HBox alignment="CENTER_LEFT" maxHeight="48.0" maxWidth="360.0" minHeight="48.0" minWidth="200.0" prefHeight="48.0" prefWidth="340.0" styleClass="search-box">
-                                    <children>
-                                       <TextField fx:id="tfOrderSearch" promptText="Search customer or product..." HBox.hgrow="ALWAYS" />
-                                       <Region styleClass="ico, ico-search" />
-                                    </children>
-                                 </HBox>
-                                 <ComboBox fx:id="cbStatusFilter" style="-fx-background-color: white;" minHeight="48.0" prefHeight="48.0" prefWidth="180.0" promptText="All status" value="All status"><items><FXCollections fx:factory="observableArrayList"><String fx:value="All status" /><String fx:value="Pending" /><String fx:value="Done" /><String fx:value="Cancelled" /></FXCollections></items></ComboBox>
-                              </children>
-                           </HBox>
-                        </children></VBox>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <HBox alignment="CENTER_RIGHT" spacing="10.0"><children><Button fx:id="btnExportOrders" mnemonicParsing="false" onAction="#handleOpenExport" styleClass="btn-ghost" text="Export" ><graphic><Region styleClass="ico, ico-download" /></graphic></Button><Button fx:id="btnAddOrder" mnemonicParsing="false" onAction="#handleOpenAddOrder" styleClass="btn-primary" text="Add order" ><graphic><Region styleClass="ico, ico-add" /></graphic></Button></children></HBox>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" styleClass="footer-bar"><children>
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                      <Label fx:id="lblOrderTotal" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Total Orders: 6" />
                      <Region HBox.hgrow="ALWAYS" />
                      <Label fx:id="lblStatusCounts" style="-fx-font-size: 16px;" text="Pending 4  ·  Done 1  ·  Cancelled 1" />
                   </children></HBox>
-<<<<<<< HEAD
                   <TableView fx:id="tvOrders" fixedCellSize="56.0" managed="false" visible="false" VBox.vgrow="ALWAYS">
-=======
-                  <TableView fx:id="tvOrders" fixedCellSize="56.0" VBox.vgrow="ALWAYS">
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                      <placeholder><Label text="No orders found" /></placeholder>
                      <items><FXCollections fx:factory="observableArrayList">
 <HashMap id="1" color="Pink and White" date="2026-04-28" fb="alyssa.customer1" price="₱400.00" product="Mixed Bouquet - Fuzzy Wire (Medium)" type="Pickup"><status><Label styleClass="badge-cancelled" text="Cancelled" /></status><actions><HBox alignment="CENTER_LEFT" spacing="10.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon"><graphic><Region styleClass="ico, ico-view" /></graphic><tooltip><Tooltip text="View details" /></tooltip></Button><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-icon-danger"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button></children></HBox></actions></HashMap>
@@ -293,7 +226,6 @@
                      </columns>
                      <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
                   </TableView>
-<<<<<<< HEAD
 
                   <!-- order cards (design). Cards carry the order status in userData so the chips can filter them. -->
                   <ScrollPane fx:id="spOrderCards" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
@@ -468,8 +400,6 @@
                         </GridPane>
                      </content>
                   </ScrollPane>
-=======
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                </children>
             </VBox>
          </children>

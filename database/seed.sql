@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 -- Sassy's Creation: Initial Product Catalog
 -- Source: Original C application's products.txt
@@ -63,11 +62,3 @@ INSERT INTO products (
       (42, 'Swimwear - Customize', 'Crochet', 0.00, 0, 3, TRUE),
       (43, 'Hat - Customize', 'Crochet', 0.00, 0, 3, TRUE),
       (44, 'Bag - Customize', 'Crochet', 0.00, 5, 3, TRUE);
-=======
-USE sassys_creation_db;
-
-INSERT INTO products (name, category, price, stock_quantity, low_stock_threshold) VALUES
-                     ('TEST Rose Bouquet',   'Bouquet',  350.00, 10, 3),
-                     ('TEST Crochet Flower', 'Crochet',  120.00,  2, 3),
-                     ('TEST Keychain',       'Keychain',  50.00, 20, 5);
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa

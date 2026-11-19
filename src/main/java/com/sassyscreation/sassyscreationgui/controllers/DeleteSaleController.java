@@ -9,10 +9,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
-import java.io.IOException;
-
 /**
- * Controller for the "Delete this sale?" confirmation dialog (Stand Sale screen).
+ * Controller for the "Delete this sale?" confirmation dialog (DELETESALE.fxml).
  *
  * The FXML root declares
  *   fx:controller="com.sassyscreation.sassyscreationgui.controllers.DeleteSaleController"
@@ -22,19 +20,17 @@ import java.io.IOException;
  *   boolean confirmed = DeleteSaleController.show(
  *           btnDelete.getScene().getWindow(),
  *           sale.getDate(), sale.getProduct(), sale.getQty(),
- *           sale.getUnitPrice(), sale.getTotal());
+ *           "₱50.00", "₱500.00");
  *   if (confirmed) {
  *       // delete the sale from the database, restore the stock (+qty), then refresh the table
  *   }
  */
 public class DeleteSaleController {
 
-    // CHANGE THIS to match the actual file name of your delete-sale FXML
-    // (it must sit in src/main/resources/com/sassyscreation/sassyscreationgui/)
+    // Must sit in src/main/resources/com/sassyscreation/sassyscreationgui/
     private static final String FXML_PATH =
             "/com/sassyscreation/sassyscreationgui/DELETESALE.fxml";
 
-    // ---- fields from the FXML ----
     @FXML private Label dDate;
     @FXML private Label dProduct;
     @FXML private Label dQty;
@@ -54,7 +50,7 @@ public class DeleteSaleController {
      * Shows the dialog and blocks until it is closed.
      *
      * @param unitPrice and total are shown as given, so pass them already formatted (e.g. "₱50.00")
-     * @return true if the user clicked "Yes, delete", false otherwise
+     * @return true only if the user clicked "Yes, delete"
      */
     public static boolean show(Window owner, String date, String product, Object qty,
                                String unitPrice, String total) {
@@ -73,10 +69,22 @@ public class DeleteSaleController {
             stage.showAndWait();
 
             return controller.confirmed;
-        } catch (IOException e) {
+        } catch (Exception e) {
+            // Any failure means "do not delete"
             e.printStackTrace();
             return false;
         }
+    }
+
+    // ---------------------------------------------------------------
+    // Init
+    // ---------------------------------------------------------------
+
+    @FXML
+    private void initialize() {
+        // Esc and Enter both mean "cancel", so a stray keypress can't delete a sale
+        btnCancelDelete.setCancelButton(true);
+        btnCancelDelete.setDefaultButton(true);
     }
 
     // ---------------------------------------------------------------
@@ -84,16 +92,20 @@ public class DeleteSaleController {
     // ---------------------------------------------------------------
 
     public void setSale(String date, String product, Object qty, String unitPrice, String total) {
-        dDate.setText(date);
-        dProduct.setText(product);
+        dDate.setText(nz(date));
+        dProduct.setText(nz(product));
         dQty.setText(String.valueOf(qty));
-        dPrice.setText(unitPrice);
-        dTotal.setText(total);
-        lblRestoreNote.setText("Stock for " + product + " will be restored (+" + qty + ").");
+        dPrice.setText(nz(unitPrice));
+        dTotal.setText(nz(total));
+        lblRestoreNote.setText("Stock for " + nz(product) + " will be restored (+" + qty + ").");
+    }
+
+    private static String nz(String s) {
+        return s == null ? "" : s;
     }
 
     // ---------------------------------------------------------------
-    // Button handlers (names match onAction in the FXML)
+    // Button handlers
     // ---------------------------------------------------------------
 
     @FXML

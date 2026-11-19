@@ -25,12 +25,10 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.shape.Rectangle?>
 
-<<<<<<< HEAD
-<HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.StandSaleController" minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2, page-v3" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
-=======
-<HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.StandSaleController" minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
-   <stylesheets><URL value="@styles.css" /></stylesheets>
+<HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.StandSaleController"
+      minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0"
+      styleClass="root-pane, dash-v2, page-v3"
+      xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">   <stylesheets><URL value="@styles.css" /></stylesheets>
    <children>
       <!-- ================= SIDEBAR ================= -->
       <VBox minWidth="248.0" prefWidth="248.0" styleClass="sidebar">
@@ -53,11 +51,7 @@
                            </children>
                         </Pane>
                         <VBox><children>
-<<<<<<< HEAD
                            <Label styleClass="brand-title" text="Sassy’s" />
-=======
-                           <Label styleClass="brand-title" text="Sassy's" />
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                            <Label styleClass="brand-sub" text="Creation" />
                         </children></VBox>
                      </children>
@@ -83,7 +77,6 @@
                   <Button fx:id="btnLogout" focusTraversable="false" managed="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-logout" text="Log out" visible="false"><graphic><Region styleClass="ico, ico-logout" /></graphic>
                      <VBox.margin><Insets bottom="8.0" /></VBox.margin>
                   </Button>
-<<<<<<< HEAD
                   <!-- Admin Officer card (moved here from the top bar) -->
                   <MenuButton fx:id="mbAccount" contentDisplay="GRAPHIC_ONLY" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="TOP" styleClass="side-user">
                      <graphic>
@@ -106,17 +99,6 @@
                         <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#handleLogout" styleClass="account-item" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
                      </items>
                   </MenuButton>
-=======
-                  <VBox spacing="2.0" styleClass="side-footer">
-                     <children>
-                        <Label styleClass="side-footer-sub" text="Handmade Crochet" />
-                        <Label styleClass="side-footer-title" text="and Bouquets" />
-                        <Label maxWidth="1.7976931348623157E308" styleClass="side-footer-pill" text="Sassy's">
-                           <VBox.margin><Insets top="10.0" /></VBox.margin>
-                        </Label>
-                     </children>
-                  </VBox>
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                </children>
             </VBox>
          </children>
@@ -180,27 +162,8 @@
             </Pane>
       <VBox>
          <children>
-<<<<<<< HEAD
             <VBox spacing="16.0" VBox.vgrow="ALWAYS">
                <padding><Insets bottom="24.0" left="28.0" right="28.0" top="56.0" /></padding>
-=======
-            <HBox alignment="CENTER_RIGHT" spacing="8.0" styleClass="topbar">
-               <padding><Insets left="28.0" right="28.0" /></padding>
-               <children>
-                  <Label styleClass="avatar" text="A" />
-                  <MenuButton fx:id="mbAccount" mnemonicParsing="false" styleClass="account-menu" text="Admin Officer">
-                     <items>
-                        <MenuItem fx:id="miChangePassword" styleClass="account-item" mnemonicParsing="false" onAction="#handleOpenChangePassword" text="Change password"><graphic><Region styleClass="ico, ico-key" /></graphic></MenuItem>
-                        <MenuItem fx:id="miAbout" styleClass="account-item" mnemonicParsing="false" onAction="#handleOpenAbout" text="About"><graphic><Region styleClass="ico, ico-info" /></graphic></MenuItem>
-                        <SeparatorMenuItem />
-                        <MenuItem fx:id="miLogout" styleClass="account-item" mnemonicParsing="false" onAction="#handleLogout" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
-                     </items>
-                  </MenuButton>
-               </children>
-            </HBox>
-            <VBox spacing="16.0" VBox.vgrow="ALWAYS">
-               <padding><Insets bottom="24.0" left="28.0" right="28.0" top="22.0" /></padding>
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                <children>
                   <HBox alignment="TOP_LEFT">
                      <children>
@@ -212,7 +175,6 @@
                         <Button fx:id="btnExportSales" mnemonicParsing="false" onAction="#handleOpenExport" styleClass="btn-ghost" text="Export" ><graphic><Region styleClass="ico, ico-download" /></graphic></Button>
                      </children>
                   </HBox>
-<<<<<<< HEAD
                   <HBox alignment="TOP_LEFT" spacing="18.0" VBox.vgrow="ALWAYS"><children>
    <VBox maxHeight="-Infinity" maxWidth="330.0" minWidth="330.0" prefWidth="330.0" spacing="12.0" styleClass="card">
       <padding><Insets bottom="22.0" left="22.0" right="22.0" top="20.0" /></padding>
@@ -261,68 +223,6 @@
                   </TableView>
    </children></VBox>
 </children></HBox>
-=======
-                  <VBox spacing="14.0" styleClass="card">
-                     <padding><Insets bottom="22.0" left="26.0" right="26.0" top="20.0" /></padding>
-                     <children>
-                        <Label styleClass="card-title" text="Record a sale" />
-                        <HBox alignment="BOTTOM_LEFT" spacing="18.0"><children>
-                           <VBox minWidth="220.0" prefWidth="420.0" spacing="6.0" HBox.hgrow="ALWAYS"><children>
-                              <Label styleClass="form-label" text="Product" />
-                              <ComboBox fx:id="cbSaleProduct" maxWidth="1.7976931348623157E308" prefHeight="40.0" promptText="Select product" value="Gypsophila" />
-                           </children></VBox>
-                           <VBox minWidth="110.0" prefWidth="140.0" spacing="6.0"><children>
-                              <Label styleClass="form-label" text="Qty Sold" />
-                              <Spinner fx:id="spQty" editable="true" initialValue="3" max="999" maxWidth="1.7976931348623157E308" min="1" prefHeight="40.0" />
-                           </children></VBox>
-                           <VBox minWidth="110.0" prefWidth="140.0" spacing="6.0"><children>
-                              <Label styleClass="form-label" text="Unit Price" />
-                              <TextField fx:id="tfUnitPrice" editable="false" prefHeight="40.0" promptText="Auto" style="-fx-background-color: #F3EFF1;" text="30.00" />
-                           </children></VBox>
-                           <VBox minWidth="140.0" spacing="6.0"><children>
-                              <Label styleClass="form-label" text="Total" />
-                              <Label fx:id="lblSaleTotal" style="-fx-font-size: 22px; -fx-text-fill: #2B8A5A;" styleClass="stat-value" text="₱90.00" />
-                           </children></VBox>
-                        </children></HBox>
-                        <HBox alignment="CENTER_LEFT"><children>
-                           <Label fx:id="lblStockInfo" styleClass="stat-note" text="Current stock: 12 (deducted automatically)" />
-                           <Region HBox.hgrow="ALWAYS" />
-                           <Button fx:id="btnRecordSale" onAction="#handleRecordSale" styleClass="btn-primary" text="Record Sale" ><graphic><Region styleClass="ico, ico-check" /></graphic></Button>
-                        </children></HBox>
-                     </children>
-                  </VBox>
-                  <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minHeight="-Infinity" styleClass="footer-bar"><children>
-                     <Label fx:id="lblSaleCount" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Total Stand Sales: 9" />
-                     <Region HBox.hgrow="ALWAYS" />
-                     <HBox alignment="CENTER_RIGHT" spacing="6.0"><children>
-                        <Label style="-fx-text-fill: #2B8A5A; -fx-font-weight: bold;" text="Total Revenue:" />
-                        <Label fx:id="lblSaleRevenue" style="-fx-font-size: 22px; -fx-text-fill: #2B8A5A;" styleClass="stat-value" text="₱1,210.00" />
-                     </children></HBox>
-                  </children></HBox>
-                  <TableView fx:id="tvSales" fixedCellSize="44.0" minHeight="200.0" VBox.vgrow="ALWAYS">
-                     <items><FXCollections fx:factory="observableArrayList">
-<HashMap Date="2026-04-25" Price="₱50.00" Product="Rose Keychain" Qty="2" Total="₱100.00"><actions><HBox alignment="CENTER_LEFT" spacing="10.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-icon-danger"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button></children></HBox></actions></HashMap>
-<HashMap Date="2026-04-25" Price="₱20.00" Product="Mini Daisy Keychain - Fuzzy Wire" Qty="3" Total="₱60.00"><actions><HBox alignment="CENTER_LEFT" spacing="10.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-icon-danger"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button></children></HBox></actions></HashMap>
-<HashMap Date="2026-04-26" Price="₱30.00" Product="Gypsophila" Qty="5" Total="₱150.00"><actions><HBox alignment="CENTER_LEFT" spacing="10.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-icon-danger"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button></children></HBox></actions></HashMap>
-<HashMap Date="2026-04-26" Price="₱80.00" Product="Baby Mushroom Keychain" Qty="1" Total="₱80.00"><actions><HBox alignment="CENTER_LEFT" spacing="10.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-icon-danger"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button></children></HBox></actions></HashMap>
-<HashMap Date="2026-04-27" Price="₱55.00" Product="Sunflower - Fuzzy Wire" Qty="2" Total="₱110.00"><actions><HBox alignment="CENTER_LEFT" spacing="10.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-icon-danger"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button></children></HBox></actions></HashMap>
-<HashMap Date="2026-04-29" Price="₱30.00" Product="Gypsophila" Qty="1" Total="₱30.00"><actions><HBox alignment="CENTER_LEFT" spacing="10.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-icon-danger"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button></children></HBox></actions></HashMap>
-<HashMap Date="2026-05-01" Price="₱30.00" Product="Gypsophila" Qty="1" Total="₱30.00"><actions><HBox alignment="CENTER_LEFT" spacing="10.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-icon-danger"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button></children></HBox></actions></HashMap>
-<HashMap Date="2026-05-02" Price="₱50.00" Product="Rose Keychain" Qty="10" Total="₱500.00"><actions><HBox alignment="CENTER_LEFT" spacing="10.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-icon-danger"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button></children></HBox></actions></HashMap>
-<HashMap Date="2026-05-03" Price="₱30.00" Product="Gypsophila" Qty="5" Total="₱150.00"><actions><HBox alignment="CENTER_LEFT" spacing="10.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-icon-danger"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button></children></HBox></actions></HashMap>
-                     </FXCollections></items>
-                     <placeholder><Label text="No sales recorded yet" /></placeholder>
-                     <columns>
-                        <TableColumn fx:id="colSaleProduct" prefWidth="280.0" text="Product"><cellValueFactory><MapValueFactory key="Product" /></cellValueFactory></TableColumn>
-                        <TableColumn fx:id="colSaleQty" prefWidth="60.0" text="Qty"><cellValueFactory><MapValueFactory key="Qty" /></cellValueFactory></TableColumn>
-                        <TableColumn fx:id="colSalePrice" prefWidth="90.0" text="Price"><cellValueFactory><MapValueFactory key="Price" /></cellValueFactory></TableColumn>
-                        <TableColumn fx:id="colSaleTotal" prefWidth="100.0" text="Total"><cellValueFactory><MapValueFactory key="Total" /></cellValueFactory></TableColumn>
-                        <TableColumn fx:id="colSaleDate" prefWidth="110.0" text="Date"><cellValueFactory><MapValueFactory key="Date" /></cellValueFactory></TableColumn>
-                        <TableColumn fx:id="colSaleActions" prefWidth="200.0" text="Actions"><cellValueFactory><MapValueFactory key="actions" /></cellValueFactory></TableColumn>
-                     </columns>
-                     <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
-                  </TableView>
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
                </children>
             </VBox>
          </children>

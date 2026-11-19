@@ -1,0 +1,1428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.shape.Arc?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
+
+<HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.InventoryController"
+      minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0"
+      styleClass="root-pane, dash-v2, page-v3"
+      xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">   <stylesheets><URL value="@styles.css" /></stylesheets>
+   <children>
+      <!-- ================= SIDEBAR ================= -->
+      <VBox minWidth="248.0" prefWidth="248.0" styleClass="sidebar">
+         <padding><Insets bottom="14.0" left="14.0" right="14.0" top="14.0" /></padding>
+         <children>
+            <VBox styleClass="side-panel" VBox.vgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="brand-box">
+                     <padding><Insets bottom="14.0" left="8.0" right="8.0" top="10.0" /></padding>
+                     <children>
+                        <Pane maxHeight="38" maxWidth="38" minHeight="38" minWidth="38" prefHeight="38" prefWidth="38">
+                           <children>
+                           <Ellipse centerX="27.9" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="0.0" />
+                           <Ellipse centerX="23.5" centerY="26.7" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="60.0" />
+                           <Ellipse centerX="14.5" centerY="26.7" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="120.0" />
+                           <Ellipse centerX="10.1" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="180.0" />
+                           <Ellipse centerX="14.5" centerY="11.3" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="240.0" />
+                           <Ellipse centerX="23.5" centerY="11.3" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="300.0" />
+                           <Circle centerX="19.0" centerY="19.0" fill="#FFE08A" radius="4.2" />
+                           </children>
+                        </Pane>
+                        <VBox><children>
+                           <Label styleClass="brand-title" text="Sassy’s" />
+                           <Label styleClass="brand-sub" text="Creation" />
+                        </children></VBox>
+                     </children>
+                  </HBox>
+                  <Label styleClass="side-section" text="MENU" />
+                  <VBox spacing="4.0">
+                     <padding><Insets bottom="14.0" top="2.0" /></padding>
+                     <children>
+                     <Button fx:id="navDashboard" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goDashboard" styleClass="nav-btn" text="Dashboard"><graphic><Region styleClass="ico, ico-dashboard" /></graphic></Button>
+                     <StackPane>
+                        <children>
+                           <Button fx:id="navOrders" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goOrders" styleClass="nav-btn" text="Orders"><graphic><Region styleClass="ico, ico-cart" /></graphic></Button>
+                           <Label fx:id="lblNavOrdersBadge" mouseTransparent="true" styleClass="nav-badge" text="4" StackPane.alignment="CENTER_RIGHT">
+                              <StackPane.margin><Insets right="14.0" /></StackPane.margin>
+                           </Label>
+                        </children>
+                     </StackPane>
+                     <Button fx:id="navStandSale" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goStandSale" styleClass="nav-btn" text="Stand Sale"><graphic><Region styleClass="ico, ico-store" /></graphic></Button>
+                     <Button fx:id="navInventory" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goInventory" styleClass="nav-btn, nav-active" text="Inventory"><graphic><Region styleClass="ico, ico-box" /></graphic></Button>
+                     </children>
+                  </VBox>
+                  <Region VBox.vgrow="ALWAYS" />
+                  <Button fx:id="btnLogout" focusTraversable="false" managed="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-logout" text="Log out" visible="false"><graphic><Region styleClass="ico, ico-logout" /></graphic>
+                     <VBox.margin><Insets bottom="8.0" /></VBox.margin>
+                  </Button>
+                  <!-- Admin Officer card (moved here from the top bar) -->
+                  <MenuButton fx:id="mbAccount" contentDisplay="GRAPHIC_ONLY" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="TOP" styleClass="side-user">
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <children>
+                              <Label styleClass="side-user-avatar" text="A" />
+                              <VBox alignment="CENTER_LEFT" spacing="1.0">
+                                 <children>
+                                    <Label styleClass="side-user-name" text="Admin Officer" />
+                                    <Label styleClass="side-user-role" text="Sassy’s Creation" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </graphic>
+                     <items>
+                        <MenuItem fx:id="miChangePassword" mnemonicParsing="false" onAction="#handleOpenChangePassword" styleClass="account-item" text="Change password"><graphic><Region styleClass="ico, ico-key" /></graphic></MenuItem>
+                        <MenuItem fx:id="miAbout" mnemonicParsing="false" onAction="#handleOpenAbout" styleClass="account-item" text="About"><graphic><Region styleClass="ico, ico-info" /></graphic></MenuItem>
+                        <SeparatorMenuItem />
+                        <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#handleLogout" styleClass="account-item" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
+                     </items>
+                  </MenuButton>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+
+      <StackPane HBox.hgrow="ALWAYS">
+         <children>
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="220" prefWidth="220" StackPane.alignment="TOP_RIGHT">
+               <clip><Rectangle height="220" width="220" /></clip>
+               <children>
+               <Ellipse centerX="212.5" centerY="61.4" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="15.0" />
+               <Ellipse centerX="181.4" centerY="92.5" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="75.0" />
+               <Ellipse centerX="138.9" centerY="81.1" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="135.0" />
+               <Ellipse centerX="127.5" centerY="38.6" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="195.0" />
+               <Ellipse centerX="158.6" centerY="7.5" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="255.0" />
+               <Ellipse centerX="201.1" centerY="18.9" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="315.0" />
+               <Circle centerX="170.0" centerY="50.0" fill="#FFE08A" opacity="0.95" radius="11.0" />
+               </children>
+            </Pane>
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="360" prefWidth="360" StackPane.alignment="BOTTOM_RIGHT">
+               <clip><Rectangle height="360" width="360" /></clip>
+               <children>
+               <Ellipse centerX="433.5" centerY="352.4" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="10.0" />
+               <Ellipse centerX="399.3" centerY="411.6" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="50.0" />
+               <Ellipse centerX="335.0" centerY="435.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="90.0" />
+               <Ellipse centerX="270.7" centerY="411.6" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="130.0" />
+               <Ellipse centerX="236.5" centerY="352.4" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="170.0" />
+               <Ellipse centerX="248.4" centerY="285.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="210.0" />
+               <Ellipse centerX="300.8" centerY="241.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="250.0" />
+               <Ellipse centerX="369.2" centerY="241.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="290.0" />
+               <Ellipse centerX="421.6" centerY="285.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="330.0" />
+               <Ellipse centerX="388.7" centerY="366.0" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="30.0" />
+               <Ellipse centerX="356.2" centerY="393.3" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="70.0" />
+               <Ellipse centerX="313.8" centerY="393.3" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="110.0" />
+               <Ellipse centerX="281.3" centerY="366.0" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="150.0" />
+               <Ellipse centerX="273.9" centerY="324.2" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="190.0" />
+               <Ellipse centerX="295.1" centerY="287.5" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="230.0" />
+               <Ellipse centerX="335.0" centerY="273.0" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="270.0" />
+               <Ellipse centerX="374.9" centerY="287.5" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="310.0" />
+               <Ellipse centerX="396.1" centerY="324.2" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="350.0" />
+               <Circle centerX="335.0" centerY="335.0" fill="#FFE08A" opacity="0.95" radius="22.0" />
+               </children>
+            </Pane>
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="200" prefWidth="200" StackPane.alignment="BOTTOM_LEFT">
+               <clip><Rectangle height="200" width="200" /></clip>
+               <children>
+               <Ellipse centerX="71.2" centerY="194.6" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="40.0" />
+               <Ellipse centerX="28.0" centerY="210.3" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="100.0" />
+               <Ellipse centerX="-7.2" centerY="180.7" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="160.0" />
+               <Ellipse centerX="0.8" centerY="135.4" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="220.0" />
+               <Ellipse centerX="44.0" centerY="119.7" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="280.0" />
+               <Ellipse centerX="79.2" centerY="149.3" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="340.0" />
+               <Ellipse centerX="45.8" centerY="191.8" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="70.0" />
+               <Ellipse centerX="17.7" centerY="186.8" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="130.0" />
+               <Ellipse centerX="7.9" centerY="160.0" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="190.0" />
+               <Ellipse centerX="26.2" centerY="138.2" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="250.0" />
+               <Ellipse centerX="54.3" centerY="143.2" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="310.0" />
+               <Ellipse centerX="64.1" centerY="170.0" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="370.0" />
+               <Circle centerX="36.0" centerY="165.0" fill="#FFE08A" opacity="0.95" radius="11.0" />
+               </children>
+            </Pane>
+      <VBox>
+         <children>
+            <VBox spacing="16.0" VBox.vgrow="ALWAYS">
+               <padding><Insets bottom="24.0" left="28.0" right="28.0" top="56.0" /></padding>
+               <children>
+                  <HBox alignment="TOP_LEFT">
+                     <children>
+                        <VBox><children>
+                           <Label styleClass="page-title" text="Product and inventory" />
+                           <Label styleClass="page-sub" text="Grid view · 43 products" />
+                        </children></VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER_RIGHT" spacing="10.0"><children><Button fx:id="btnExportInventory" managed="false" mnemonicParsing="false" visible="false" onAction="#handleOpenExport" styleClass="btn-ghost" text="Export" ><graphic><Region styleClass="ico, ico-download" /></graphic></Button><Button fx:id="btnAddProduct" minHeight="44.0" prefHeight="44.0" mnemonicParsing="false" onAction="#handleOpenAddProduct" styleClass="btn-primary" text="Add product" ><graphic><Region styleClass="ico, ico-add" /></graphic></Button></children></HBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" spacing="8.0">
+                     <children>
+                        <ToggleButton fx:id="chipAll" minHeight="44.0" prefHeight="44.0" selected="true" styleClass="chip" text="All"><toggleGroup><ToggleGroup fx:id="tgCat" /></toggleGroup></ToggleButton>
+                        <ToggleButton fx:id="chipBouquet" minHeight="44.0" prefHeight="44.0" styleClass="chip" text="Bouquet" toggleGroup="$tgCat" />
+                        <ToggleButton fx:id="chipCrochet" minHeight="44.0" prefHeight="44.0" styleClass="chip" text="Crochet" toggleGroup="$tgCat" />
+                        <ToggleButton fx:id="chipKeychain" minHeight="44.0" prefHeight="44.0" styleClass="chip" text="Keychain" toggleGroup="$tgCat" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER_LEFT" maxHeight="44.0" maxWidth="300.0" minHeight="44.0" minWidth="200.0" prefHeight="44.0" prefWidth="260.0" spacing="6.0" style="-fx-padding: 0 8 0 16;" styleClass="search-box">
+                           <children>
+                              <Region styleClass="ico, ico-search" />
+                              <TextField fx:id="tfProductSearch" promptText="Search products" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <!-- List / Grid switch -->
+                        <HBox alignment="CENTER" maxHeight="44.0" minHeight="44.0" prefHeight="44.0" spacing="2.0" styleClass="view-switch">
+                           <children>
+                              <ToggleButton fx:id="btnViewList" mnemonicParsing="false" styleClass="view-seg" text="List"><graphic><Region styleClass="ico, ico-list" /></graphic><toggleGroup><ToggleGroup fx:id="tgView" /></toggleGroup></ToggleButton>
+                              <ToggleButton fx:id="btnViewGrid" mnemonicParsing="false" selected="true" styleClass="view-seg" text="Grid" toggleGroup="$tgView"><graphic><Region styleClass="ico, ico-grid" /></graphic></ToggleButton>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" managed="false" styleClass="footer-bar" visible="false"><children>
+                     <Label fx:id="lblProductTotal" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Total Products: 43" />
+                     <Region HBox.hgrow="ALWAYS" />
+                     <Label fx:id="lblCategoryCounts" style="-fx-font-size: 16px;" text="Bouquet 28  ·  Crochet 9  ·  Keychain 6" />
+                  </children></HBox>
+                  <ScrollPane fx:id="spProducts" fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-background: transparent;">
+                     <content>
+                        <GridPane fx:id="gpProducts" hgap="16.0" vgap="16.0" style="-fx-background-color: transparent;">
+                           <padding><Insets bottom="20.0" left="8.0" right="14.0" top="8.0" /></padding>
+                           <columnConstraints><ColumnConstraints hgrow="ALWAYS" percentWidth="33.3333" /><ColumnConstraints hgrow="ALWAYS" percentWidth="33.3333" /><ColumnConstraints hgrow="ALWAYS" percentWidth="33.3334" /></columnConstraints>
+                           <children>
+                           <VBox GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph1" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-little-blossom-serenade" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Little Blossom Serenade - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱100.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph2" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-single-lily-tulip" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Single Lily / Tulip - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱85.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph3" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-mini-sunflower-35" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Mini Sunflower - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱35.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph4" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-mini-sunflower-50" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Mini Sunflower 2 - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱50.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph5" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-mini-bouquet-fuzzy-wire" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Mini Bouquet - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱55.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph6" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-sunflower-bouquet" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Sunflower Bouquet - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱150.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph7" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-sunblush-bouquet" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Sunblush Bouquet - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱155.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph8" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-rosa-bouquet" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Rosa Bouquet - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱155.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph9" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-tangled" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Tangled - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱180.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph10" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-tangled-grand" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Tangled Grand - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱1,000.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph11" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-blooming-grace-bouquet" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Blooming Grace Bouquet - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱280.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph12" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-single-stargazer-bouquet" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Single Stargazer Bouquet - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱300.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph13" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-single-stargazer-v2" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Single Stargazer Bouquet Version 2 - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱450.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph14" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-florea-bouquet" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Florèa Bouquet - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱350.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph15" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-florea-bouquet-v2" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Florèa Bouquet Version 2 - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱500.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph16" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-florea-bouquet-v3" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Florèa Bouquet Version 3 - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱650.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph17" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-stargazer-embrace-bouquet" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Stargazer Embrace Bouquet - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱650.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph18" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-thumbelina-cone-bouquet" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Thumbelina Cone Bouquet - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱500.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph19" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-big-rose-bouquet" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Big Rose Bouquet - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱580.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph20" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-coffee-bouquet" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Coffee Bouquet - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱300.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph21" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-red-tulip-bouquet" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Red Tulip Bouquet - Fuzzy Wire" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱300.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph22" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-set-gift" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Set Gift - Crochet" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱300.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph23" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-crochet-tulip-bouquet" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Tulip - Crochet" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱135.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph24" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-crochet-single-tulip" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Single Tulip - Crochet" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱150.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph25" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-sophia-bouquet" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Sophia - Crochet" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱750.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph26" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-rose-serenade" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Rose Serenade - Crochet" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱250.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph27" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-satin-single-tulip" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Single Tulip - Satin" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱100.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Bouquet">
+                              <children>
+                                 <StackPane fx:id="ph28" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-rosette-charm" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Rosette Charm - Satin Ribbon" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Bouquet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱300.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Keychain">
+                              <children>
+                                 <StackPane fx:id="ph29" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-jelly-first-keychain" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Jelly First Keychain" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Keychain" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱100.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Keychain">
+                              <children>
+                                 <StackPane fx:id="ph30" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-mini-bouquet-keychain" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Mini Bouquet Keychain" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Keychain" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱100.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Keychain">
+                              <children>
+                                 <StackPane fx:id="ph31" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-puff-flower-pouch" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Puff Flower in a Pouch Keychain" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Keychain" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱40.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Keychain">
+                              <children>
+                                 <StackPane fx:id="ph32" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-mini-flower-pouch" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Mini Flower in a Pouch Keychain" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Keychain" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱25.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Keychain">
+                              <children>
+                                 <StackPane fx:id="ph33" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-mini-labubu" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Mini Labubu Keychain" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Keychain" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱85.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Keychain">
+                              <children>
+                                 <StackPane fx:id="ph34" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-moana-inspired-keychain" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Moana Inspired Keychain" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Keychain" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱200.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Crochet">
+                              <children>
+                                 <StackPane fx:id="ph35" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-frog-headband" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Frog Headband" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Crochet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱80.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Crochet">
+                              <children>
+                                 <StackPane fx:id="ph36" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-thumbler-holder" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Thumbler Holder" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Crochet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱250.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Crochet">
+                              <children>
+                                 <StackPane fx:id="ph37" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-diamond-top" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Diamond Top" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Crochet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱200.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-pending" text="4 left" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Crochet">
+                              <children>
+                                 <StackPane fx:id="ph38" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-swim-bra" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Swim Bra" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Crochet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱200.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Crochet">
+                              <children>
+                                 <StackPane fx:id="ph39" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-mini-tulip-in-card" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Mini Tulip in a Card" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Crochet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱70.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Crochet">
+                              <children>
+                                 <StackPane fx:id="ph40" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-crochet-tulip-pot" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Tulip Pot - Crochet" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Crochet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱200.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Crochet">
+                              <children>
+                                 <StackPane fx:id="ph41" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-crochet-sunflower-pot" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Sunflower Pot - Crochet" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Crochet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱200.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Crochet">
+                              <children>
+                                 <StackPane fx:id="ph42" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-crochet-cactus-pot" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Cactus Pot - Crochet" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Crochet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱200.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           <VBox GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" maxWidth="1.7976931348623157E308" spacing="0.0" styleClass="prod-card" userData="Crochet">
+                              <children>
+                                 <StackPane fx:id="ph43" maxHeight="140.0" maxWidth="1.7976931348623157E308" minHeight="140.0" prefHeight="140.0" styleClass="prod-photo, pic-crochet-pot-set" />
+                                 <VBox spacing="3.0">
+                                    <padding><Insets bottom="12.0" left="12.0" right="12.0" top="10.0" /></padding>
+                                    <children>
+                                       <Label maxWidth="1.7976931348623157E308" styleClass="prod-name" text="Pot Set (Tulip, Sunflower, Cactus) - Crochet" wrapText="true" />
+                                       <Label styleClass="page-sub" text="Crochet" />
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="2.0" /></VBox.margin>
+                                          <children>
+                                             <Label styleClass="prod-price" text="₱200.00" />
+                                             <Region HBox.hgrow="ALWAYS" />
+                                             <Label styleClass="badge-done" text="10 in stock" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                          <children>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-edit" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button>
+                                             <Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-ghost, prod-btn, prod-btn-del"><graphic><Region styleClass="ico, ico-delete" /></graphic><tooltip><Tooltip text="Delete" /></tooltip></Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           </children>
+                        </GridPane>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+         </children>
+      </StackPane>
+   </children>
+</HBox>

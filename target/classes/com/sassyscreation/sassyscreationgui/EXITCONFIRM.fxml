@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
+
+<StackPane prefHeight="340" prefWidth="480" styleClass="dialog-root, page-v3" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets><URL value="@styles.css" /></stylesheets>
+   <children>
+      <VBox alignment="CENTER">
+   <children>
+      <VBox alignment="CENTER" maxWidth="420.0" spacing="6.0" styleClass="dialog-card, dialog-card-pink">
+         <children>
+            <StackPane styleClass="icon-badge-sm"><children><Region styleClass="ico, ico-power" /></children></StackPane>
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="dialog-title-dark" text="Exit Sassy’s Creation?" />
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="dialog-text" textAlignment="CENTER" text="The application will close. Make sure you have saved your work." wrapText="true" />
+            <Region prefHeight="6.0" />
+            <VBox alignment="CENTER" spacing="8.0" styleClass="dialog-buttons"><children><Button maxWidth="1.7976931348623157E308" fx:id="btnConfirmExit" mnemonicParsing="false" onAction="#handleConfirmExit" styleClass="btn-primary" text="Yes, exit" /><Button maxWidth="1.7976931348623157E308" fx:id="btnCancelExit" mnemonicParsing="false" onAction="#handleCancelExit" styleClass="btn-ghost" text="Stay" /></children></VBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>
+   </children>
+</StackPane>

@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import java.util.HashMap?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.shape.Arc?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.control.cell.MapValueFactory?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.shape.SVGPath?>
+
+<HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.InventoryController"
+      minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0"
+      styleClass="root-pane, dash-v2, page-v3"
+      xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">   <stylesheets><URL value="@styles.css" /></stylesheets>
+   <children>
+      <!-- ================= SIDEBAR ================= -->
+      <VBox minWidth="248.0" prefWidth="248.0" styleClass="sidebar">
+         <padding><Insets bottom="14.0" left="14.0" right="14.0" top="14.0" /></padding>
+         <children>
+            <VBox styleClass="side-panel" VBox.vgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="brand-box">
+                     <padding><Insets bottom="14.0" left="8.0" right="8.0" top="10.0" /></padding>
+                     <children>
+                        <Pane maxHeight="38" maxWidth="38" minHeight="38" minWidth="38" prefHeight="38" prefWidth="38">
+                           <children>
+                           <Ellipse centerX="27.9" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="0.0" />
+                           <Ellipse centerX="23.5" centerY="26.7" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="60.0" />
+                           <Ellipse centerX="14.5" centerY="26.7" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="120.0" />
+                           <Ellipse centerX="10.1" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="180.0" />
+                           <Ellipse centerX="14.5" centerY="11.3" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="240.0" />
+                           <Ellipse centerX="23.5" centerY="11.3" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="300.0" />
+                           <Circle centerX="19.0" centerY="19.0" fill="#FFE08A" radius="4.2" />
+                           </children>
+                        </Pane>
+                        <VBox><children>
+                           <Label styleClass="brand-title" text="Sassy’s" />
+                           <Label styleClass="brand-sub" text="Creation" />
+                        </children></VBox>
+                     </children>
+                  </HBox>
+                  <Label styleClass="side-section" text="MENU" />
+                  <VBox spacing="4.0">
+                     <padding><Insets bottom="14.0" top="2.0" /></padding>
+                     <children>
+                     <Button fx:id="navDashboard" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goDashboard" styleClass="nav-btn" text="Dashboard"><graphic><Region styleClass="ico, ico-dashboard" /></graphic></Button>
+                     <StackPane>
+                        <children>
+                           <Button fx:id="navOrders" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goOrders" styleClass="nav-btn" text="Orders"><graphic><Region styleClass="ico, ico-cart" /></graphic></Button>
+                           <Label fx:id="lblNavOrdersBadge" mouseTransparent="true" styleClass="nav-badge" text="4" StackPane.alignment="CENTER_RIGHT">
+                              <StackPane.margin><Insets right="14.0" /></StackPane.margin>
+                           </Label>
+                        </children>
+                     </StackPane>
+                     <Button fx:id="navStandSale" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goStandSale" styleClass="nav-btn" text="Stand Sale"><graphic><Region styleClass="ico, ico-store" /></graphic></Button>
+                     <Button fx:id="navInventory" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goInventory" styleClass="nav-btn, nav-active" text="Inventory"><graphic><Region styleClass="ico, ico-box" /></graphic></Button>
+                     </children>
+                  </VBox>
+                  <Region VBox.vgrow="ALWAYS" />
+                  <Button fx:id="btnLogout" focusTraversable="false" managed="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-logout" text="Log out" visible="false"><graphic><Region styleClass="ico, ico-logout" /></graphic>
+                     <VBox.margin><Insets bottom="8.0" /></VBox.margin>
+                  </Button>
+                  <!-- Admin Officer card (moved here from the top bar) -->
+                  <MenuButton fx:id="mbAccount" contentDisplay="GRAPHIC_ONLY" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="TOP" styleClass="side-user">
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <children>
+                              <Label styleClass="side-user-avatar" text="A" />
+                              <VBox alignment="CENTER_LEFT" spacing="1.0">
+                                 <children>
+                                    <Label styleClass="side-user-name" text="Admin Officer" />
+                                    <Label styleClass="side-user-role" text="Sassy’s Creation" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </graphic>
+                     <items>
+                        <MenuItem fx:id="miChangePassword" mnemonicParsing="false" onAction="#handleOpenChangePassword" styleClass="account-item" text="Change password"><graphic><Region styleClass="ico, ico-key" /></graphic></MenuItem>
+                        <MenuItem fx:id="miAbout" mnemonicParsing="false" onAction="#handleOpenAbout" styleClass="account-item" text="About"><graphic><Region styleClass="ico, ico-info" /></graphic></MenuItem>
+                        <SeparatorMenuItem />
+                        <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#handleLogout" styleClass="account-item" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
+                     </items>
+                  </MenuButton>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+
+      <StackPane HBox.hgrow="ALWAYS">
+         <children>
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="220" prefWidth="220" StackPane.alignment="TOP_RIGHT">
+               <clip><Rectangle height="220" width="220" /></clip>
+               <children>
+               <Ellipse centerX="212.5" centerY="61.4" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="15.0" />
+               <Ellipse centerX="181.4" centerY="92.5" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="75.0" />
+               <Ellipse centerX="138.9" centerY="81.1" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="135.0" />
+               <Ellipse centerX="127.5" centerY="38.6" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="195.0" />
+               <Ellipse centerX="158.6" centerY="7.5" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="255.0" />
+               <Ellipse centerX="201.1" centerY="18.9" fill="#F8BBD0" opacity="0.72" radiusX="32.0" radiusY="15.0" rotate="315.0" />
+               <Circle centerX="170.0" centerY="50.0" fill="#FFE08A" opacity="0.95" radius="11.0" />
+               </children>
+            </Pane>
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="360" prefWidth="360" StackPane.alignment="BOTTOM_RIGHT">
+               <clip><Rectangle height="360" width="360" /></clip>
+               <children>
+               <Ellipse centerX="433.5" centerY="352.4" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="10.0" />
+               <Ellipse centerX="399.3" centerY="411.6" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="50.0" />
+               <Ellipse centerX="335.0" centerY="435.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="90.0" />
+               <Ellipse centerX="270.7" centerY="411.6" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="130.0" />
+               <Ellipse centerX="236.5" centerY="352.4" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="170.0" />
+               <Ellipse centerX="248.4" centerY="285.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="210.0" />
+               <Ellipse centerX="300.8" centerY="241.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="250.0" />
+               <Ellipse centerX="369.2" centerY="241.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="290.0" />
+               <Ellipse centerX="421.6" centerY="285.0" fill="#F8BBD0" opacity="0.72" radiusX="74.0" radiusY="34.0" rotate="330.0" />
+               <Ellipse centerX="388.7" centerY="366.0" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="30.0" />
+               <Ellipse centerX="356.2" centerY="393.3" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="70.0" />
+               <Ellipse centerX="313.8" centerY="393.3" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="110.0" />
+               <Ellipse centerX="281.3" centerY="366.0" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="150.0" />
+               <Ellipse centerX="273.9" centerY="324.2" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="190.0" />
+               <Ellipse centerX="295.1" centerY="287.5" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="230.0" />
+               <Ellipse centerX="335.0" centerY="273.0" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="270.0" />
+               <Ellipse centerX="374.9" centerY="287.5" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="310.0" />
+               <Ellipse centerX="396.1" centerY="324.2" fill="#E64980" opacity="0.26" radiusX="45.9" radiusY="22.1" rotate="350.0" />
+               <Circle centerX="335.0" centerY="335.0" fill="#FFE08A" opacity="0.95" radius="22.0" />
+               </children>
+            </Pane>
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="200" prefWidth="200" StackPane.alignment="BOTTOM_LEFT">
+               <clip><Rectangle height="200" width="200" /></clip>
+               <children>
+               <Ellipse centerX="71.2" centerY="194.6" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="40.0" />
+               <Ellipse centerX="28.0" centerY="210.3" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="100.0" />
+               <Ellipse centerX="-7.2" centerY="180.7" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="160.0" />
+               <Ellipse centerX="0.8" centerY="135.4" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="220.0" />
+               <Ellipse centerX="44.0" centerY="119.7" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="280.0" />
+               <Ellipse centerX="79.2" centerY="149.3" fill="#F8BBD0" opacity="0.72" radiusX="34.0" radiusY="16.0" rotate="340.0" />
+               <Ellipse centerX="45.8" centerY="191.8" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="70.0" />
+               <Ellipse centerX="17.7" centerY="186.8" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="130.0" />
+               <Ellipse centerX="7.9" centerY="160.0" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="190.0" />
+               <Ellipse centerX="26.2" centerY="138.2" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="250.0" />
+               <Ellipse centerX="54.3" centerY="143.2" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="310.0" />
+               <Ellipse centerX="64.1" centerY="170.0" fill="#E64980" opacity="0.26" radiusX="21.1" radiusY="10.4" rotate="370.0" />
+               <Circle centerX="36.0" centerY="165.0" fill="#FFE08A" opacity="0.95" radius="11.0" />
+               </children>
+            </Pane>
+      <VBox>
+         <children>
+            <VBox spacing="16.0" VBox.vgrow="ALWAYS">
+               <padding><Insets bottom="24.0" left="28.0" right="28.0" top="56.0" /></padding>
+               <children>
+                  <HBox alignment="TOP_LEFT">
+                     <children>
+                        <VBox><children>
+                           <Label styleClass="page-title" text="Product and inventory" />
+                           <Label styleClass="page-sub" text="Catalog and stock levels · 43 products" />
+                        </children></VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER_RIGHT" spacing="10.0"><children><Button fx:id="btnExportInventory" managed="false" mnemonicParsing="false" visible="false" onAction="#handleOpenExport" styleClass="btn-ghost" text="Export" ><graphic><Region styleClass="ico, ico-download" /></graphic></Button><Button fx:id="btnAddProduct" minHeight="44.0" prefHeight="44.0" mnemonicParsing="false" onAction="#handleOpenAddProduct" styleClass="btn-primary" text="Add product" ><graphic><Region styleClass="ico, ico-add" /></graphic></Button></children></HBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" spacing="8.0">
+                     <children>
+                        <ToggleButton fx:id="chipAll" contentDisplay="RIGHT" graphicTextGap="8.0" minHeight="44.0" prefHeight="44.0" selected="true" styleClass="chip" text="All"><graphic><Label styleClass="chip-count" text="43" /></graphic><toggleGroup><ToggleGroup fx:id="tgCat" /></toggleGroup></ToggleButton>
+                        <ToggleButton fx:id="chipBouquet" contentDisplay="RIGHT" graphicTextGap="8.0" minHeight="44.0" prefHeight="44.0" styleClass="chip" text="Bouquet" toggleGroup="$tgCat"><graphic><Label styleClass="chip-count" text="28" /></graphic></ToggleButton>
+                        <ToggleButton fx:id="chipCrochet" contentDisplay="RIGHT" graphicTextGap="8.0" minHeight="44.0" prefHeight="44.0" styleClass="chip" text="Crochet" toggleGroup="$tgCat"><graphic><Label styleClass="chip-count" text="9" /></graphic></ToggleButton>
+                        <ToggleButton fx:id="chipKeychain" contentDisplay="RIGHT" graphicTextGap="8.0" minHeight="44.0" prefHeight="44.0" styleClass="chip" text="Keychain" toggleGroup="$tgCat"><graphic><Label styleClass="chip-count" text="6" /></graphic></ToggleButton>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER_LEFT" maxHeight="44.0" maxWidth="300.0" minHeight="44.0" minWidth="200.0" prefHeight="44.0" prefWidth="260.0" spacing="6.0" style="-fx-padding: 0 8 0 16;" styleClass="search-box">
+                           <children>
+                              <Region styleClass="ico, ico-search" />
+                              <TextField fx:id="tfProductSearch" promptText="Search products" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <!-- List / Grid switch -->
+                        <HBox alignment="CENTER" maxHeight="44.0" minHeight="44.0" prefHeight="44.0" spacing="2.0" styleClass="view-switch">
+                           <children>
+                              <ToggleButton fx:id="btnViewList" mnemonicParsing="false" selected="true" styleClass="view-seg" text="List"><graphic><Region styleClass="ico, ico-list" /></graphic><toggleGroup><ToggleGroup fx:id="tgView" /></toggleGroup></ToggleButton>
+                              <ToggleButton fx:id="btnViewGrid" mnemonicParsing="false" styleClass="view-seg" text="Grid" toggleGroup="$tgView"><graphic><Region styleClass="ico, ico-grid" /></graphic></ToggleButton>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" managed="false" styleClass="footer-bar" visible="false"><children>
+                     <Label fx:id="lblProductTotal" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Total Products: 43" />
+                     <Region HBox.hgrow="ALWAYS" />
+                     <Label fx:id="lblCategoryCounts" style="-fx-font-size: 16px;" text="Bouquet 28  ·  Crochet 9  ·  Keychain 6" />
+                  </children></HBox>
+                  <TableView fx:id="tvProducts" fixedCellSize="58.0" VBox.vgrow="ALWAYS">
+                     <placeholder><Label text="No products found" /></placeholder>
+                     <items><FXCollections fx:factory="observableArrayList">
+<HashMap Category="Bouquet" ID="1" Name="Little Blossom Serenade - Fuzzy Wire" Price="₱100.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="2" Name="Single Lily / Tulip - Fuzzy Wire" Price="₱85.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="3" Name="Mini Sunflower - Fuzzy Wire" Price="₱35.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="4" Name="Mini Sunflower 2 - Fuzzy Wire" Price="₱50.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="5" Name="Mini Bouquet - Fuzzy Wire" Price="₱55.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="6" Name="Sunflower Bouquet - Fuzzy Wire" Price="₱150.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="7" Name="Sunblush Bouquet - Fuzzy Wire" Price="₱155.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="8" Name="Rosa Bouquet - Fuzzy Wire" Price="₱155.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="9" Name="Tangled - Fuzzy Wire" Price="₱180.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="10" Name="Tangled Grand - Fuzzy Wire" Price="₱1,000.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="11" Name="Blooming Grace Bouquet - Fuzzy Wire" Price="₱280.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="12" Name="Single Stargazer Bouquet - Fuzzy Wire" Price="₱300.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="13" Name="Single Stargazer Bouquet Version 2 - Fuzzy Wire" Price="₱450.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="14" Name="Florèa Bouquet - Fuzzy Wire" Price="₱350.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="15" Name="Florèa Bouquet Version 2 - Fuzzy Wire" Price="₱500.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="16" Name="Florèa Bouquet Version 3 - Fuzzy Wire" Price="₱650.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="17" Name="Stargazer Embrace Bouquet - Fuzzy Wire" Price="₱650.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="18" Name="Thumbelina Cone Bouquet - Fuzzy Wire" Price="₱500.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="19" Name="Big Rose Bouquet - Fuzzy Wire" Price="₱580.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="20" Name="Coffee Bouquet - Fuzzy Wire" Price="₱300.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="21" Name="Red Tulip Bouquet - Fuzzy Wire" Price="₱300.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="22" Name="Set Gift - Crochet" Price="₱300.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="23" Name="Tulip - Crochet" Price="₱135.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="24" Name="Single Tulip - Crochet" Price="₱150.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="25" Name="Sophia - Crochet" Price="₱750.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="26" Name="Rose Serenade - Crochet" Price="₱250.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="27" Name="Single Tulip - Satin" Price="₱100.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Bouquet" ID="28" Name="Rosette Charm - Satin Ribbon" Price="₱300.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <Circle centerX="12" centerY="12" radius="2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="12" centerY="6" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="17.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="15.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="8.5" centerY="16.5" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   <Circle centerX="6.5" centerY="10" radius="2.5" fill="transparent" stroke="#C22A62" strokeWidth="1.7" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Keychain" ID="29" Name="Jelly First Keychain" Price="₱100.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <SVGPath content="M7 11a5 5 0 0 1 10 0v2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   <SVGPath content="M7 13v4M10 13v5M14 13v5M17 13v4" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Keychain" ID="30" Name="Mini Bouquet Keychain" Price="₱100.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <SVGPath content="M7 11a5 5 0 0 1 10 0v2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   <SVGPath content="M7 13v4M10 13v5M14 13v5M17 13v4" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Keychain" ID="31" Name="Puff Flower in a Pouch Keychain" Price="₱40.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <SVGPath content="M7 11a5 5 0 0 1 10 0v2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   <SVGPath content="M7 13v4M10 13v5M14 13v5M17 13v4" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Keychain" ID="32" Name="Mini Flower in a Pouch Keychain" Price="₱25.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <SVGPath content="M7 11a5 5 0 0 1 10 0v2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   <SVGPath content="M7 13v4M10 13v5M14 13v5M17 13v4" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Keychain" ID="33" Name="Mini Labubu Keychain" Price="₱85.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <SVGPath content="M7 11a5 5 0 0 1 10 0v2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   <SVGPath content="M7 13v4M10 13v5M14 13v5M17 13v4" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Keychain" ID="34" Name="Moana Inspired Keychain" Price="₱200.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <SVGPath content="M7 11a5 5 0 0 1 10 0v2" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   <SVGPath content="M7 13v4M10 13v5M14 13v5M17 13v4" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Crochet" ID="35" Name="Frog Headband" Price="₱80.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <SVGPath content="M4 16a8 8 0 0 1 16 0z" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   <SVGPath content="M2 16h20" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Crochet" ID="36" Name="Thumbler Holder" Price="₱250.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <SVGPath content="M4 16a8 8 0 0 1 16 0z" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   <SVGPath content="M2 16h20" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Crochet" ID="37" Name="Diamond Top" Price="₱200.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <SVGPath content="M4 16a8 8 0 0 1 16 0z" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   <SVGPath content="M2 16h20" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="badge-pending" text="4 left" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Crochet" ID="38" Name="Swim Bra" Price="₱200.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <SVGPath content="M4 16a8 8 0 0 1 16 0z" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   <SVGPath content="M2 16h20" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Crochet" ID="39" Name="Mini Tulip in a Card" Price="₱70.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <SVGPath content="M4 16a8 8 0 0 1 16 0z" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   <SVGPath content="M2 16h20" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Crochet" ID="40" Name="Tulip Pot - Crochet" Price="₱200.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <SVGPath content="M4 16a8 8 0 0 1 16 0z" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   <SVGPath content="M2 16h20" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Crochet" ID="41" Name="Sunflower Pot - Crochet" Price="₱200.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <SVGPath content="M4 16a8 8 0 0 1 16 0z" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   <SVGPath content="M2 16h20" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Crochet" ID="42" Name="Cactus Pot - Crochet" Price="₱200.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <SVGPath content="M4 16a8 8 0 0 1 16 0z" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   <SVGPath content="M2 16h20" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+<HashMap Category="Crochet" ID="43" Name="Pot Set (Tulip, Sunflower, Cactus) - Crochet" Price="₱200.00"><photo><StackPane maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="prod-tile"><children><Pane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mouseTransparent="true" prefHeight="24.0" prefWidth="24.0" scaleX="1.1" scaleY="1.1">
+   <children>
+   <SVGPath content="M4 16a8 8 0 0 1 16 0z" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   <SVGPath content="M2 16h20" fill="transparent" stroke="#C22A62" strokeWidth="1.7" strokeLineCap="ROUND" strokeLineJoin="ROUND" />
+   </children>
+</Pane></children></StackPane></photo><stock><Label styleClass="stock-plain" text="10 in stock" /></stock><actions><HBox alignment="CENTER_LEFT" spacing="4.0"><children><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, btn-edit, link-pink" text="Edit"><graphic><Region styleClass="ico, ico-edit" /></graphic><tooltip><Tooltip text="Edit" /></tooltip></Button><Label styleClass="link-sep" text="·" /><Button focusTraversable="false" mnemonicParsing="false" styleClass="btn-icon, link-pink" text="Restock"><tooltip><Tooltip text="Restock" /></tooltip></Button></children></HBox></actions></HashMap>
+                     </FXCollections></items>
+                     <columns>
+                        <TableColumn fx:id="colProdId" prefWidth="60.0" text="ID" visible="false"><cellValueFactory><MapValueFactory key="ID" /></cellValueFactory></TableColumn>
+                        <TableColumn fx:id="colProdPhoto" prefWidth="64.0" sortable="false" text="Product"><cellValueFactory><MapValueFactory key="photo" /></cellValueFactory></TableColumn>
+                        <TableColumn fx:id="colProdName" prefWidth="270.0" sortable="false" style="-fx-font-weight: bold;" text=""><cellValueFactory><MapValueFactory key="Name" /></cellValueFactory></TableColumn>
+                        <TableColumn fx:id="colProdCat" prefWidth="110.0" text="Category"><cellValueFactory><MapValueFactory key="Category" /></cellValueFactory></TableColumn>
+                        <TableColumn fx:id="colProdPrice" prefWidth="90.0" text="Price"><cellValueFactory><MapValueFactory key="Price" /></cellValueFactory></TableColumn>
+                        <TableColumn fx:id="colProdStock" prefWidth="130.0" text="Stock"><cellValueFactory><MapValueFactory key="stock" /></cellValueFactory></TableColumn>
+                        <TableColumn fx:id="colProdActions" prefWidth="170.0" sortable="false" text="Actions"><cellValueFactory><MapValueFactory key="actions" /></cellValueFactory></TableColumn>
+                     </columns>
+                     <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
+                  </TableView>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+         </children>
+      </StackPane>
+   </children>
+</HBox>

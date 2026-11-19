@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
+
+<StackPane fx:controller="com.sassyscreation.sassyscreationgui.controllers.DeleteOrderController"
+           prefHeight="550" prefWidth="480"
+           styleClass="dialog-root, page-v3"
+           xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets><URL value="@styles.css" /></stylesheets>
+   <children>
+      <VBox alignment="CENTER" maxWidth="420.0" spacing="0.0" styleClass="dialog-card">
+         <children>
+            <StackPane styleClass="icon-badge-sm"><children><Region styleClass="ico, ico-warning" /></children></StackPane>
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="dialog-title-dark" text="Delete this order?">
+               <VBox.margin><Insets bottom="10.0" top="10.0" /></VBox.margin>
+            </Label>
+            <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="ID" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dID" maxWidth="240.0" styleClass="detail-value" text="3" textAlignment="RIGHT" wrapText="true" /></children></HBox>
+            <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="Customer" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dCustomer" maxWidth="240.0" styleClass="detail-value" text="maria.reyes" textAlignment="RIGHT" wrapText="true" /></children></HBox>
+            <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="Product" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dProduct" maxWidth="240.0" styleClass="detail-value" text="Octopus Keychain" textAlignment="RIGHT" wrapText="true" /></children></HBox>
+            <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="Price" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dPrice" maxWidth="240.0" styleClass="detail-value" text="₱110.00" textAlignment="RIGHT" wrapText="true" /></children></HBox>
+            <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="Status" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dStatus" maxWidth="240.0" styleClass="detail-value" text="Pending" textAlignment="RIGHT" wrapText="true" /></children></HBox>
+            <Label fx:id="lblRestoreNote" styleClass="restore-note" text="Stock for Octopus Keychain will be restored." wrapText="true" />
+            <VBox alignment="CENTER" spacing="8.0" styleClass="dialog-buttons">
+               <children>
+                  <Button fx:id="btnConfirmDelete" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleConfirmDelete" styleClass="btn-danger" text="Yes, delete" />
+                  <Button fx:id="btnCancelDelete" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCancelDelete" styleClass="btn-ghost" text="No, cancel" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</StackPane>

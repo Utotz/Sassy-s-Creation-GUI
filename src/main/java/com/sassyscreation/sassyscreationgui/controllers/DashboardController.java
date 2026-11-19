@@ -1,34 +1,16 @@
 package com.sassyscreation.sassyscreationgui.controllers;
 
-<<<<<<< HEAD
-import com.sassyscreation.sassyscreationgui.dao.ProductDAO;
-import com.sassyscreation.sassyscreationgui.model.Product;
-import com.sassyscreation.sassyscreationgui.util.Transitions;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-=======
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
-<<<<<<< HEAD
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-=======
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -36,33 +18,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-<<<<<<< HEAD
-import java.math.BigDecimal;
-import java.net.URL;
-import java.time.Year;
-import java.util.ArrayList;
-=======
 import java.net.URL;
 import java.util.Comparator;
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-<<<<<<< HEAD
-
-public class DashboardController {
-
-    private static final String FXML_PATH = "/com/sassyscreation/sassyscreationgui/";
-
-    @FXML private ComboBox<String> cbDashYear;
-    @FXML private Label lblNavOrdersBadge;
-=======
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
@@ -92,67 +58,13 @@ public class DashboardController implements Initializable {
     @FXML private Button btnReviewOrders;
 
     // ---- stat cards ----
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
     @FXML private Label lblOrders;
     @FXML private Label lblProducts;
     @FXML private Label lblRevenue;
     @FXML private Label lblPending;
-<<<<<<< HEAD
-    @FXML private Label lblReminderTitle;
-    @FXML private BarChart<String, Number> revenueChart;
-    @FXML private PieChart statusChart;
-    @FXML private TableView<Map<String, Object>> tvLowStock;
-    @FXML private Node barSample;
-    @FXML private Node pieSample;
-    @FXML private Node lowStockSample;
-
-    private final ProductDAO productDAO = new ProductDAO();
-
-    @FXML
-    public void initialize() {
-        // hide the design preview nodes (safe even if one is missing in the FXML)
-        hide(barSample);
-        hide(pieSample);
-        hide(lowStockSample);
-
-        // make sure the year box has years and a selected value
-        if (cbDashYear != null && cbDashYear.getItems().isEmpty()) {
-            int thisYear = Year.now().getValue();
-            for (int y = thisYear; y >= thisYear - 2; y--) {
-                cbDashYear.getItems().add(String.valueOf(y));
-            }
-        }
-
-        // the chart should not animate in from nothing
-        if (revenueChart != null) {
-            revenueChart.setAnimated(false);
-            revenueChart.setLegendVisible(false);
-        }
-
-        if (cbDashYear == null) {
-            loadData();
-            return;
-        }
-
-        // reload the numbers when the year changes
-        cbDashYear.valueProperty().addListener((obs, oldVal, newVal) -> loadData());
-
-        if (cbDashYear.getValue() == null) {
-            cbDashYear.getSelectionModel().selectFirst(); // this fires loadData()
-        } else {
-            loadData();
-        }
-    }
-
-    // ---------- navigation ----------
-
-    @FXML
-    private void goDashboard() {
-        // already on the dashboard
-=======
 
     // ---- revenue bars + reminder ----
-    @FXML private BarChart<String, Number> revenueChart;   // plain chart, now hidden
+    @FXML private BarChart<String, Number> revenueChart;   // plain chart, hidden
     @FXML private HBox barSample;                          // pill bars are drawn into this
     @FXML private Label lblReminderTitle;
 
@@ -167,7 +79,7 @@ public class DashboardController implements Initializable {
     // ---- orders by status (semicircle gauge) ----
     @FXML private Label lblOrdersYear;
     @FXML private HBox pieSample;              // holds the gauge
-    @FXML private PieChart statusChart;        // plain pie chart, now hidden
+    @FXML private PieChart statusChart;        // plain pie chart, hidden
     @FXML private Arc arcPending;
     @FXML private Arc arcDone;
     @FXML private Arc arcCancelled;
@@ -225,7 +137,7 @@ public class DashboardController implements Initializable {
         lblRevenue.setText("\u20B11,210.00");
         lblPending.setText("\u20B11,560.00");
         lblNavOrdersBadge.setText(String.valueOf(pendingOrders));
-        lblReminderTitle.setText(pendingOrders + " orders awaiting pickup");
+        lblReminderTitle.setText(pendingOrders + (pendingOrders == 1 ? " order" : " orders") + " awaiting pickup");
         lblOrdersYear.setText("Year " + year);
 
         // Stand revenue by day (label -> pesos)
@@ -250,7 +162,7 @@ public class DashboardController implements Initializable {
     //  Low stock table
     // =====================================================================
 
-    /** Tells each column which key of the row map to show (no FXML MapValueFactory needed). */
+    /** Tells each column which key of the row map to show, and draws the stock badge. */
     private void setUpLowStockTable() {
         if (tvLowStock == null) {
             return;
@@ -258,6 +170,24 @@ public class DashboardController implements Initializable {
         colLowName.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().get("name")));
         colLowCat.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().get("category")));
         colLowStock.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().get("stock")));
+
+        // Red "badge-low" pill, like the design preview in the FXML
+        colLowStock.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(Object item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                    return;
+                }
+                int stock = (item instanceof Number n) ? n.intValue() : 0;
+                Label badge = new Label(stock <= 0 ? "0 \u00B7 Out of stock" : stock + " left");
+                badge.getStyleClass().add("badge-low");
+                setText(null);
+                setGraphic(badge);
+            }
+        });
     }
 
     /**
@@ -342,6 +272,16 @@ public class DashboardController implements Initializable {
      * right: cancelled, then done, then pending takes the rest, so pending sits on the left.
      */
     private void renderStatusGauge(int pending, int done, int cancelled) {
+        // Don't crash the whole dashboard if the fx:ids are missing in DASHBOARD.fxml
+        if (arcPending == null || arcDone == null || arcCancelled == null
+                || lblGaugePct == null || lblLegendPending == null
+                || lblLegendDone == null || lblLegendCancelled == null) {
+            System.err.println("Dashboard gauge: add fx:id to the Arcs and labels in DASHBOARD.fxml "
+                    + "(arcPending, arcDone, arcCancelled, lblGaugePct, lblLegendPending, "
+                    + "lblLegendDone, lblLegendCancelled).");
+            return;
+        }
+
         int total = pending + done + cancelled;
 
         double pendingLen = 0;
@@ -368,7 +308,7 @@ public class DashboardController implements Initializable {
         lblLegendCancelled.setText("Cancelled  " + cancelled);
     }
 
-    private void hide(javafx.scene.Node node) {
+    private void hide(Node node) {
         if (node != null) {
             node.setVisible(false);
             node.setManaged(false);
@@ -382,42 +322,20 @@ public class DashboardController implements Initializable {
     @FXML
     private void goDashboard() {
         // Already on the dashboard
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
     }
 
     @FXML
     private void goOrders() {
-<<<<<<< HEAD
-        Transitions.goTo(lblOrders, "ORDERS.fxml");
-=======
         switchScreen("ORDERS.fxml", "Orders");
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
     }
 
     @FXML
     private void goStandSale() {
-<<<<<<< HEAD
-        Transitions.goTo(lblOrders, "STANDSALE.fxml");
-=======
         switchScreen("STANDSALE.fxml", "Stand Sale");
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
     }
 
     @FXML
     private void goInventory() {
-<<<<<<< HEAD
-        Transitions.goTo(lblOrders, "INVENTORY_GRID.fxml");
-    }
-
-    @FXML
-    private void handleLogout() {
-        Transitions.goTo(lblOrders, "LOGIN.fxml");
-    }
-
-    @FXML
-    private void handleOpenChangePassword() {
-        openDialog("CHANGEPASSWORD.fxml");
-=======
         switchScreen("INVENTORY_LIST.fxml", "Inventory");
     }
 
@@ -428,178 +346,28 @@ public class DashboardController implements Initializable {
     @FXML
     private void handleOpenChangePassword() {
         openDialog("CHANGEPASSWORD.fxml", "Change password");
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
     }
 
     @FXML
     private void handleOpenAbout() {
-<<<<<<< HEAD
-        openDialog("ABOUT.fxml");
-=======
         // borderless = true -> no Windows title bar, rounded transparent window
         openDialog("ABOUT.fxml", "About", true);
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
     }
 
     @FXML
     private void handleOpenLowStock() {
-<<<<<<< HEAD
-        Transitions.goTo(lblOrders, "INVENTORY_GRID.fxml");
-    }
-
-    // ---------- data ----------
-
-    private void loadData() {
-        // products come from the database
-        // (catch everything: a DB problem must never stop the dashboard from opening)
-        List<Product> products = new ArrayList<>();
-        try {
-            products = productDAO.getAllProducts();
-        } catch (Exception e) {
-            e.printStackTrace();
-            showError("Could not load the products from the database.");
-        }
-
-        try {
-            showLowStock(products);
-
-            // orders, products listed, stand revenue, pending value, pending orders
-            // TODO: replace the demo numbers with real order and stand sale queries
-            setStats(6, products.size(), new BigDecimal("1210.00"), new BigDecimal("1500.00"), 4);
-
-            // revenue by day (LinkedHashMap keeps the order)
-            // TODO: replace with a real query filtered by year
-            Map<String, Double> days = new LinkedHashMap<>();
-            days.put("Mon", 120.0);
-            days.put("Tue", 340.0);
-            days.put("Wed", 90.0);
-            days.put("Thu", 410.0);
-            days.put("Fri", 250.0);
-            showRevenue(days);
-
-            // pending, done, cancelled
-            showStatus(4, 2, 0);
-        } catch (Exception e) {
-            // prints the real cause (usually an fx:id that doesn't match) in the console
-            e.printStackTrace();
-        }
-    }
-
-    private void setStats(int orders, int products, BigDecimal revenue,
-                          BigDecimal pendingValue, int pendingOrders) {
-        lblOrders.setText(String.valueOf(orders));
-        lblProducts.setText(String.valueOf(products));
-        lblRevenue.setText("₱" + String.format("%,.2f", revenue));
-        lblPending.setText("₱" + String.format("%,.2f", pendingValue));
-        lblReminderTitle.setText(pendingOrders + " orders awaiting pickup");
-
-        // sidebar badge only shows when there are pending orders
-        lblNavOrdersBadge.setText(String.valueOf(pendingOrders));
-        lblNavOrdersBadge.setVisible(pendingOrders > 0);
-    }
-
-    private void showRevenue(Map<String, Double> days) {
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-
-        for (Map.Entry<String, Double> day : days.entrySet()) {
-            series.getData().add(new XYChart.Data<>(day.getKey(), day.getValue()));
-        }
-
-        revenueChart.getData().clear();
-        revenueChart.getData().add(series);
-    }
-
-    private void showStatus(int pending, int done, int cancelled) {
-        ObservableList<PieChart.Data> data = FXCollections.observableArrayList(
-                new PieChart.Data("Pending " + pending, pending),
-                new PieChart.Data("Done " + done, done),
-                new PieChart.Data("Cancelled " + cancelled, cancelled));
-
-        statusChart.setData(data);
-    }
-
-    private void showLowStock(List<Product> products) {
-        ObservableList<Map<String, Object>> rows = FXCollections.observableArrayList();
-
-        for (Product p : products) {
-            if (p.getStockQuantity() <= p.getLowStockThreshold()) {
-                Map<String, Object> row = new HashMap<>();
-                row.put("Name", p.getName());
-                row.put("Category", p.getCategory());
-                row.put("stock", stockLabel(p));
-                rows.add(row);
-            }
-        }
-
-        tvLowStock.setItems(rows);
-    }
-
-    private Label stockLabel(Product p) {
-        String note = p.getStockQuantity() == 0 ? "Out of stock" : "Low stock";
-
-        Label label = new Label(p.getStockQuantity() + " · " + note);
-        label.getStyleClass().add("badge-low");
-        return label;
-    }
-
-    // ---------- helpers ----------
-
-    private void hide(Node node) {
-        if (node == null) {
-            return;
-        }
-        node.setVisible(false);
-        node.setManaged(false);
-    }
-
-    private void showError(String message) {
-        // runLater: an alert can't open while the screen is still loading or animating
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Dashboard");
-            alert.setHeaderText(null);
-            alert.setContentText(message);
-            alert.showAndWait();
-        });
-    }
-
-    private Stage getStage() {
-        return (Stage) lblOrders.getScene().getWindow();
-    }
-
-    private void openDialog(String fileName) {
-        try {
-            URL url = getClass().getResource(FXML_PATH + fileName);
-            if (url == null) {
-                throw new IllegalStateException("FXML not found: " + FXML_PATH + fileName);
-            }
-
-            FXMLLoader loader = new FXMLLoader(url);
-            Parent root = loader.load();
-
-            Stage dialog = new Stage();
-            dialog.initOwner(getStage());
-            dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.initStyle(StageStyle.UNDECORATED);
-            dialog.setScene(new Scene(root));
-
-            // start the pop-in only once the window is visible
-            dialog.setOnShown(e -> Transitions.popIn(root));
-
-            dialog.showAndWait();
-        } catch (Exception e) {
-            e.printStackTrace();
-            showError("Could not open " + fileName + ":\n" + e);
-        }
-    }
-=======
         openDialog("LOWSTOCK.fxml", "Low stock");
     }
 
     @FXML
     private void handleLogout() {
-        // Custom confirmation dialog (EXITCONFIRM.fxml) instead of the plain JavaFX Alert
-        if (ExitDialogController.show(currentStage())) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Log out");
+        confirm.setHeaderText(null);
+        confirm.setContentText("Are you sure you want to log out?");
+
+        Optional<ButtonType> result = confirm.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             currentStage().setMaximized(false);
             switchScreen("LOGIN.fxml", "Login");
         }
@@ -668,7 +436,10 @@ public class DashboardController implements Initializable {
     }
 
     private void showError(String header, String message) {
-        ErrorDialogController.show(currentStage(), header, message);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(header);
+        alert.setContentText(message == null ? "Unknown error. Check the console for details." : message);
+        alert.showAndWait();
     }
->>>>>>> 56fe2cdd06299c465f617b8428f3d5c0261d12fa
 }
