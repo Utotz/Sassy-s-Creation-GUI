@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.effect.GaussianBlur?>
+<StackPane fx:id="root" fx:controller="com.sassyscreation.sassyscreationgui.controllers.LoginController" minHeight="640.0" minWidth="1000.0" prefHeight="720.0" prefWidth="1180.0" styleClass="root-pane, lg-root" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets><URL value="@styles.css" /></stylesheets>
+   <children>
+      <!-- blurred flower photo (scaled up slightly so the blur has no transparent edges) -->
+      <ImageView fx:id="bgImage" mouseTransparent="true" preserveRatio="false" scaleX="1.08" scaleY="1.08">
+         <image><Image url="@drawables/login-bg.jpg" /></image>
+         <effect><GaussianBlur radius="28" /></effect>
+      </ImageView>
+
+      <Region mouseTransparent="true" styleClass="lg-overlay" />
+
+      <!-- split login card -->
+      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="900.0" minHeight="560.0" minWidth="840.0" prefWidth="900.0" styleClass="lg-shell" StackPane.alignment="CENTER">
+         <children>
+
+            <!-- LEFT: brand panel -->
+            <VBox minWidth="400.0" prefWidth="420.0" spacing="14.0" styleClass="lg-left" HBox.hgrow="NEVER">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="12.0">
+                     <children>
+                        <Pane maxHeight="64.0" maxWidth="64.0" minHeight="64.0" minWidth="64.0" prefHeight="64.0" prefWidth="64.0">
+                           <children>
+                              <Ellipse centerX="47.0" centerY="32.0" fill="#C22A62" opacity="1.0" radiusX="14" radiusY="9.5" rotate="0.0" />
+                              <Ellipse centerX="39.5" centerY="45.0" fill="#C22A62" opacity="1.0" radiusX="14" radiusY="9.5" rotate="60.0" />
+                              <Ellipse centerX="24.5" centerY="45.0" fill="#C22A62" opacity="1.0" radiusX="14" radiusY="9.5" rotate="120.0" />
+                              <Ellipse centerX="17.0" centerY="32.0" fill="#C22A62" opacity="1.0" radiusX="14" radiusY="9.5" rotate="180.0" />
+                              <Ellipse centerX="24.5" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="14" radiusY="9.5" rotate="240.0" />
+                              <Ellipse centerX="39.5" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="14" radiusY="9.5" rotate="300.0" />
+                              <Circle centerX="32" centerY="32" fill="#FFE08A" radius="7" />
+                           </children>
+                        </Pane>
+                        <VBox alignment="CENTER_LEFT" spacing="2.0">
+                           <children>
+                              <Label styleClass="lg-brand-name" text="SASSY’S CREATION" />
+                              <Label styleClass="lg-brand-sub" text="Handmade Crochet and Bouquets" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <Region prefHeight="34.0" VBox.vgrow="ALWAYS" />
+                  <HBox>
+                     <children>
+                        <Label styleClass="lg-pill" text="ADMIN OFFICER PORTAL"><graphic><Region styleClass="ico, ico-person" /></graphic></Label>
+                     </children>
+                  </HBox>
+                  <VBox spacing="0.0">
+                     <children>
+                        <Label styleClass="lg-big-dark" text="SALES AND" />
+                        <Label styleClass="lg-big-rose" text="ORDER" />
+                        <Label styleClass="lg-big-rose" text="MANAGEMENT" />
+                     </children>
+                  </VBox>
+                  <Label maxWidth="320.0" styleClass="lg-big-sub" text="SYSTEM FOR HANDMADE CROCHET AND BOUQUETS" wrapText="true" />
+                  <Region prefHeight="60.0" VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
+
+            <!-- RIGHT: form panel -->
+            <VBox alignment="CENTER_LEFT" prefWidth="480.0" spacing="8.0" styleClass="lg-right" HBox.hgrow="ALWAYS">
+               <children>
+                  <!-- lockout banner: set visible/managed to true to preview it -->
+                  <VBox fx:id="lockoutBox" managed="false" spacing="6.0" styleClass="lockout-box" visible="false">
+                     <children>
+                        <Label styleClass="lockout-title" text="Too many failed attempts"><graphic><Region styleClass="ico, ico-lock" /></graphic></Label>
+                        <Label fx:id="lblLockoutCountdown" styleClass="lockout-text" text="Try again in 30 seconds" />
+                        <ProgressBar fx:id="pbLockout" maxWidth="1.7976931348623157E308" progress="1.0" />
+                     </children>
+                  </VBox>
+                  <Label styleClass="lg-signin" text="Sign In" />
+                  <Label styleClass="lg-signin-sub" text="Admin Officer login. Authorized access only." />
+                  <Region prefHeight="10.0" />
+                  <Label maxWidth="1.7976931348623157E308" styleClass="lg-label" text="Username *" />
+                  <TextField fx:id="tfUsername" prefHeight="44.0" promptText="Enter username" styleClass="lg-field" />
+                  <CheckBox fx:id="cbRemember" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remember username" />
+                  <Region prefHeight="2.0" />
+                  <Label maxWidth="1.7976931348623157E308" styleClass="lg-label" text="Password *" />
+                  <StackPane alignment="CENTER_RIGHT"><children>
+                     <PasswordField fx:id="pfPassword" prefHeight="44.0" promptText="Enter password" style="-fx-padding: 0 48 0 14;" styleClass="lg-field" />
+                     <TextField fx:id="tfPasswordVisible" managed="false" prefHeight="44.0" promptText="Enter password" style="-fx-padding: 0 48 0 14;" styleClass="lg-field" visible="false" />
+                     <CheckBox fx:id="cbShowPassword" mnemonicParsing="false" onAction="#handleTogglePassword" styleClass="eye-toggle" text="" StackPane.alignment="CENTER_RIGHT">
+                        <StackPane.margin><Insets right="14.0" /></StackPane.margin>
+                        <tooltip><Tooltip text="Show / hide password" /></tooltip>
+                     </CheckBox>
+                  </children></StackPane>
+                  <HBox alignment="CENTER_LEFT">
+                     <padding><Insets top="2.0" /></padding>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Hyperlink fx:id="linkForgot" onAction="#handleForgotPassword" styleClass="login-link, lg-link" text="Forgot password?" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="lblError" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="error-label" text="" textAlignment="CENTER" wrapText="true" />
+                  <Button fx:id="btnLogin" defaultButton="true" disable="true" maxWidth="1.7976931348623157E308" onAction="#handleLogin" prefHeight="46.0" styleClass="lg-login" text="Log in  →" />
+                  <HBox alignment="CENTER" spacing="10.0">
+                     <padding><Insets bottom="2.0" top="2.0" /></padding>
+                     <children>
+                        <Region maxWidth="1.7976931348623157E308" styleClass="lg-line" HBox.hgrow="ALWAYS" />
+                        <Label styleClass="lg-or" text="or" />
+                        <Region maxWidth="1.7976931348623157E308" styleClass="lg-line" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <Button fx:id="btnExit" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleExit" prefHeight="42.0" styleClass="lg-exit" text="Exit" />
+                  <Label fx:id="lblAttempts" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="lg-note" text="3 attempts allowed before a 30-second lockout" textAlignment="CENTER" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</StackPane>

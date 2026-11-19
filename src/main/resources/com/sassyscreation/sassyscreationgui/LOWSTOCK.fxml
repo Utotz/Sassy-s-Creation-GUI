@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.Region?>
+<?import java.util.HashMap?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.MapValueFactory?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
+
+<StackPane prefHeight="640" prefWidth="540" styleClass="dialog-root, page-v3" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets><URL value="@styles.css" /></stylesheets>
+   <children>
+      <VBox alignment="CENTER">
+   <children>
+      <VBox alignment="CENTER_LEFT" maxWidth="480.0" spacing="12.0" styleClass="dialog-card">
+         <children>
+            <Label alignment="CENTER" contentDisplay="LEFT" graphicTextGap="8.0" maxWidth="1.7976931348623157E308" textAlignment="CENTER" styleClass="dialog-title" text="Low stock items" ><graphic><Region styleClass="ico, ico-warning" /></graphic></Label>
+            <HBox alignment="CENTER_LEFT" spacing="10.0"><children>
+               <Label styleClass="dialog-text" text="Category" />
+               <ComboBox fx:id="cbLowCategory" prefWidth="100.0" promptText="All" value="All"><items><FXCollections fx:factory="observableArrayList"><String fx:value="All" /><String fx:value="Bouquet" /><String fx:value="Crochet" /><String fx:value="Keychain" /></FXCollections></items></ComboBox>
+               <Label styleClass="dialog-text" text="Stock at or below" />
+               <Spinner styleClass="split-arrows-horizontal" fx:id="spThreshold" HBox.hgrow="ALWAYS" editable="true" initialValue="0" max="999" maxWidth="1.7976931348623157E308" min="0" prefWidth="110.0" />
+            </children></HBox>
+            <TableView fx:id="tvLowStock" fixedCellSize="44.0" prefHeight="290.0">
+               <placeholder><Label text="No low stock items" /></placeholder>
+               <items><FXCollections fx:factory="observableArrayList"><HashMap Category="Keychain" Name="Customized Keychain"><stock><Label styleClass="badge-low" text="0" /></stock></HashMap><HashMap Category="Crochet" Name="Swimwear - Customize"><stock><Label styleClass="badge-low" text="0" /></stock></HashMap><HashMap Category="Crochet" Name="Hat - Customize"><stock><Label styleClass="badge-low" text="0" /></stock></HashMap><HashMap Category="Keychain" Name="Rose Keychain"><stock><Label styleClass="badge-pending" text="5" /></stock></HashMap><HashMap Category="Bouquet" Name="Mixed Bouquet - Fuzzy Wire (Small)"><stock><Label styleClass="badge-pending" text="5" /></stock></HashMap><HashMap Category="Crochet" Name="Crochet Bra"><stock><Label styleClass="badge-pending" text="5" /></stock></HashMap></FXCollections></items>
+               <columns><TableColumn fx:id="colLowName" prefWidth="230.0" text="Name"><cellValueFactory><MapValueFactory key="Name" /></cellValueFactory></TableColumn><TableColumn fx:id="colLowCat" prefWidth="110.0" text="Category"><cellValueFactory><MapValueFactory key="Category" /></cellValueFactory></TableColumn><TableColumn fx:id="colLowStock" prefWidth="80.0" text="Stock"><cellValueFactory><MapValueFactory key="stock" /></cellValueFactory></TableColumn></columns>
+               <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
+            </TableView>
+            <Label fx:id="lblLowStockCount" styleClass="stat-note" text="3 out of stock · 3 low" />
+            <HBox alignment="CENTER" spacing="14.0" styleClass="dialog-buttons"><children><Button fx:id="btnCloseLowStock" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" mnemonicParsing="false" onAction="#handleCloseLowStock" styleClass="btn-ghost" text="Close" /><Button fx:id="btnGoInventory" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" mnemonicParsing="false" onAction="#handleGoToInventory" styleClass="btn-primary" text="Go to Inventory" /></children></HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>
+   </children>
+</StackPane>

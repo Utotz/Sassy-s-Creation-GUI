@@ -1,0 +1,1144 @@
+/* =====================================================================
+   Sassy's Creation - shared stylesheet (linked in every FXML)
+   Look: white sidebar, blush gradient background, crimson pills,
+   rounded white cards, Poppins headings. Flowers + icons are kept.
+   ===================================================================== */
+
+/* ---- Fonts bundled in /fonts (this is what makes them show in Scene Builder) ---- */
+@font-face { font-family: "Poppins";        src: url("fonts/Poppins-Regular.ttf"); }
+@font-face { font-family: "Poppins";        src: url("fonts/Poppins-Bold.ttf"); }
+@font-face { font-family: "Poppins";        src: url("fonts/Poppins-Italic.ttf"); }
+@font-face { font-family: "Poppins";        src: url("fonts/Poppins-BoldItalic.ttf"); }
+@font-face { font-family: "Poppins Medium"; src: url("fonts/Poppins-Medium.ttf"); }
+@font-face { font-family: "Inter";          src: url("fonts/Inter-Regular.ttf"); }
+@font-face { font-family: "Inter";          src: url("fonts/Inter-Bold.ttf"); }
+
+/* ---- root ---- */
+.root-pane, .dialog-root, .fl-bg {
+    -fx-focus-color: #C22A62; -fx-faint-focus-color: #C22A6233;
+    -fx-font-family: "Poppins"; -fx-font-size: 13px;
+    -fx-background-color: linear-gradient(to bottom right, #FFF5F8, #FCE4EC);
+}
+
+/* ---- sidebar ---- */
+.sidebar { -fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.07), 18, 0, 3, 0); }
+.brand-box { -fx-border-color: transparent; -fx-border-width: 0; }
+.brand-icon { -fx-background-color: #C22A62; -fx-background-radius: 9; }
+.brand-title { -fx-text-fill: #1A1418; -fx-font-size: 15px; }
+.brand-sub { -fx-text-fill: #54454D; -fx-font-size: 12px; }
+.nav-btn { -fx-background-color: transparent; -fx-text-fill: #1A1418; -fx-alignment: CENTER_LEFT; -fx-padding: 11 16; -fx-background-radius: 14; -fx-font-size: 14px; -fx-cursor: hand; }
+.nav-btn:hover { -fx-background-color: #FDF2F6; }
+.nav-active, .nav-active:hover { -fx-background-color: #C22A62; -fx-text-fill: white; -fx-font-weight: bold; }
+.nav-logout { -fx-background-color: transparent; -fx-text-fill: #1A1418; -fx-alignment: CENTER_LEFT; -fx-padding: 11 16; -fx-background-radius: 14; -fx-border-color: #E8D0DB; -fx-border-width: 1; -fx-border-radius: 14; -fx-font-size: 14px; -fx-cursor: hand; }
+.nav-logout:hover { -fx-background-color: #FDF2F6; }
+.side-footer { -fx-background-color: #FDF2F6; -fx-background-radius: 16; -fx-padding: 12; }
+.side-footer-sub { -fx-text-fill: #54454D; -fx-font-size: 11px; }
+.side-footer-title { -fx-text-fill: #1A1418; -fx-font-size: 12px; }
+
+/* ---- top bar (one fixed height on every screen, floats on the blush background) ---- */
+.topbar { -fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0; -fx-min-height: 48; -fx-pref-height: 48; -fx-max-height: 48; }
+.avatar { -fx-background-color: white; -fx-text-fill: #C22A62; -fx-background-radius: 20; -fx-min-width: 28; -fx-min-height: 28; -fx-alignment: CENTER; -fx-font-weight: bold; }
+.account-menu { -fx-background-color: transparent; -fx-background-radius: 14; -fx-text-fill: #1A1418; -fx-cursor: hand; }
+.account-menu:hover, .account-menu:showing { -fx-background-color: white; }
+.account-menu .label { -fx-text-fill: #1A1418; }
+.account-menu > .arrow-button > .arrow { -fx-background-color: #54454D; }
+
+/* ---- page text ---- */
+.page-title { -fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1A1418; }
+.page-sub { -fx-text-fill: #54454D; -fx-font-size: 13px; }
+.card { -fx-background-color: white; -fx-background-radius: 24; -fx-border-color: transparent; -fx-border-radius: 24; -fx-padding: 18; -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.09), 24, 0, 0, 8); }
+.card-title { -fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #1A1418; }
+.stat-label { -fx-text-fill: #54454D; -fx-font-size: 13px; }
+.stat-value { -fx-font-size: 32px; -fx-text-fill: #1A1418; }
+.stat-note { -fx-text-fill: #62525B; -fx-font-size: 12px; }
+.icon-box { -fx-background-radius: 12; -fx-min-width: 40; -fx-min-height: 40; -fx-alignment: CENTER; -fx-font-size: 16px; }
+.icon-pink { -fx-background-color: #FDF2F6; } .icon-blue { -fx-background-color: #E7F3FB; }
+.icon-gold { -fx-background-color: #FBF3E1; } .icon-red { -fx-background-color: #FDECEA; }
+
+/* ---- buttons: crimson pills ---- */
+.btn-primary { -fx-background-color: #C22A62; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 14; -fx-padding: 10 22; -fx-cursor: hand; }
+.btn-primary:hover { -fx-background-color: #A8204F; }
+.btn-primary:disabled { -fx-background-color: #E6D3DB; -fx-text-fill: #8A7A82; -fx-opacity: 1; -fx-cursor: default; }
+.btn-warn { -fx-background-color: #8A6508; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 14; -fx-padding: 10 22; -fx-cursor: hand; }
+.btn-success { -fx-background-color: #1E7A4C; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 14; -fx-padding: 10 22; -fx-cursor: hand; }
+.btn-danger { -fx-background-color: #B3261E; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 14; -fx-padding: 10 22; -fx-cursor: hand; }
+.btn-warn:hover { -fx-background-color: #6F5106; } .btn-success:hover { -fx-background-color: #176340; } .btn-danger:hover { -fx-background-color: #96201A; }
+.btn-ghost { -fx-background-color: white; -fx-text-fill: #1A1418; -fx-font-weight: bold; -fx-border-color: #E8D0DB; -fx-border-radius: 14; -fx-background-radius: 14; -fx-padding: 10 22; -fx-cursor: hand; }
+.btn-ghost:hover { -fx-background-color: #FDF2F6; }
+.btn-icon { -fx-background-color: transparent; -fx-text-fill: #C22A62; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 4 10; -fx-background-radius: 14; -fx-cursor: hand; }
+.btn-icon:hover { -fx-background-color: #FDF2F6; -fx-text-fill: #A8204F; }
+.btn-icon-danger { -fx-text-fill: #B3261E; }
+.btn-icon-danger:hover { -fx-background-color: #FDECEA; -fx-text-fill: #B3261E; }
+
+/* ---- links ---- */
+.login-link, .pink-link { -fx-text-fill: #C22A62; -fx-font-size: 12px; -fx-font-weight: bold; -fx-border-color: transparent; -fx-padding: 0; }
+.login-link:visited, .pink-link:visited { -fx-text-fill: #C22A62; }
+.login-link:hover, .pink-link:hover { -fx-text-fill: #A8204F; }
+
+/* ---- form controls: blush fill, soft border, 14px corners ---- */
+.form-label { -fx-text-fill: #1A1418; -fx-font-size: 12px; -fx-font-weight: bold; }
+.text-field, .password-field, .combo-box, .date-picker, .spinner { -fx-background-color: #FDF2F6; -fx-background-radius: 14; -fx-border-color: #E8D0DB; -fx-border-radius: 14; -fx-font-size: 14px; }
+.text-field, .password-field { -fx-padding: 0 14 0 14; }
+.text-field:focused, .password-field:focused, .combo-box:focused, .date-picker:focused, .spinner:focused { -fx-background-color: white; -fx-border-color: #C22A62; }
+.spinner .text-field, .date-picker .text-field, .combo-box .text-field { -fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 14; }
+.text-field, .password-field, .combo-box-base, .date-picker, .spinner .text-field { -fx-prompt-text-fill: #7A6571; }
+.search-field { -fx-background-color: white; -fx-background-radius: 14; -fx-border-radius: 14; -fx-padding: 0 18 0 18; }
+.error-label { -fx-text-fill: #B3261E; -fx-font-size: 12px; -fx-min-height: 18; }
+.hint-label { -fx-text-fill: #62525B; -fx-font-size: 12px; }
+.step-label { -fx-text-fill: #C22A62; -fx-font-size: 11px; -fx-font-weight: bold; }
+.check-box { -fx-text-fill: #1A1418; }
+.check-box:selected .mark { -fx-background-color: white; }
+.check-box:selected .box { -fx-background-color: #C22A62; -fx-border-color: #C22A62; }
+.chip, .seg { -fx-background-color: white; -fx-border-color: #E8D0DB; -fx-background-radius: 14; -fx-border-radius: 14; -fx-padding: 5 16; -fx-text-fill: #1A1418; }
+.chip:selected { -fx-background-color: #C22A62; -fx-text-fill: white; -fx-border-color: #C22A62; }
+.seg { -fx-background-radius: 14; -fx-border-radius: 14; -fx-pref-width: 140; }
+.seg:selected { -fx-background-color: #FDF2F6; -fx-border-color: #C22A62; -fx-text-fill: #A8204F; -fx-font-weight: bold; }
+
+/* ---- tables: white rounded card, no zebra ---- */
+.table-view { -fx-background-color: white; -fx-border-color: transparent; -fx-background-radius: 24; -fx-border-radius: 24; -fx-padding: 8 18 8 18; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.09), 24, 0, 0, 8); }
+.table-view .column-header-background { -fx-background-color: white; }
+.table-view .column-header, .table-view .filler { -fx-background-color: white; -fx-border-color: transparent transparent #EFDDE4 transparent; }
+.table-view .column-header .label { -fx-text-fill: #1A1418; -fx-font-size: 12px; -fx-alignment: CENTER-LEFT; -fx-padding: 16 0 16 12; }
+.table-view .column-resize-line { -fx-background-color: transparent; }
+.table-row-cell { -fx-background-color: white; -fx-border-color: transparent transparent #F6E9EE transparent; }
+.table-view .table-row-cell:odd, .table-view .table-row-cell:even { -fx-background-color: white; }
+.table-view .table-row-cell:empty { -fx-background-color: transparent; -fx-border-color: transparent; }
+.table-view .table-row-cell:filled:hover { -fx-background-color: #FEF7F9; }
+.table-view .table-row-cell:filled:selected { -fx-background-color: #FDF2F6; }
+.table-view .table-cell { -fx-background-color: transparent; -fx-border-color: transparent; -fx-alignment: CENTER-LEFT; -fx-padding: 0 0 0 12; -fx-text-fill: #1A1418; -fx-font-size: 13px; }
+.table-view .table-cell:filled:selected, .table-view:focused .table-cell:filled:selected { -fx-background-color: transparent; -fx-text-fill: #1A1418; }
+.badge-pending { -fx-background-color: #F9E7B8; -fx-text-fill: #6E4C06; -fx-background-radius: 12; -fx-padding: 3 11; }
+.badge-done { -fx-background-color: #C9E9D6; -fx-text-fill: #14522F; -fx-background-radius: 12; -fx-padding: 3 11; }
+.badge-cancelled, .badge-low { -fx-background-color: #F9D3CD; -fx-text-fill: #8F2514; -fx-background-radius: 12; -fx-padding: 3 11; }
+.table-view .badge-pending, .table-view .badge-done, .table-view .badge-cancelled, .table-view .badge-low { -fx-padding: 4 13; -fx-background-radius: 12; -fx-font-size: 12px; }
+.footer-bar { -fx-background-color: #FBE3EB; -fx-background-radius: 16; -fx-padding: 14 24 14 24; -fx-min-height: 56; -fx-alignment: CENTER-LEFT; }
+
+/* ---- dialogs ---- */
+.dialog-card { -fx-background-color: white; -fx-background-radius: 24; -fx-padding: 34 36 30 36; -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.16), 40, 0, 0, 14); }
+.dialog-card-pink { -fx-border-color: transparent; -fx-border-radius: 24; -fx-border-width: 0; }
+.dialog-title         { -fx-text-fill: #B3261E; -fx-font-weight: bold; -fx-font-size: 26px; -fx-padding: 0 0 14 0; }
+.dialog-title-primary { -fx-text-fill: #C22A62; -fx-font-weight: bold; -fx-font-size: 26px; -fx-padding: 0 0 14 0; }
+.dialog-title-warn    { -fx-text-fill: #8A6508; -fx-font-weight: bold; -fx-font-size: 26px; -fx-padding: 0 0 14 0; }
+.dialog-title-success { -fx-text-fill: #1E6B44; -fx-font-weight: bold; -fx-font-size: 26px; -fx-padding: 8 0 4 0; }
+.dialog-title-error   { -fx-text-fill: #B3261E; -fx-font-weight: bold; -fx-font-size: 26px; -fx-padding: 8 0 4 0; }
+.dialog-text { -fx-text-fill: #3F343A; -fx-font-size: 16px; }
+.detail-row { -fx-alignment: CENTER_LEFT; -fx-padding: 11 0 11 0; -fx-border-color: transparent transparent #EFE6EA transparent; -fx-border-width: 0 0 1 0; }
+.detail-key { -fx-text-fill: #54545A; -fx-font-size: 16px; }
+.detail-value { -fx-text-fill: #111111; -fx-font-size: 17px; }
+.restore-note { -fx-text-fill: #17714A; -fx-font-size: 15px; -fx-padding: 12 0 0 0; }
+.dialog-buttons { -fx-padding: 22 0 0 0; }
+.dialog-card .btn-danger, .dialog-card .btn-primary, .dialog-card .btn-warn, .dialog-card .btn-success { -fx-background-radius: 14; -fx-font-size: 15px; -fx-padding: 13 28 13 28; }
+.dialog-card .btn-ghost { -fx-background-radius: 14; -fx-border-radius: 14; -fx-text-fill: #1A1418; -fx-font-size: 15px; -fx-padding: 13 26 13 26; }
+.success-circle { -fx-background-color: #E4F3EA; -fx-text-fill: #1E6B44; -fx-background-radius: 40; -fx-min-width: 72; -fx-min-height: 72; -fx-pref-width: 72; -fx-pref-height: 72; -fx-alignment: CENTER; -fx-font-size: 32px; -fx-font-weight: bold; }
+.error-circle { -fx-background-color: #FDECEA; -fx-text-fill: #B3261E; -fx-background-radius: 40; -fx-min-width: 72; -fx-min-height: 72; -fx-pref-width: 72; -fx-pref-height: 72; -fx-alignment: CENTER; -fx-font-size: 32px; -fx-font-weight: bold; }
+
+/* ---- login lockout banner ---- */
+.lockout-box { -fx-background-color: #FDECEA; -fx-background-radius: 14; -fx-border-color: #F5C2BA; -fx-border-radius: 14; -fx-padding: 12 14 12 14; }
+.lockout-title { -fx-text-fill: #8F2514; -fx-font-weight: bold; -fx-font-size: 12px; }
+.lockout-text { -fx-text-fill: #8F2514; -fx-font-size: 12px; }
+.lockout-box .progress-bar > .track { -fx-background-color: #F5D5D0; }
+.lockout-box .progress-bar > .bar { -fx-background-color: #B3261E; -fx-background-insets: 0; }
+
+/* ---- flower login ---- */
+.fl-card { -fx-background-color: white; -fx-background-radius: 28; -fx-padding: 36 38 28 38; -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.16), 40, 0, 0, 14); }
+.fl-brand { -fx-text-fill: #C22A62; -fx-font-size: 11px; -fx-font-weight: bold; }
+.fl-title { -fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #1A1418; }
+.fl-tagline { -fx-text-fill: #8A4A69; -fx-font-size: 12px; }
+.fl-field { -fx-background-color: #FDF2F6; -fx-background-radius: 14; -fx-border-color: #E8D0DB; -fx-border-radius: 14; -fx-border-width: 1; -fx-padding: 0 16 0 16; -fx-font-size: 14px; }
+.fl-field:focused { -fx-background-color: white; -fx-border-color: #C22A62; }
+.fl-primary { -fx-background-radius: 14; -fx-font-size: 14px; }
+.fl-exit { -fx-background-color: transparent; -fx-text-fill: #54454D; -fx-font-size: 13px; -fx-cursor: hand; }
+.fl-exit:hover { -fx-text-fill: #C22A62; }
+
+
+/* ================= SVG icons =================
+   Every icon is a Region with a vector shape (no emoji / text glyphs). Colour comes from the parent control below. */
+.ico { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 16; -fx-pref-height: 16; -fx-max-height: 16; -fx-background-color: #5E4A56; -fx-scale-shape: true; -fx-position-shape: true; }
+.ico-dashboard { -fx-shape: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"; }
+.ico-cart { -fx-shape: "M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"; }
+.ico-store { -fx-shape: "M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"; }
+.ico-box { -fx-shape: "M20 2H4c-1 0-2 .9-2 2v3.01c0 .72.43 1.34 1 1.69V20c0 1.1 1.1 2 2 2h14c.9 0 2-.9 2-2V8.7c.57-.35 1-.97 1-1.69V4c0-1.1-1-2-2-2zm-5 12H9v-2h6v2zm5-7H4V4l16-.02V7z"; }
+.ico-logout { -fx-shape: "M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"; }
+.ico-key { -fx-shape: "M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"; }
+.ico-info { -fx-shape: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"; }
+.ico-back { -fx-shape: "M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"; }
+.ico-forward { -fx-shape: "M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"; }
+.ico-download { -fx-shape: "M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"; }
+.ico-add { -fx-shape: "M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"; }
+.ico-edit { -fx-shape: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"; }
+.ico-delete { -fx-shape: "M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"; }
+.ico-view { -fx-shape: "M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"; }
+.ico-warning { -fx-shape: "M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"; }
+.ico-check { -fx-shape: "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"; }
+.ico-close { -fx-shape: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"; }
+.ico-power { -fx-shape: "M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"; }
+.ico-lock { -fx-shape: "M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"; }
+.ico-receipt { -fx-shape: "M18 17H6v-2h12v2zm0-4H6v-2h12v2zm0-4H6V7h12v2zM3 22l1.5-1.5L6 22l1.5-1.5L9 22l1.5-1.5L12 22l1.5-1.5L15 22l1.5-1.5L18 22l1.5-1.5L21 22V2l-1.5 1.5L18 2l-1.5 1.5L15 2l-1.5 1.5L12 2l-1.5 1.5L9 2 7.5 3.5 6 2 4.5 3.5 3 2v20z"; }
+.ico-sync { -fx-shape: "M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"; }
+.ico-person { -fx-shape: "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"; }
+.ico-trend { -fx-shape: "M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"; }
+
+/* icon colours follow their parent */
+.nav-btn .ico, .nav-logout .ico { -fx-background-color: #5E3A4E; }
+.nav-active .ico, .nav-active:hover .ico { -fx-background-color: white; }
+.btn-primary .ico, .btn-warn .ico, .btn-success .ico, .btn-danger .ico { -fx-background-color: white; }
+.btn-primary:disabled .ico { -fx-background-color: #8A7A82; }
+.btn-ghost .ico { -fx-background-color: #2F3439; }
+.btn-icon .ico { -fx-background-color: #5E4A56; }
+.btn-icon:hover .ico { -fx-background-color: #C22A62; }
+.btn-icon-danger .ico, .btn-icon-danger:hover .ico { -fx-background-color: #B3261E; }
+.menu-item .ico { -fx-background-color: #5E4A56; }
+.dialog-title .ico, .dialog-title-error .ico, .lockout-title .ico { -fx-background-color: #B3261E; }
+.dialog-title-primary .ico { -fx-background-color: #C22A62; }
+.dialog-title-warn .ico { -fx-background-color: #8A6508; }
+.dialog-title-success .ico { -fx-background-color: #1E6B44; }
+.dialog-title .label, .dialog-title-primary, .dialog-title-warn, .dialog-title-success, .dialog-title-error, .lockout-title { -fx-graphic-text-gap: 10; }
+.dialog-title, .dialog-title-primary, .dialog-title-warn, .dialog-title-success, .dialog-title-error { -fx-graphic-text-gap: 10; }
+.dialog-title .ico, .dialog-title-primary .ico, .dialog-title-warn .ico, .dialog-title-success .ico, .dialog-title-error .ico { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.lockout-title { -fx-graphic-text-gap: 8; }
+.icon-box .ico { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+.icon-pink .ico { -fx-background-color: #C22A62; } .icon-blue .ico { -fx-background-color: #2B7BB9; }
+.icon-gold .ico { -fx-background-color: #B8861B; } .icon-red .ico { -fx-background-color: #B3261E; }
+.success-circle .ico, .error-circle .ico { -fx-min-width: 34; -fx-pref-width: 34; -fx-max-width: 34; -fx-min-height: 34; -fx-pref-height: 34; -fx-max-height: 34; }
+.success-circle .ico { -fx-background-color: #1E6B44; }
+.error-circle .ico { -fx-background-color: #B3261E; }
+.nav-btn, .nav-logout, .btn-primary, .btn-warn, .btn-success, .btn-danger, .btn-ghost { -fx-graphic-text-gap: 10; }
+.btn-ghost .ico, .btn-primary .ico, .btn-warn .ico, .btn-success .ico, .btn-danger .ico { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.nav-btn .ico, .nav-logout .ico { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+.nav-active .ico { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+
+/* row "Edit" button = pencil icon + the word Edit */
+.btn-edit { -fx-font-size: 12px; -fx-padding: 4 10 4 8; -fx-graphic-text-gap: 6; -fx-text-fill: #5E4A56; }
+.btn-edit .ico { -fx-min-width: 14; -fx-pref-width: 14; -fx-max-width: 14; -fx-min-height: 14; -fx-pref-height: 14; -fx-max-height: 14; }
+.btn-edit:hover { -fx-text-fill: #C22A62; }
+.btn-icon .ico { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+
+/* ================= Dashboard low-stock table ================= */
+.low-table-wrap { -fx-background-color: white; -fx-background-radius: 18; -fx-border-color: #E8D0DB; -fx-border-radius: 18; }
+.low-table, .low-table:focused { -fx-background-color: transparent; -fx-border-color: transparent; -fx-effect: null; -fx-padding: 0 6 0 6; -fx-background-radius: 18 18 0 0; }
+.low-table .column-header-background, .low-table .column-header, .low-table .filler { -fx-background-color: transparent; }
+.low-table .column-header .label { -fx-padding: 10 0 10 12; }
+.low-table .table-cell { -fx-padding: 0 0 0 12; -fx-font-size: 13px; }
+.low-table .table-row-cell { -fx-cell-size: 44; }
+/* "View all" = the last row of the table: same 44px height and 13px size as the other rows */
+.table-footer-row, .table-footer-row:visited { -fx-background-color: #FDF2F6; -fx-background-radius: 0 0 18 18; -fx-border-color: #E8D0DB transparent transparent transparent; -fx-border-width: 1 0 0 0; -fx-padding: 0 12 0 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #C22A62; -fx-cursor: hand; -fx-min-height: 44; -fx-pref-height: 44; -fx-max-height: 44; -fx-text-overrun: clip; -fx-underline: false; }
+.table-footer-row:hover { -fx-background-color: #FCE4EC; -fx-text-fill: #A8204F; }
+.table-footer-row .ico { -fx-background-color: #C22A62; -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+
+
+/* ================= Fonts =================
+   Poppins        -> every header (page titles, card titles, dialog titles, table column headers)
+   Poppins Medium -> big numbers and the brand name
+   SF Pro Rounded -> warnings & announcements (dialog messages, detail rows, errors, badges, buttons, nav)
+   Inter          -> everything else (body text, tables, forms)
+   Poppins + Inter are bundled in /fonts and loaded by the @font-face lines at the top.
+   SF Pro Rounded is an Apple font and cannot be bundled: install it on this PC, or change the
+   family name in the ONE rule marked  <<< ROUNDED FONT  below. */
+.page-title, .card-title, .fl-title, .fl-brand, .step-label, .side-footer-title,
+.dialog-title, .dialog-title-primary, .dialog-title-warn, .dialog-title-success, .dialog-title-error,
+.lockout-title, .table-view .column-header .label
+{ -fx-font-family: "Poppins"; }
+.brand-title, .stat-value { -fx-font-family: "Poppins Medium"; }
+
+/* <<< ROUNDED FONT (change "SF Pro Rounded" to e.g. "Nunito" or "Inter" if you do not have it) */
+.dialog-text, .detail-key, .detail-value, .restore-note, .lockout-text, .error-label, .badge-low, .stat-note,
+.dialog-card .button, .btn-primary, .btn-warn, .btn-success, .btn-danger, .btn-ghost, .btn-icon, .btn-edit,
+.nav-btn, .nav-active, .nav-logout, .fl-primary, .fl-exit, .login-link, .pink-link, .table-footer-row,
+.chip, .seg, .badge-pending, .badge-done, .badge-cancelled,
+.avatar, .success-circle, .error-circle
+{ -fx-font-family: "Poppins"; }
+
+/* table cells and everything inside popups stay Inter */
+.table-view .table-cell { -fx-font-family: "Poppins"; }
+.context-menu, .menu-item .label, .combo-box-popup .list-cell, .date-picker-popup, .tooltip
+{ -fx-font-family: "Poppins"; }
+
+/* row-action icons follow the crimson theme */
+.btn-icon .ico, .btn-edit .ico { -fx-background-color: #C22A62; }
+.btn-icon:hover .ico, .btn-edit:hover .ico { -fx-background-color: #A8204F; }
+.btn-icon-danger .ico, .btn-icon-danger:hover .ico { -fx-background-color: #B3261E; }
+.btn-edit, .btn-edit:hover { -fx-text-fill: #C22A62; }
+.btn-icon-danger, .btn-icon-danger:hover { -fx-text-fill: #B3261E; }
+.btn-ghost .ico { -fx-background-color: #1A1418; }
+
+/* ================= Icon proportions (no stretching) =================
+   Wide / tall icons get a box with their own aspect ratio so they are never squashed into a square. */
+.ico.ico-key.ico { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 9; -fx-pref-height: 9; -fx-max-height: 9; }
+.nav-btn .ico.ico-key { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 10; -fx-pref-height: 10; -fx-max-height: 10; }
+.nav-logout .ico.ico-key { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 10; -fx-pref-height: 10; -fx-max-height: 10; }
+.btn-primary .ico.ico-key { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 8; -fx-pref-height: 8; -fx-max-height: 8; }
+.btn-warn .ico.ico-key { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 8; -fx-pref-height: 8; -fx-max-height: 8; }
+.btn-success .ico.ico-key { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 8; -fx-pref-height: 8; -fx-max-height: 8; }
+.btn-danger .ico.ico-key { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 8; -fx-pref-height: 8; -fx-max-height: 8; }
+.btn-ghost .ico.ico-key { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 8; -fx-pref-height: 8; -fx-max-height: 8; }
+.btn-icon .ico.ico-key { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 8; -fx-pref-height: 8; -fx-max-height: 8; }
+.menu-item .ico.ico-key { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 9; -fx-pref-height: 9; -fx-max-height: 9; }
+.dialog-title .ico.ico-key { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 12; -fx-pref-height: 12; -fx-max-height: 12; }
+.dialog-title-primary .ico.ico-key { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 12; -fx-pref-height: 12; -fx-max-height: 12; }
+.dialog-title-warn .ico.ico-key { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 12; -fx-pref-height: 12; -fx-max-height: 12; }
+.dialog-title-success .ico.ico-key { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 12; -fx-pref-height: 12; -fx-max-height: 12; }
+.dialog-title-error .ico.ico-key { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 12; -fx-pref-height: 12; -fx-max-height: 12; }
+.icon-box .ico.ico-key { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 10; -fx-pref-height: 10; -fx-max-height: 10; }
+.success-circle .ico.ico-key { -fx-min-width: 34; -fx-pref-width: 34; -fx-max-width: 34; -fx-min-height: 18.5; -fx-pref-height: 18.5; -fx-max-height: 18.5; }
+.error-circle .ico.ico-key { -fx-min-width: 34; -fx-pref-width: 34; -fx-max-width: 34; -fx-min-height: 18.5; -fx-pref-height: 18.5; -fx-max-height: 18.5; }
+.table-footer-row .ico.ico-key { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 8; -fx-pref-height: 8; -fx-max-height: 8; }
+.lockout-title .ico.ico-key { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 9; -fx-pref-height: 9; -fx-max-height: 9; }
+.btn-edit .ico.ico-key { -fx-min-width: 14; -fx-pref-width: 14; -fx-max-width: 14; -fx-min-height: 7.5; -fx-pref-height: 7.5; -fx-max-height: 7.5; }
+.ico.ico-view.ico { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 11; -fx-pref-height: 11; -fx-max-height: 11; }
+.nav-btn .ico.ico-view { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 12; -fx-pref-height: 12; -fx-max-height: 12; }
+.nav-logout .ico.ico-view { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 12; -fx-pref-height: 12; -fx-max-height: 12; }
+.btn-primary .ico.ico-view { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 10; -fx-pref-height: 10; -fx-max-height: 10; }
+.btn-warn .ico.ico-view { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 10; -fx-pref-height: 10; -fx-max-height: 10; }
+.btn-success .ico.ico-view { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 10; -fx-pref-height: 10; -fx-max-height: 10; }
+.btn-danger .ico.ico-view { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 10; -fx-pref-height: 10; -fx-max-height: 10; }
+.btn-ghost .ico.ico-view { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 10; -fx-pref-height: 10; -fx-max-height: 10; }
+.btn-icon .ico.ico-view { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 10; -fx-pref-height: 10; -fx-max-height: 10; }
+.menu-item .ico.ico-view { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 11; -fx-pref-height: 11; -fx-max-height: 11; }
+.dialog-title .ico.ico-view { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.dialog-title-primary .ico.ico-view { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.dialog-title-warn .ico.ico-view { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.dialog-title-success .ico.ico-view { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.dialog-title-error .ico.ico-view { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.icon-box .ico.ico-view { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 12; -fx-pref-height: 12; -fx-max-height: 12; }
+.success-circle .ico.ico-view { -fx-min-width: 34; -fx-pref-width: 34; -fx-max-width: 34; -fx-min-height: 23; -fx-pref-height: 23; -fx-max-height: 23; }
+.error-circle .ico.ico-view { -fx-min-width: 34; -fx-pref-width: 34; -fx-max-width: 34; -fx-min-height: 23; -fx-pref-height: 23; -fx-max-height: 23; }
+.table-footer-row .ico.ico-view { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 10; -fx-pref-height: 10; -fx-max-height: 10; }
+.lockout-title .ico.ico-view { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 11; -fx-pref-height: 11; -fx-max-height: 11; }
+.btn-edit .ico.ico-view { -fx-min-width: 14; -fx-pref-width: 14; -fx-max-width: 14; -fx-min-height: 9.5; -fx-pref-height: 9.5; -fx-max-height: 9.5; }
+.ico.ico-check.ico { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 12; -fx-pref-height: 12; -fx-max-height: 12; }
+.nav-btn .ico.ico-check { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 13.5; -fx-pref-height: 13.5; -fx-max-height: 13.5; }
+.nav-logout .ico.ico-check { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 13.5; -fx-pref-height: 13.5; -fx-max-height: 13.5; }
+.btn-primary .ico.ico-check { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 11.5; -fx-pref-height: 11.5; -fx-max-height: 11.5; }
+.btn-warn .ico.ico-check { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 11.5; -fx-pref-height: 11.5; -fx-max-height: 11.5; }
+.btn-success .ico.ico-check { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 11.5; -fx-pref-height: 11.5; -fx-max-height: 11.5; }
+.btn-danger .ico.ico-check { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 11.5; -fx-pref-height: 11.5; -fx-max-height: 11.5; }
+.btn-ghost .ico.ico-check { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 11.5; -fx-pref-height: 11.5; -fx-max-height: 11.5; }
+.btn-icon .ico.ico-check { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 11.5; -fx-pref-height: 11.5; -fx-max-height: 11.5; }
+.menu-item .ico.ico-check { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 12; -fx-pref-height: 12; -fx-max-height: 12; }
+.dialog-title .ico.ico-check { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 16.5; -fx-pref-height: 16.5; -fx-max-height: 16.5; }
+.dialog-title-primary .ico.ico-check { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 16.5; -fx-pref-height: 16.5; -fx-max-height: 16.5; }
+.dialog-title-warn .ico.ico-check { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 16.5; -fx-pref-height: 16.5; -fx-max-height: 16.5; }
+.dialog-title-success .ico.ico-check { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 16.5; -fx-pref-height: 16.5; -fx-max-height: 16.5; }
+.dialog-title-error .ico.ico-check { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 16.5; -fx-pref-height: 16.5; -fx-max-height: 16.5; }
+.icon-box .ico.ico-check { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 13.5; -fx-pref-height: 13.5; -fx-max-height: 13.5; }
+.success-circle .ico.ico-check { -fx-min-width: 34; -fx-pref-width: 34; -fx-max-width: 34; -fx-min-height: 26; -fx-pref-height: 26; -fx-max-height: 26; }
+.error-circle .ico.ico-check { -fx-min-width: 34; -fx-pref-width: 34; -fx-max-width: 34; -fx-min-height: 26; -fx-pref-height: 26; -fx-max-height: 26; }
+.table-footer-row .ico.ico-check { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 11.5; -fx-pref-height: 11.5; -fx-max-height: 11.5; }
+.lockout-title .ico.ico-check { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 12; -fx-pref-height: 12; -fx-max-height: 12; }
+.btn-edit .ico.ico-check { -fx-min-width: 14; -fx-pref-width: 14; -fx-max-width: 14; -fx-min-height: 10.5; -fx-pref-height: 10.5; -fx-max-height: 10.5; }
+.ico.ico-trend.ico { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 9.5; -fx-pref-height: 9.5; -fx-max-height: 9.5; }
+.nav-btn .ico.ico-trend { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 11; -fx-pref-height: 11; -fx-max-height: 11; }
+.nav-logout .ico.ico-trend { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 11; -fx-pref-height: 11; -fx-max-height: 11; }
+.btn-primary .ico.ico-trend { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 9; -fx-pref-height: 9; -fx-max-height: 9; }
+.btn-warn .ico.ico-trend { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 9; -fx-pref-height: 9; -fx-max-height: 9; }
+.btn-success .ico.ico-trend { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 9; -fx-pref-height: 9; -fx-max-height: 9; }
+.btn-danger .ico.ico-trend { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 9; -fx-pref-height: 9; -fx-max-height: 9; }
+.btn-ghost .ico.ico-trend { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 9; -fx-pref-height: 9; -fx-max-height: 9; }
+.btn-icon .ico.ico-trend { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 9; -fx-pref-height: 9; -fx-max-height: 9; }
+.menu-item .ico.ico-trend { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 9.5; -fx-pref-height: 9.5; -fx-max-height: 9.5; }
+.dialog-title .ico.ico-trend { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 13; -fx-pref-height: 13; -fx-max-height: 13; }
+.dialog-title-primary .ico.ico-trend { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 13; -fx-pref-height: 13; -fx-max-height: 13; }
+.dialog-title-warn .ico.ico-trend { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 13; -fx-pref-height: 13; -fx-max-height: 13; }
+.dialog-title-success .ico.ico-trend { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 13; -fx-pref-height: 13; -fx-max-height: 13; }
+.dialog-title-error .ico.ico-trend { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 13; -fx-pref-height: 13; -fx-max-height: 13; }
+.icon-box .ico.ico-trend { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 11; -fx-pref-height: 11; -fx-max-height: 11; }
+.success-circle .ico.ico-trend { -fx-min-width: 34; -fx-pref-width: 34; -fx-max-width: 34; -fx-min-height: 20.5; -fx-pref-height: 20.5; -fx-max-height: 20.5; }
+.error-circle .ico.ico-trend { -fx-min-width: 34; -fx-pref-width: 34; -fx-max-width: 34; -fx-min-height: 20.5; -fx-pref-height: 20.5; -fx-max-height: 20.5; }
+.table-footer-row .ico.ico-trend { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 9; -fx-pref-height: 9; -fx-max-height: 9; }
+.lockout-title .ico.ico-trend { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 9.5; -fx-pref-height: 9.5; -fx-max-height: 9.5; }
+.btn-edit .ico.ico-trend { -fx-min-width: 14; -fx-pref-width: 14; -fx-max-width: 14; -fx-min-height: 8.5; -fx-pref-height: 8.5; -fx-max-height: 8.5; }
+.ico.ico-download.ico { -fx-min-width: 13; -fx-pref-width: 13; -fx-max-width: 13; -fx-min-height: 16; -fx-pref-height: 16; -fx-max-height: 16; }
+.nav-btn .ico.ico-download { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+.nav-logout .ico.ico-download { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+.btn-primary .ico.ico-download { -fx-min-width: 12.5; -fx-pref-width: 12.5; -fx-max-width: 12.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-warn .ico.ico-download { -fx-min-width: 12.5; -fx-pref-width: 12.5; -fx-max-width: 12.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-success .ico.ico-download { -fx-min-width: 12.5; -fx-pref-width: 12.5; -fx-max-width: 12.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-danger .ico.ico-download { -fx-min-width: 12.5; -fx-pref-width: 12.5; -fx-max-width: 12.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-ghost .ico.ico-download { -fx-min-width: 12.5; -fx-pref-width: 12.5; -fx-max-width: 12.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-icon .ico.ico-download { -fx-min-width: 12.5; -fx-pref-width: 12.5; -fx-max-width: 12.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.menu-item .ico.ico-download { -fx-min-width: 13; -fx-pref-width: 13; -fx-max-width: 13; -fx-min-height: 16; -fx-pref-height: 16; -fx-max-height: 16; }
+.dialog-title .ico.ico-download { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-primary .ico.ico-download { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-warn .ico.ico-download { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-success .ico.ico-download { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-error .ico.ico-download { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.icon-box .ico.ico-download { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+.success-circle .ico.ico-download { -fx-min-width: 28; -fx-pref-width: 28; -fx-max-width: 28; -fx-min-height: 34; -fx-pref-height: 34; -fx-max-height: 34; }
+.error-circle .ico.ico-download { -fx-min-width: 28; -fx-pref-width: 28; -fx-max-width: 28; -fx-min-height: 34; -fx-pref-height: 34; -fx-max-height: 34; }
+.table-footer-row .ico.ico-download { -fx-min-width: 12.5; -fx-pref-width: 12.5; -fx-max-width: 12.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.lockout-title .ico.ico-download { -fx-min-width: 13; -fx-pref-width: 13; -fx-max-width: 13; -fx-min-height: 16; -fx-pref-height: 16; -fx-max-height: 16; }
+.btn-edit .ico.ico-download { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 14; -fx-pref-height: 14; -fx-max-height: 14; }
+.ico.ico-delete.ico { -fx-min-width: 12.5; -fx-pref-width: 12.5; -fx-max-width: 12.5; -fx-min-height: 16; -fx-pref-height: 16; -fx-max-height: 16; }
+.nav-btn .ico.ico-delete { -fx-min-width: 14; -fx-pref-width: 14; -fx-max-width: 14; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+.nav-logout .ico.ico-delete { -fx-min-width: 14; -fx-pref-width: 14; -fx-max-width: 14; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+.btn-primary .ico.ico-delete { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-warn .ico.ico-delete { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-success .ico.ico-delete { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-danger .ico.ico-delete { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-ghost .ico.ico-delete { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-icon .ico.ico-delete { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.menu-item .ico.ico-delete { -fx-min-width: 12.5; -fx-pref-width: 12.5; -fx-max-width: 12.5; -fx-min-height: 16; -fx-pref-height: 16; -fx-max-height: 16; }
+.dialog-title .ico.ico-delete { -fx-min-width: 17; -fx-pref-width: 17; -fx-max-width: 17; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-primary .ico.ico-delete { -fx-min-width: 17; -fx-pref-width: 17; -fx-max-width: 17; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-warn .ico.ico-delete { -fx-min-width: 17; -fx-pref-width: 17; -fx-max-width: 17; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-success .ico.ico-delete { -fx-min-width: 17; -fx-pref-width: 17; -fx-max-width: 17; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-error .ico.ico-delete { -fx-min-width: 17; -fx-pref-width: 17; -fx-max-width: 17; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.icon-box .ico.ico-delete { -fx-min-width: 14; -fx-pref-width: 14; -fx-max-width: 14; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+.success-circle .ico.ico-delete { -fx-min-width: 26.5; -fx-pref-width: 26.5; -fx-max-width: 26.5; -fx-min-height: 34; -fx-pref-height: 34; -fx-max-height: 34; }
+.error-circle .ico.ico-delete { -fx-min-width: 26.5; -fx-pref-width: 26.5; -fx-max-width: 26.5; -fx-min-height: 34; -fx-pref-height: 34; -fx-max-height: 34; }
+.table-footer-row .ico.ico-delete { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.lockout-title .ico.ico-delete { -fx-min-width: 12.5; -fx-pref-width: 12.5; -fx-max-width: 12.5; -fx-min-height: 16; -fx-pref-height: 16; -fx-max-height: 16; }
+.btn-edit .ico.ico-delete { -fx-min-width: 11; -fx-pref-width: 11; -fx-max-width: 11; -fx-min-height: 14; -fx-pref-height: 14; -fx-max-height: 14; }
+.ico.ico-lock.ico { -fx-min-width: 12; -fx-pref-width: 12; -fx-max-width: 12; -fx-min-height: 16; -fx-pref-height: 16; -fx-max-height: 16; }
+.nav-btn .ico.ico-lock { -fx-min-width: 13.5; -fx-pref-width: 13.5; -fx-max-width: 13.5; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+.nav-logout .ico.ico-lock { -fx-min-width: 13.5; -fx-pref-width: 13.5; -fx-max-width: 13.5; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+.btn-primary .ico.ico-lock { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-warn .ico.ico-lock { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-success .ico.ico-lock { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-danger .ico.ico-lock { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-ghost .ico.ico-lock { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-icon .ico.ico-lock { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.menu-item .ico.ico-lock { -fx-min-width: 12; -fx-pref-width: 12; -fx-max-width: 12; -fx-min-height: 16; -fx-pref-height: 16; -fx-max-height: 16; }
+.dialog-title .ico.ico-lock { -fx-min-width: 17; -fx-pref-width: 17; -fx-max-width: 17; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-primary .ico.ico-lock { -fx-min-width: 17; -fx-pref-width: 17; -fx-max-width: 17; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-warn .ico.ico-lock { -fx-min-width: 17; -fx-pref-width: 17; -fx-max-width: 17; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-success .ico.ico-lock { -fx-min-width: 17; -fx-pref-width: 17; -fx-max-width: 17; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-error .ico.ico-lock { -fx-min-width: 17; -fx-pref-width: 17; -fx-max-width: 17; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.icon-box .ico.ico-lock { -fx-min-width: 13.5; -fx-pref-width: 13.5; -fx-max-width: 13.5; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+.success-circle .ico.ico-lock { -fx-min-width: 26; -fx-pref-width: 26; -fx-max-width: 26; -fx-min-height: 34; -fx-pref-height: 34; -fx-max-height: 34; }
+.error-circle .ico.ico-lock { -fx-min-width: 26; -fx-pref-width: 26; -fx-max-width: 26; -fx-min-height: 34; -fx-pref-height: 34; -fx-max-height: 34; }
+.table-footer-row .ico.ico-lock { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.lockout-title .ico.ico-lock { -fx-min-width: 12; -fx-pref-width: 12; -fx-max-width: 12; -fx-min-height: 16; -fx-pref-height: 16; -fx-max-height: 16; }
+.btn-edit .ico.ico-lock { -fx-min-width: 10.5; -fx-pref-width: 10.5; -fx-max-width: 10.5; -fx-min-height: 14; -fx-pref-height: 14; -fx-max-height: 14; }
+.ico.ico-sync.ico { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 16; -fx-pref-height: 16; -fx-max-height: 16; }
+.nav-btn .ico.ico-sync { -fx-min-width: 13; -fx-pref-width: 13; -fx-max-width: 13; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+.nav-logout .ico.ico-sync { -fx-min-width: 13; -fx-pref-width: 13; -fx-max-width: 13; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+.btn-primary .ico.ico-sync { -fx-min-width: 11; -fx-pref-width: 11; -fx-max-width: 11; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-warn .ico.ico-sync { -fx-min-width: 11; -fx-pref-width: 11; -fx-max-width: 11; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-success .ico.ico-sync { -fx-min-width: 11; -fx-pref-width: 11; -fx-max-width: 11; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-danger .ico.ico-sync { -fx-min-width: 11; -fx-pref-width: 11; -fx-max-width: 11; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-ghost .ico.ico-sync { -fx-min-width: 11; -fx-pref-width: 11; -fx-max-width: 11; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.btn-icon .ico.ico-sync { -fx-min-width: 11; -fx-pref-width: 11; -fx-max-width: 11; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.menu-item .ico.ico-sync { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 16; -fx-pref-height: 16; -fx-max-height: 16; }
+.dialog-title .ico.ico-sync { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-primary .ico.ico-sync { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-warn .ico.ico-sync { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-success .ico.ico-sync { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.dialog-title-error .ico.ico-sync { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.icon-box .ico.ico-sync { -fx-min-width: 13; -fx-pref-width: 13; -fx-max-width: 13; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+.success-circle .ico.ico-sync { -fx-min-width: 24.5; -fx-pref-width: 24.5; -fx-max-width: 24.5; -fx-min-height: 34; -fx-pref-height: 34; -fx-max-height: 34; }
+.error-circle .ico.ico-sync { -fx-min-width: 24.5; -fx-pref-width: 24.5; -fx-max-width: 24.5; -fx-min-height: 34; -fx-pref-height: 34; -fx-max-height: 34; }
+.table-footer-row .ico.ico-sync { -fx-min-width: 11; -fx-pref-width: 11; -fx-max-width: 11; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.lockout-title .ico.ico-sync { -fx-min-width: 11.5; -fx-pref-width: 11.5; -fx-max-width: 11.5; -fx-min-height: 16; -fx-pref-height: 16; -fx-max-height: 16; }
+.btn-edit .ico.ico-sync { -fx-min-width: 10; -fx-pref-width: 10; -fx-max-width: 10; -fx-min-height: 14; -fx-pref-height: 14; -fx-max-height: 14; }
+
+/* ================= Dashboard bar chart: same colours as the pie chart ================= */
+.revenue-chart .chart-bar { -fx-background-radius: 6 6 0 0; }
+.revenue-chart .chart-bar.data0 { -fx-bar-fill: #C9962B; -fx-background-color: #C9962B; }
+.revenue-chart .chart-bar.data1 { -fx-bar-fill: #2E9E5B; -fx-background-color: #2E9E5B; }
+.revenue-chart .chart-bar.data2 { -fx-bar-fill: #E25D3F; -fx-background-color: #E25D3F; }
+.revenue-chart .chart-bar.data3 { -fx-bar-fill: #C9962B; -fx-background-color: #C9962B; }
+.revenue-chart .chart-bar.data4 { -fx-bar-fill: #2E9E5B; -fx-background-color: #2E9E5B; }
+.revenue-chart .chart-bar.data5 { -fx-bar-fill: #E25D3F; -fx-background-color: #E25D3F; }
+.revenue-chart .chart-bar.data6 { -fx-bar-fill: #C9962B; -fx-background-color: #C9962B; }
+.revenue-chart .chart-bar.data7 { -fx-bar-fill: #2E9E5B; -fx-background-color: #2E9E5B; }
+.revenue-chart .chart-bar.data8 { -fx-bar-fill: #E25D3F; -fx-background-color: #E25D3F; }
+.revenue-chart .chart-bar.data9 { -fx-bar-fill: #C9962B; -fx-background-color: #C9962B; }
+.revenue-chart .chart-bar.data10 { -fx-bar-fill: #2E9E5B; -fx-background-color: #2E9E5B; }
+.revenue-chart .chart-bar.data11 { -fx-bar-fill: #E25D3F; -fx-background-color: #E25D3F; }
+.revenue-chart .chart-bar.data12 { -fx-bar-fill: #C9962B; -fx-background-color: #C9962B; }
+.revenue-chart .chart-bar.data13 { -fx-bar-fill: #2E9E5B; -fx-background-color: #2E9E5B; }
+
+/* ================= Row action buttons: more breathing room ================= */
+.btn-icon { -fx-padding: 4 10; }
+.btn-edit { -fx-padding: 4 12 4 10; }
+
+/* ================= Dashboard (card row + scroll) ================= */
+.clear-scroll, .clear-scroll > .viewport { -fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0; -fx-border-color: transparent; }
+.clear-scroll .scroll-bar:vertical { -fx-pref-width: 8; }
+.stat-value { -fx-font-size: 28px; }
+.icon-box.icon-box-sm { -fx-min-width: 32; -fx-pref-width: 32; -fx-min-height: 32; -fx-pref-height: 32; -fx-background-radius: 10; }
+.low-table-wrap { -fx-background-color: transparent; -fx-border-color: transparent; }
+.low-table .column-header .label { -fx-padding: 10 0 10 14; }
+.low-table .table-cell { -fx-padding: 0 0 0 14; }
+.low-table .table-row-cell { -fx-border-color: transparent transparent #F6E9EE transparent; }
+.table-footer-row, .table-footer-row:visited { -fx-background-color: transparent; -fx-border-color: transparent; -fx-alignment: CENTER_LEFT; }
+.table-footer-row:hover { -fx-background-color: #FDF2F6; }
+
+/* =====================================================================
+   Dashboard v2 - matches the new Dashboard design.
+   Everything below is scoped to .dash-v2 (the dashboard root), so the
+   other screens that share this stylesheet look exactly as before.
+   ===================================================================== */
+
+/* ---- new icon shapes ---- */
+.ico-search { -fx-shape: "M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"; }
+.ico-bell   { -fx-shape: "M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"; }
+
+/* ---- background ---- */
+.dash-v2 { -fx-background-color: linear-gradient(to bottom, #FFF1F5, #FDE0EA); }
+
+/* ---- sidebar: white frame + soft inner panel ---- */
+.dash-v2 .sidebar { -fx-background-color: white; -fx-effect: null; }
+.dash-v2 .side-panel { -fx-background-color: #F6F0F3; -fx-background-radius: 22; -fx-padding: 8 10 12 10; }
+.dash-v2 .brand-title { -fx-font-size: 17px; }
+.dash-v2 .brand-sub { -fx-font-size: 14px; -fx-text-fill: #6F6570; }
+.dash-v2 .side-section { -fx-text-fill: #6F6570; -fx-font-size: 11px; -fx-padding: 4 0 6 12; }
+.dash-v2 .nav-btn { -fx-background-color: transparent; -fx-background-radius: 0; -fx-text-fill: #6F6570; -fx-padding: 11 12; -fx-border-color: transparent; -fx-border-width: 0 0 0 3; }
+.dash-v2 .nav-btn:hover { -fx-background-color: rgba(194,42,98,0.06); }
+.dash-v2 .nav-active, .dash-v2 .nav-active:hover { -fx-background-color: transparent; -fx-border-color: transparent transparent transparent #C22A62; -fx-text-fill: #2A2227; -fx-font-weight: bold; }
+.dash-v2 .nav-active .ico, .dash-v2 .nav-active:hover .ico { -fx-background-color: #C22A62; }
+.dash-v2 .nav-badge { -fx-background-color: #C22A62; -fx-text-fill: white; -fx-background-radius: 20; -fx-padding: 1 9 1 9; -fx-font-size: 12px; -fx-font-weight: bold; }
+.dash-v2 .side-footer { -fx-background-color: #C22A62; -fx-background-radius: 14; -fx-padding: 16; }
+.dash-v2 .side-footer-sub { -fx-text-fill: #FDE6EE; -fx-font-size: 12px; }
+.dash-v2 .side-footer-title { -fx-text-fill: white; -fx-font-size: 14px; }
+.dash-v2 .side-footer-pill { -fx-background-color: white; -fx-text-fill: #C22A62; -fx-font-weight: bold; -fx-background-radius: 14; -fx-alignment: CENTER; -fx-padding: 9 0 9 0; -fx-font-size: 13px; }
+
+/* ---- top bar: white strip, search on the left, admin on the right ---- */
+.dash-v2 .topbar { -fx-background-color: white; -fx-border-color: transparent transparent #F3DDE5 transparent; -fx-border-width: 0 0 1 0; -fx-min-height: 64; -fx-pref-height: 64; -fx-max-height: 64; }
+.dash-v2 .search-box { -fx-background-color: white; -fx-background-radius: 14; -fx-border-color: #DCCDD4; -fx-border-radius: 14; -fx-padding: 0 16 0 4; }
+.dash-v2 .search-box .text-field, .dash-v2 .search-box .text-field:focused { -fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 14; -fx-prompt-text-fill: #6F6570; }
+.dash-v2 .search-box .ico { -fx-background-color: #6F6570; }
+.dash-v2 .avatar { -fx-background-color: #C22A62; -fx-text-fill: white; -fx-background-radius: 30; -fx-min-width: 38; -fx-min-height: 38; }
+
+/* ---- Good Morning banner ---- */
+.dash-v2 .banner {
+    -fx-background-color: #C22A62;
+    -fx-background-radius: 24;
+}
+.dash-v2 .banner-title { -fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: bold; -fx-font-family: "Poppins"; }
+.dash-v2 .banner-sub { -fx-text-fill: white; -fx-font-size: 14px; }
+.dash-v2 .banner-btn { -fx-background-color: white; -fx-text-fill: #C22A62; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 14; -fx-padding: 11 24 11 24; -fx-cursor: hand; }
+.dash-v2 .banner-btn:hover { -fx-background-color: #FDF2F6; }
+
+/* ---- Revenue by Day: pill bars, hatched / pink shades, no grid ---- */
+.dash-v2 .revenue-chart { -fx-background-color: transparent; -fx-padding: 0; }
+.dash-v2 .revenue-chart .chart-plot-background, .dash-v2 .revenue-chart .chart-content { -fx-background-color: transparent; }
+.dash-v2 .revenue-chart .chart-vertical-grid-lines, .dash-v2 .revenue-chart .chart-horizontal-grid-lines,
+.dash-v2 .revenue-chart .chart-vertical-zero-line, .dash-v2 .revenue-chart .chart-horizontal-zero-line,
+.dash-v2 .revenue-chart .chart-alternative-row-fill, .dash-v2 .revenue-chart .chart-alternative-column-fill { -fx-stroke: transparent; -fx-fill: transparent; }
+.dash-v2 .revenue-chart .axis { -fx-tick-label-fill: #6F6570; -fx-tick-label-font-size: 12px; -fx-border-color: transparent; }
+.dash-v2 .revenue-chart .axis-tick-mark, .dash-v2 .revenue-chart .axis-minor-tick-mark { -fx-stroke: transparent; }
+.dash-v2 .revenue-chart .axis:left { -fx-tick-label-fill: transparent; }
+.dash-v2 .revenue-chart .chart-bar { -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 0; }
+/* hatched (no highlight) */
+.dash-v2 .revenue-chart .chart-bar.data0, .dash-v2 .revenue-chart .chart-bar.data3, .dash-v2 .revenue-chart .chart-bar.data4, .dash-v2 .revenue-chart .chart-bar.data6,
+.dash-v2 .revenue-chart .chart-bar.data7, .dash-v2 .revenue-chart .chart-bar.data10, .dash-v2 .revenue-chart .chart-bar.data11, .dash-v2 .revenue-chart .chart-bar.data13
+{ -fx-bar-fill: linear-gradient(from 0px 0px to 9px 9px, repeat, #E6D9DF 0%, #E6D9DF 50%, white 50%, white 100%);
+  -fx-background-color: linear-gradient(from 0px 0px to 9px 9px, repeat, #E6D9DF 0%, #E6D9DF 50%, white 50%, white 100%);
+  -fx-border-color: #D9CBD2; -fx-border-width: 1.5; }
+/* medium pink */
+.dash-v2 .revenue-chart .chart-bar.data1, .dash-v2 .revenue-chart .chart-bar.data8 { -fx-bar-fill: #D4547F; -fx-background-color: #D4547F; }
+/* light pink */
+.dash-v2 .revenue-chart .chart-bar.data2, .dash-v2 .revenue-chart .chart-bar.data9 { -fx-bar-fill: #E8A0BC; -fx-background-color: #E8A0BC; }
+/* strongest (brand crimson) */
+.dash-v2 .revenue-chart .chart-bar.data5, .dash-v2 .revenue-chart .chart-bar.data12 { -fx-bar-fill: #C22A62; -fx-background-color: #C22A62; }
+/* same look for the design-time preview bars */
+.dash-v2 .sample-hatch { -fx-fill: linear-gradient(from 0px 0px to 9px 9px, repeat, #E6D9DF 0%, #E6D9DF 50%, white 50%, white 100%); -fx-stroke: #D9CBD2; -fx-stroke-width: 1.5; }
+.dash-v2 .sample-mid { -fx-fill: #D4547F; }
+.dash-v2 .sample-light { -fx-fill: #E8A0BC; }
+.dash-v2 .sample-dark { -fx-fill: #C22A62; }
+
+/* ---- Reminder card ---- */
+.dash-v2 .bell-circle { -fx-background-color: #C22A62; -fx-background-radius: 30; -fx-min-width: 38; -fx-min-height: 38; -fx-alignment: CENTER; }
+.dash-v2 .bell-circle .ico { -fx-background-color: white; -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 18; -fx-pref-height: 18; -fx-max-height: 18; }
+.dash-v2 .reminder-panel { -fx-background-color: #FDE6EE; -fx-background-radius: 18; -fx-padding: 18; }
+.dash-v2 .reminder-big { -fx-text-fill: #C22A62; -fx-font-size: 21px; -fx-font-weight: bold; -fx-font-family: "Poppins"; }
+.dash-v2 .reminder-note { -fx-text-fill: #5B5159; -fx-font-size: 15px; }
+
+/* ---- Low stock: no header row, "View all" pill in the title row ---- */
+.dash-v2 .low-table .column-header-background { -fx-max-height: 0; -fx-pref-height: 0; -fx-min-height: 0; -fx-opacity: 0; }
+.dash-v2 .view-all-pill, .dash-v2 .view-all-pill:visited, .dash-v2 .view-all-pill:hover { -fx-background-color: white; -fx-border-color: #C22A62; -fx-border-width: 1.5; -fx-border-radius: 14; -fx-background-radius: 14; -fx-text-fill: #C22A62; -fx-padding: 5 16 5 16; -fx-font-size: 13px; -fx-font-weight: bold; -fx-underline: false; -fx-cursor: hand; }
+.dash-v2 .view-all-pill:hover { -fx-background-color: #FDF2F6; }
+
+/* ---- Orders by Status (pie colours + legend underneath; gauge preview) ---- */
+.dash-v2 .status-chart { -fx-background-color: transparent; }
+.dash-v2 .status-chart .default-color0.chart-pie { -fx-pie-color: #C22A62; -fx-border-color: white; }
+.dash-v2 .status-chart .default-color1.chart-pie { -fx-pie-color: #E8A0BC; -fx-border-color: white; }
+.dash-v2 .status-chart .default-color2.chart-pie { -fx-pie-color: #DDD0D6; -fx-border-color: white; }
+.dash-v2 .status-chart .default-color0.chart-legend-item-symbol { -fx-background-color: #C22A62; }
+.dash-v2 .status-chart .default-color1.chart-legend-item-symbol { -fx-background-color: #E8A0BC; }
+.dash-v2 .status-chart .default-color2.chart-legend-item-symbol { -fx-background-color: #DDD0D6; }
+.dash-v2 .status-chart .chart-legend { -fx-background-color: transparent; }
+.dash-v2 .gauge-pct { -fx-font-size: 28px; -fx-text-fill: #2A2227; -fx-font-family: "Poppins Medium"; }
+
+/* ---- Quick actions (dark maroon card) ---- */
+.dash-v2 .quick-card { -fx-background-color: #C22A62; }
+.dash-v2 .quick-title { -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: "Poppins"; }
+.dash-v2 .quick-sub { -fx-text-fill: #FDE6EE; -fx-font-size: 12px; }
+.dash-v2 .quick-btn { -fx-background-color: transparent; -fx-border-color: #F4D6E1; -fx-border-width: 1.5; -fx-border-radius: 14; -fx-background-radius: 14; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT; -fx-padding: 11 18 11 18; -fx-graphic-text-gap: 10; -fx-cursor: hand; }
+.dash-v2 .quick-btn:hover { -fx-background-color: rgba(255,255,255,0.12); }
+.dash-v2 .quick-btn .ico { -fx-background-color: white; -fx-min-width: 14; -fx-pref-width: 14; -fx-max-width: 14; -fx-min-height: 14; -fx-pref-height: 14; -fx-max-height: 14; }
+.dash-v2 .quick-btn-primary, .dash-v2 .quick-btn-primary:hover { -fx-background-color: white; -fx-border-color: white; -fx-text-fill: #C22A62; -fx-font-weight: bold; }
+.dash-v2 .quick-btn-primary .ico { -fx-background-color: #C22A62; }
+
+/* ---- account dropdown (Admin Officer): bigger, rounded, matches the dialogs ---- */
+.context-menu {
+    -fx-background-color: white;
+    -fx-background-radius: 22;
+    -fx-border-color: #F3C6D6;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 22;
+    -fx-padding: 10 10 10 10;
+    -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.22), 30, 0, 0, 10);
+}
+.context-menu .separator .line { -fx-border-color: #F6DCE6; -fx-border-width: 1 0 0 0; }
+.context-menu .separator { -fx-padding: 4 14 4 14; }
+.menu-item.account-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 14;
+    -fx-padding: 13 54 13 18;
+    -fx-cursor: hand;
+}
+.menu-item.account-item .label {
+    -fx-font-family: "Poppins";
+    -fx-font-size: 16px;
+    -fx-text-fill: #1A1418;
+    -fx-graphic-text-gap: 14;
+}
+.menu-item.account-item .ico { -fx-background-color: #8A4A69; }
+.menu-item.account-item:focused, .menu-item.account-item:hover { -fx-background-color: #FCE4EC; }
+.menu-item.account-item:focused .label, .menu-item.account-item:hover .label { -fx-text-fill: #C22A62; }
+.menu-item.account-item:focused .ico, .menu-item.account-item:hover .ico { -fx-background-color: #C22A62; }
+
+/* ---- year dropdown (and other combo boxes): same look as the account menu ---- */
+.combo-box-popup > .list-view {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-border-color: #F3C6D6;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 14;
+    -fx-padding: 8;
+    -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.22), 26, 0, 0, 8);
+}
+.combo-box-popup .list-cell,
+.combo-box-popup .list-cell:odd,
+.combo-box-popup .list-cell:even {
+    -fx-background-color: transparent;
+    -fx-background-radius: 12;
+    -fx-padding: 11 40 11 18;
+    -fx-font-family: "Poppins";
+    -fx-font-size: 16px;
+    -fx-text-fill: #1A1418;
+    -fx-cursor: hand;
+}
+.combo-box-popup .list-cell:filled:hover,
+.combo-box-popup .list-cell:filled:selected,
+.combo-box-popup .list-cell:filled:focused {
+    -fx-background-color: #FCE4EC;
+    -fx-text-fill: #C22A62;
+}
+
+/* ===================================================================
+   v3 THEME - only screens whose root has the "page-v3" class.
+   UNCHANGED: DASHBOARD only (LOGIN now uses v3 too). Everything else uses these tokens:
+     corner radius : tag 12 | tile 12 | panel 18 | input + button 14 | card, table, dialog 24
+     colours       : crimson #C22A62 (hover #A8204F), blush #FDF2F6,
+                     control border #EBD3DD, card border #F3DCE5,
+                     text #1A1418, muted #54454D
+     no big shadows - thin borders instead
+   =================================================================== */
+.page-v3 .page-title { -fx-font-size: 24px; }
+
+/* cards, tables, dialogs: radius 24 */
+.page-v3 .card, .page-v3 .fl-card, .page-v3 .dialog-card, .page-v3 .dialog-card-pink, .page-v3 .table-view {
+    -fx-background-radius: 24; -fx-border-radius: 24; -fx-border-color: #F3DCE5; -fx-border-width: 1; -fx-effect: null; }
+.page-v3 .dialog-card, .page-v3 .fl-card { -fx-padding: 24; }
+.page-v3 .footer-bar { -fx-background-radius: 16; }
+.dialog-root.page-v3 { -fx-background-color: transparent; }
+
+/* controls: input 18 / button pill 30 */
+.page-v3 .btn-primary, .page-v3 .btn-ghost, .page-v3 .btn-danger, .page-v3 .btn-warn, .page-v3 .btn-success, .page-v3 .btn-icon,
+.page-v3 .dialog-card .btn-primary, .page-v3 .dialog-card .btn-ghost, .page-v3 .dialog-card .btn-danger, .page-v3 .dialog-card .btn-warn, .page-v3 .dialog-card .btn-success {
+    -fx-background-radius: 14; -fx-border-radius: 14; }
+.page-v3 .text-field, .page-v3 .password-field, .page-v3 .combo-box, .page-v3 .date-picker, .page-v3 .spinner,
+.page-v3 .chip, .page-v3 .seg, .page-v3 .search-box, .page-v3 .search-box .text-field {
+    -fx-background-radius: 14; -fx-border-radius: 14; }
+.page-v3 .btn-ghost { -fx-border-color: #EBD3DD; -fx-border-width: 1; }
+.page-v3 .text-field, .page-v3 .password-field, .page-v3 .combo-box, .page-v3 .date-picker, .page-v3 .spinner { -fx-border-color: #EBD3DD; }
+.page-v3 .text-field:focused, .page-v3 .password-field:focused, .page-v3 .combo-box:focused, .page-v3 .date-picker:focused, .page-v3 .spinner:focused { -fx-border-color: #C22A62; }
+
+/* tables */
+.page-v3 .table-view { -fx-padding: 0; }
+.page-v3 .table-view .column-header-background { -fx-background-color: #FDF2F6; -fx-background-radius: 24 24 0 0; }
+.page-v3 .table-view .column-header, .page-v3 .table-view .filler { -fx-background-color: #FDF2F6; -fx-border-color: transparent transparent #F3DCE5 transparent; }
+.page-v3 .table-view .column-header .label { -fx-text-fill: #54454D; -fx-font-size: 11px; -fx-padding: 12 0 12 12; }
+.page-v3 .table-view .table-row-cell:odd, .page-v3 .table-view .table-row-cell:even { -fx-background-color: white; -fx-border-color: transparent transparent #F3E6EC transparent; }
+.page-v3 .table-view .table-row-cell:filled:hover { -fx-background-color: #FDF7F9; }
+
+/* status tags: radius 12 */
+.page-v3 .badge-pending, .page-v3 .badge-done, .page-v3 .badge-cancelled, .page-v3 .badge-low,
+.page-v3 .table-view .badge-pending, .page-v3 .table-view .badge-done, .page-v3 .table-view .badge-cancelled, .page-v3 .table-view .badge-low {
+    -fx-background-radius: 12; -fx-padding: 4 12; -fx-font-size: 12px; }
+
+/* quantity spinner: [ - 3 + ] */
+.page-v3 .spinner.split-arrows-horizontal .increment-arrow-button, .page-v3 .spinner.split-arrows-horizontal .decrement-arrow-button {
+    -fx-background-color: transparent; -fx-background-radius: 14; -fx-padding: 0 14 0 14; -fx-cursor: hand; }
+.page-v3 .spinner.split-arrows-horizontal .increment-arrow-button:hover, .page-v3 .spinner.split-arrows-horizontal .decrement-arrow-button:hover { -fx-background-color: #FDE8EF; }
+.page-v3 .spinner .increment-arrow { -fx-background-color: #C22A62; -fx-shape: "M5 0 H7 V5 H12 V7 H7 V12 H5 V7 H0 V5 H5 Z"; -fx-padding: 6; }
+.page-v3 .spinner .decrement-arrow { -fx-background-color: #C22A62; -fx-shape: "M0 0 H12 V2 H0 Z"; -fx-padding: 1 6 1 6; }
+.page-v3 .spinner .text-field { -fx-alignment: CENTER; -fx-font-weight: bold; -fx-background-color: transparent; -fx-border-color: transparent; }
+
+/* dialog text */
+.page-v3 .detail-row { -fx-padding: 8 0 8 0; }
+.page-v3 .detail-key, .page-v3 .detail-value, .page-v3 .dialog-text { -fx-font-size: 14px; }
+.page-v3 .detail-value { -fx-font-weight: bold; }
+
+/* stand sale chips + centred small dialogs */
+.page-v3 .stat-chip { -fx-background-color: white; -fx-background-radius: 14; -fx-border-color: #EBD3DD; -fx-border-radius: 14; -fx-padding: 8 14 8 14; -fx-text-fill: #1A1418; }
+.page-v3 .dialog-buttons { -fx-padding: 14 0 0 0; }
+.page-v3 .dialog-title, .page-v3 .dialog-title-primary, .page-v3 .dialog-title-warn, .page-v3 .dialog-title-success, .page-v3 .dialog-title-error { -fx-font-size: 20px; }
+
+
+/* ===================================================================
+   v5 - Admin Officer card in the sidebar + new LOGIN (split card on flower photo)
+   =================================================================== */
+
+/* ---- sidebar footer: Admin Officer card (replaces the "Handmade Crochet and Bouquets" box) ---- */
+.side-user { -fx-background-color: linear-gradient(to bottom right, #D6336C, #C22A62 55%, #A8204F); -fx-background-radius: 16; -fx-padding: 10 10 10 12; -fx-alignment: CENTER_LEFT; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.28), 14, 0, 0, 4); }
+.side-user:hover, .side-user:showing { -fx-background-color: linear-gradient(to bottom right, #E0407A, #CC2F69 55%, #B3245A); }
+.side-user > .arrow-button { -fx-background-color: transparent; -fx-padding: 0 0 0 4; }
+.side-user > .arrow-button > .arrow { -fx-background-color: white; }
+.side-user-avatar { -fx-background-color: white; -fx-text-fill: #C22A62; -fx-background-radius: 20; -fx-min-width: 38; -fx-pref-width: 38; -fx-max-width: 38; -fx-min-height: 38; -fx-pref-height: 38; -fx-max-height: 38; -fx-alignment: CENTER; -fx-font-weight: bold; -fx-font-size: 15px; }
+.side-user-name { -fx-text-fill: white; -fx-font-family: "Poppins Medium"; -fx-font-size: 13px; }
+.side-user-role { -fx-text-fill: #FFD3E2; -fx-font-size: 11px; }
+
+/* ---- LOGIN: photo background + split card (white brand panel | rose form panel) ---- */
+/* the blurred photo is an ImageView in LOGIN.fxml, so the root only needs a fallback colour */
+.lg-root { -fx-background-color: #7A1F47; }
+
+/* tint over the blurred photo (lower the alpha numbers to show more of the picture) */
+.lg-overlay { -fx-background-color: linear-gradient(to bottom, rgba(122,20,64,0.30), rgba(70,8,36,0.55)); }.lg-shell { -fx-background-color: white; -fx-background-radius: 24; -fx-effect: dropshadow(gaussian, rgba(40,0,20,0.50), 44, 0, 0, 16); }
+
+/* left: brand panel */
+.lg-left { -fx-background-color: white; -fx-background-radius: 24 0 0 24; -fx-padding: 36 40 32 40; }
+.lg-brand-name { -fx-text-fill: #C22A62; -fx-font-family: "Poppins"; -fx-font-weight: bold; -fx-font-size: 13px; }
+.lg-brand-sub { -fx-text-fill: #54454D; -fx-font-size: 11px; }
+.lg-pill { -fx-background-color: white; -fx-border-color: #C22A62; -fx-border-width: 1; -fx-border-radius: 14; -fx-background-radius: 14; -fx-padding: 4 12 4 12; -fx-text-fill: #C22A62; -fx-font-weight: bold; -fx-font-size: 10px; -fx-graphic-text-gap: 6; }
+.lg-pill .ico { -fx-background-color: #C22A62; }
+.lg-big-dark { -fx-text-fill: #1A1418; -fx-font-family: "Poppins"; -fx-font-weight: bold; -fx-font-size: 40px; }
+.lg-big-rose { -fx-text-fill: #C22A62; -fx-font-family: "Poppins"; -fx-font-weight: bold; -fx-font-size: 40px; }
+.lg-big-sub { -fx-text-fill: #7A6571; -fx-font-size: 12px; }
+
+/* right: form panel */
+.lg-right { -fx-background-color: linear-gradient(to bottom right, #D6336C, #B02358 60%, #8E1B49); -fx-background-radius: 0 24 24 0; -fx-padding: 34 40 28 40; }
+.lg-signin { -fx-text-fill: white; -fx-font-family: "Poppins"; -fx-font-weight: bold; -fx-font-size: 28px; }
+.lg-signin-sub { -fx-text-fill: #FFD3E2; -fx-font-size: 12px; }
+.lg-label { -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; }
+.lg-field { -fx-background-color: #FFF1F6; -fx-background-insets: 0; -fx-background-radius: 14; -fx-border-color: transparent; -fx-border-width: 2; -fx-border-radius: 14; -fx-padding: 0 14 0 14; -fx-font-size: 14px; -fx-text-fill: #1A1418; -fx-prompt-text-fill: #9A7B88; }
+.lg-field:focused { -fx-background-color: white; -fx-border-color: white; }
+.lg-right .check-box { -fx-text-fill: white; -fx-font-size: 12px; }
+.lg-right .check-box .box { -fx-background-color: rgba(255,255,255,0.92); -fx-background-radius: 5; -fx-border-color: transparent; }
+.lg-right .check-box:selected .box { -fx-background-color: white; -fx-border-color: transparent; }
+.lg-right .check-box:selected .mark { -fx-background-color: #C22A62; }
+.lg-right .lg-link { -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; -fx-underline: false; -fx-border-color: transparent; }
+.lg-right .lg-link:visited { -fx-text-fill: white; }
+.lg-right .lg-link:hover { -fx-text-fill: #FFD3E2; }
+.lg-right .error-label { -fx-text-fill: white; -fx-font-weight: bold; }
+.lg-login { -fx-background-color: white; -fx-background-radius: 14; -fx-text-fill: #A8204F; -fx-font-family: "Poppins"; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand; }
+.lg-login:hover { -fx-background-color: #FFE4EE; }
+.lg-login:disabled { -fx-opacity: 0.7; }
+.lg-line { -fx-background-color: rgba(255,255,255,0.35); -fx-min-height: 1; -fx-pref-height: 1; -fx-max-height: 1; }
+.lg-or { -fx-text-fill: #FFD3E2; -fx-font-size: 11px; }
+.lg-exit { -fx-background-color: transparent; -fx-border-color: rgba(255,255,255,0.7); -fx-border-width: 1; -fx-border-radius: 14; -fx-background-radius: 14; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px; -fx-cursor: hand; }
+.lg-exit:hover { -fx-background-color: rgba(255,255,255,0.16); }
+.lg-note { -fx-text-fill: #FFD3E2; -fx-font-size: 11px; }
+.lg-tagline { -fx-text-fill: rgba(255,255,255,0.85); -fx-font-size: 12px; }
+.lg-right .lockout-box { -fx-background-color: #FFF0F5; -fx-background-radius: 14; -fx-border-color: transparent; }
+.lg-right .lockout-title, .lg-right .lockout-text { -fx-text-fill: #8A1E4D; }
+.lg-right .lockout-title .ico { -fx-background-color: #8A1E4D; }
+.lg-right .lockout-box .progress-bar > .track { -fx-background-color: #F6D3E0; }
+.lg-right .lockout-box .progress-bar > .bar { -fx-background-color: #C22A62; -fx-background-insets: 0; }
+
+
+/* ===================================================================
+   v6 - Poppins everywhere, blurred flower background on the pages,
+        shared sign-in look for FORGOT / RESET / PASSWORD CHANGED
+   =================================================================== */
+.root-pane, .dialog-root, .fl-bg, .lg-root { -fx-font-family: "Poppins"; }
+
+
+/* extra pieces used by the password screens (same card + same position as LOGIN) */
+.lg-step { -fx-text-fill: #FFD3E2; -fx-font-size: 10px; -fx-font-weight: bold; }
+.lg-hint { -fx-text-fill: #FFD3E2; -fx-font-size: 11px; }
+.lg-right .combo-box.lg-combo { -fx-background-color: #FFF1F6; -fx-background-insets: 0; -fx-background-radius: 14; -fx-border-color: transparent; -fx-border-width: 2; -fx-border-radius: 14; -fx-pref-height: 44; }
+.lg-right .combo-box.lg-combo:focused { -fx-background-color: white; -fx-border-color: white; }
+.lg-right .combo-box.lg-combo .list-cell { -fx-text-fill: #1A1418; -fx-background-color: transparent; -fx-font-size: 13px; -fx-padding: 0 8 0 8; }
+.lg-right .combo-box.lg-combo > .arrow-button { -fx-background-color: transparent; }
+.lg-right .combo-box.lg-combo > .arrow-button > .arrow { -fx-background-color: #8A1E4D; }
+.lg-right .progress-bar > .track { -fx-background-color: rgba(255,255,255,0.30); -fx-background-radius: 4; -fx-background-insets: 0; }
+.lg-right .progress-bar > .bar { -fx-background-color: white; -fx-background-radius: 4; -fx-background-insets: 0; -fx-padding: 3; }
+.lg-success { -fx-background-color: white; -fx-background-radius: 40; -fx-min-width: 72; -fx-pref-width: 72; -fx-max-width: 72; -fx-min-height: 72; -fx-pref-height: 72; -fx-max-height: 72; -fx-alignment: CENTER; }
+.lg-success .ico { -fx-background-color: #C22A62; -fx-min-width: 30; -fx-pref-width: 30; -fx-max-width: 30; -fx-min-height: 22.5; -fx-pref-height: 22.5; -fx-max-height: 22.5; }
+
+
+/* ===================================================================
+   v7 - dialog shadows, key badge, centred sign-in form, visible sidebar
+   =================================================================== */
+
+/* person icon in the "ADMIN OFFICER PORTAL" pill (square icon, so no per-context size rules needed) */
+.lg-pill .ico.ico-person { -fx-min-width: 11; -fx-pref-width: 11; -fx-max-width: 11; -fx-min-height: 11; -fx-pref-height: 11; -fx-max-height: 11; }
+
+/* dialogs: soft shadow so the white card pops off the pink window (windows are 30px wider than the card so it is not cut) */
+.dialog-root.page-v3 .dialog-card, .dialog-root.page-v3 .dialog-card-pink {
+    -fx-effect: dropshadow(gaussian, rgba(94,22,56,0.40), 26, 0.08, 0, 8); }
+
+/* big round icon badge on top of a dialog (CHANGEPASSWORD = key) */
+.icon-badge { -fx-background-color: #FDE8EF; -fx-background-radius: 40; -fx-alignment: CENTER;
+    -fx-min-width: 64; -fx-pref-width: 64; -fx-max-width: 64; -fx-min-height: 64; -fx-pref-height: 64; -fx-max-height: 64; }
+.icon-badge .ico { -fx-background-color: #C22A62; }
+.icon-badge .ico.ico-key { -fx-min-width: 30; -fx-pref-width: 30; -fx-max-width: 30; -fx-min-height: 16.5; -fx-pref-height: 16.5; -fx-max-height: 16.5; }
+
+/* sidebar: white frame with a shadow + a clearly visible blush panel inside (no longer blends into the page) */
+.dash-v2 .sidebar { -fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.22), 22, 0, 4, 0); -fx-border-color: transparent #F0D3DE transparent transparent; -fx-border-width: 0 1 0 0; }
+.dash-v2 .side-panel { -fx-background-color: #FCE9F0; -fx-border-color: #F0CFDC; -fx-border-width: 1; -fx-border-radius: 22; -fx-background-radius: 22; }
+
+
+/* ===================================================================
+   v8 - MATCH THE HTML DESIGN (all 30 screens canvas)
+   =================================================================== */
+/* dialogs: dark title + small round icon badge on top (LOGOUT, EXITCONFIRM) */
+.dialog-title-dark { -fx-text-fill: #1A1418; -fx-font-weight: bold; -fx-font-size: 20px; -fx-alignment: CENTER; }
+.icon-badge-sm { -fx-background-color: #FDE8EF; -fx-background-radius: 40; -fx-alignment: CENTER;
+    -fx-min-width: 48; -fx-pref-width: 48; -fx-max-width: 48; -fx-min-height: 48; -fx-pref-height: 48; -fx-max-height: 48; }
+.icon-badge-sm .ico { -fx-background-color: #C22A62;
+    -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+
+/* dashed divider (order cards, edit sale total) */
+.dash-line { -fx-border-color: #EBD3DD; -fx-border-style: dashed; -fx-border-width: 1 0 0 0;
+    -fx-min-height: 1; -fx-pref-height: 1; -fx-max-height: 1; }
+
+/* order cards (ORDERS) */
+.order-card { -fx-background-color: white; -fx-background-radius: 24; -fx-border-color: #F3DCE5; -fx-border-radius: 24; -fx-padding: 14 16 14 16; }
+.order-avatar { -fx-background-color: #FDE8EF; -fx-text-fill: #C22A62; -fx-background-radius: 12; -fx-font-weight: bold; -fx-font-size: 13px; -fx-alignment: CENTER;
+    -fx-min-width: 40; -fx-pref-width: 40; -fx-max-width: 40; -fx-min-height: 40; -fx-pref-height: 40; -fx-max-height: 40; }
+.order-cust { -fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #1A1418; }
+.order-product { -fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #1A1418; }
+.order-price { -fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #1A1418; }
+.order-btn { -fx-padding: 5 14 5 14; -fx-font-size: 12px; -fx-graphic-text-gap: 6; -fx-text-fill: #1A1418; }
+.order-btn .ico { -fx-background-color: #1A1418; }
+.order-btn-edit, .order-btn-edit:hover { -fx-text-fill: #C22A62; }
+.order-btn-edit .ico, .order-btn-edit:hover .ico { -fx-background-color: #C22A62; }
+.order-btn-del .ico, .order-btn-del:hover .ico { -fx-background-color: #B3261E; }
+
+/* inventory grid cards (INVENTORY_GRID) */
+.prod-card { -fx-background-color: white; -fx-background-radius: 24; -fx-border-color: #F3DCE5; -fx-border-radius: 24; }
+.prod-photo { -fx-background-color: #FDE8EF; -fx-background-radius: 24 24 0 0; }
+.prod-photo-text { -fx-text-fill: #C22A62; -fx-font-size: 13px; }
+.prod-name { -fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #1A1418; }
+.prod-price { -fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #1A1418; }
+.prod-btn { -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-graphic-text-gap: 5; -fx-text-fill: #1A1418; }
+.prod-btn-edit, .prod-btn-edit:hover { -fx-text-fill: #C22A62; }
+.prod-btn-edit .ico, .prod-btn-edit:hover .ico { -fx-background-color: #C22A62; }
+.prod-btn-del .ico, .prod-btn-del:hover .ico { -fx-background-color: #B3261E; }
+
+/* product list: "20 in stock" plain text, link-style "Edit . Restock" */
+.stock-plain { -fx-text-fill: #1A1418; }
+.link-pink, .link-pink:hover { -fx-text-fill: #C22A62; -fx-font-size: 13px; }
+.link-sep { -fx-text-fill: #C22A62; -fx-font-size: 13px; }
+
+/* add/edit product: photo box */
+.photo-drop { -fx-background-color: #FDF2F6; -fx-background-radius: 24; -fx-border-color: #E58FB0; -fx-border-style: dashed; -fx-border-radius: 24; -fx-border-width: 1.2; }
+.photo-drop-text { -fx-text-fill: #C22A62; -fx-font-size: 13px; -fx-text-alignment: CENTER; }
+
+/* edit sale: big total */
+.total-big { -fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1A1418; }
+
+/* round icon badge size fixes inside dialogs (keeps each icon's aspect) */
+.icon-badge-sm .ico.ico-check { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 16.5; -fx-pref-height: 16.5; -fx-max-height: 16.5; }
+.icon-badge-sm .ico.ico-delete { -fx-min-width: 17; -fx-pref-width: 17; -fx-max-width: 17; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.icon-badge-sm .ico.ico-sync { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.icon-badge-sm .ico.ico-download { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.icon-badge-sm .ico.ico-warning { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 19; -fx-pref-height: 19; -fx-max-height: 19; }
+.icon-badge-sm .ico.ico-receipt { -fx-min-width: 19.8; -fx-pref-width: 19.8; -fx-max-width: 19.8; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+
+
+/* ===================================================================
+   v11 - one set of corners everywhere + pink scroll bars + inventory icons
+   Corner tokens (same as DASHBOARD):
+     card / table / dialog 24 | inner panel 18 | input 18 | button = pill 30 | icon tile 12 | tag 12
+   =================================================================== */
+
+/* inventory list: pink icon tile (same as the icon-box on the dashboard: 12) */
+.prod-tile { -fx-background-color: #FDE8EF; -fx-background-radius: 12; }
+
+/* tables: header + rows must not paint over the rounded card corners */
+.page-v3 .table-view .column-header-background { -fx-background-color: #FDF2F6; -fx-background-radius: 24 24 0 0; }
+.page-v3 .table-view .column-header, .page-v3 .table-view .filler { -fx-background-color: transparent; -fx-border-color: transparent transparent #F3DCE5 transparent; }
+.page-v3 .table-view .table-row-cell:odd, .page-v3 .table-view .table-row-cell:even { -fx-background-color: transparent; -fx-border-color: transparent transparent #F3E6EC transparent; }
+.page-v3 .table-view .table-row-cell:filled:hover { -fx-background-color: #FDF7F9; }
+.page-v3 .table-view .table-cell { -fx-padding: 0 0 0 12; }
+
+/* stock tags in the product list: same shape as every other tag */
+.page-v3 .table-view .stock-plain { -fx-font-size: 13px; }
+
+/* ---- scroll bars: slim pink thumb on a soft blush groove, no arrows, no white strip ---- */
+.scroll-bar { -fx-background-color: transparent; -fx-background-insets: 0; -fx-padding: 0; }
+.scroll-bar:vertical { -fx-pref-width: 12; -fx-min-width: 12; }
+.scroll-bar:horizontal { -fx-pref-height: 12; -fx-min-height: 12; }
+.clear-scroll .scroll-bar:vertical { -fx-pref-width: 12; }
+.scroll-bar > .track { -fx-background-color: rgba(194,42,98,0.07); -fx-background-radius: 10; -fx-background-insets: 3; -fx-border-color: transparent; }
+.scroll-bar > .track-background { -fx-background-color: transparent; -fx-background-insets: 0; }
+.scroll-bar > .thumb { -fx-background-color: #E58FB0; -fx-background-radius: 10; -fx-background-insets: 3; }
+.scroll-bar > .thumb:hover { -fx-background-color: #D4547F; }
+.scroll-bar > .thumb:pressed { -fx-background-color: #C22A62; }
+.scroll-bar > .increment-button, .scroll-bar > .decrement-button { -fx-background-color: transparent; -fx-background-insets: 0; -fx-padding: 0; }
+.scroll-bar:vertical > .increment-button, .scroll-bar:vertical > .decrement-button { -fx-pref-height: 0; -fx-min-height: 0; -fx-max-height: 0; }
+.scroll-bar:horizontal > .increment-button, .scroll-bar:horizontal > .decrement-button { -fx-pref-width: 0; -fx-min-width: 0; -fx-max-width: 0; }
+.scroll-bar .increment-arrow, .scroll-bar .decrement-arrow { -fx-shape: " "; -fx-padding: 0; -fx-background-color: transparent; }
+.scroll-pane > .corner, .table-view .corner, .list-view .corner { -fx-background-color: transparent; }
+.scroll-pane > .viewport { -fx-background-color: transparent; }
+
+
+/* ---- v11b: inputs AND buttons share one corner (14) like the design; no pills ---- */
+.page-v3 .btn-primary, .page-v3 .btn-ghost, .page-v3 .btn-danger, .page-v3 .btn-warn, .page-v3 .btn-success, .page-v3 .btn-icon,
+.page-v3 .dialog-card .btn-primary, .page-v3 .dialog-card .btn-ghost, .page-v3 .dialog-card .btn-danger, .page-v3 .dialog-card .btn-warn, .page-v3 .dialog-card .btn-success,
+.page-v3 .text-field, .page-v3 .password-field, .page-v3 .combo-box, .page-v3 .date-picker, .page-v3 .spinner,
+.page-v3 .chip, .page-v3 .seg, .page-v3 .search-box, .page-v3 .search-box .text-field, .page-v3 .stat-chip {
+    -fx-background-radius: 14; -fx-border-radius: 14; }
+.page-v3 .badge-pending, .page-v3 .badge-done, .page-v3 .badge-cancelled, .page-v3 .badge-low,
+.page-v3 .table-view .badge-pending, .page-v3 .table-view .badge-done, .page-v3 .table-view .badge-cancelled, .page-v3 .table-view .badge-low { -fx-background-radius: 8; }
+
+/* ---- eye icon that replaces "Show password" (still the CheckBox cbShowPassword) ---- */
+.lg-right .check-box.eye-toggle { -fx-padding: 0; -fx-cursor: hand; }
+.lg-right .check-box.eye-toggle > .box { -fx-background-color: transparent; -fx-background-insets: 0; -fx-border-color: transparent; -fx-padding: 0; }
+.lg-right .check-box.eye-toggle > .box > .mark, .lg-right .check-box.eye-toggle:selected > .box > .mark {
+    -fx-background-color: #9A7B88; -fx-scale-shape: true; -fx-padding: 0;
+    -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15;
+    -fx-shape: "M12 5C7 5 2.7 8.1 1 12.5 2.7 16.9 7 20 12 20s9.3-3.1 11-7.5C21.3 8.1 17 5 12 5zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"; }
+.lg-right .check-box.eye-toggle:selected > .box > .mark {
+    -fx-background-color: #C22A62; -fx-min-height: 18.9; -fx-pref-height: 18.9; -fx-max-height: 18.9;
+    -fx-shape: "M12 5C7 5 2.7 8.1 1 12.5 2.7 16.9 7 20 12 20s9.3-3.1 11-7.5C21.3 8.1 17 5 12 5zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM3 3.5l1.4-1.4 17.5 17.5-1.4 1.4z"; }
+.lg-right .check-box.eye-toggle:hover > .box > .mark { -fx-background-color: #C22A62; }
+
+/* ---- v12: outline pencil / trash for the Stand Sale rows (as in the design) ---- */
+.ico-edit-o { -fx-shape: "M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"; -fx-scale-shape: true; }
+.ico-delete-o { -fx-shape: "M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"; -fx-scale-shape: true; }
+.btn-icon .ico.ico-edit-o, .btn-icon .ico.ico-delete-o { -fx-min-width: 17; -fx-pref-width: 17; -fx-max-width: 17; -fx-min-height: 17; -fx-pref-height: 17; -fx-max-height: 17; }
+
+
+/* ---- v14: Stand Sale = design (table header same size as rows, regular weight; smaller - / + ) ---- */
+.page-v3 .table-view .column-header .label { -fx-text-fill: #54454D; -fx-font-size: 13px; -fx-font-weight: normal; }
+.page-v3 .spinner .increment-arrow { -fx-padding: 4.5; }
+.page-v3 .spinner .decrement-arrow { -fx-padding: 1 5 1 5; }
+
+
+/* ===================================================================
+   v16
+   =================================================================== */
+
+/* ---- one explicit background inset for every input, in every state (no half-square corners on focus / hover) ---- */
+.text-field, .text-field:focused, .text-field:hover, .password-field, .password-field:focused,
+.combo-box, .combo-box:hover, .combo-box:focused, .combo-box:showing,
+.date-picker, .date-picker:hover, .date-picker:focused, .date-picker:showing,
+.spinner, .spinner:focused { -fx-background-insets: 0; -fx-border-insets: 0; }
+.combo-box-base > .arrow-button, .date-picker > .arrow-button { -fx-background-color: transparent; -fx-background-insets: 0; -fx-background-radius: 0 14 14 0; }
+.combo-box-base > .arrow-button > .arrow { -fx-background-color: #C22A62; }
+.date-picker > .arrow-button { -fx-padding: 0 12 0 6; }
+.date-picker > .arrow-button > .arrow { -fx-background-color: #C22A62; -fx-background-insets: 0; }
+.date-picker .text-field { -fx-background-insets: 0; }
+
+/* ---- calendar pop-up (Add order, Edit order, Export data, ...) ---- */
+.date-picker-popup {
+    -fx-background-color: white; -fx-background-insets: 0; -fx-background-radius: 20;
+    -fx-border-color: #F3C6D6; -fx-border-width: 1.5; -fx-border-radius: 20;
+    -fx-padding: 14 14 12 14;
+    -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.22), 26, 0, 0, 8);
+    -fx-font-family: "Poppins";
+}
+.date-picker-popup > .month-year-pane { -fx-background-color: #FDF2F6; -fx-background-insets: 0; -fx-background-radius: 14; -fx-padding: 6 8 6 8; -fx-alignment: CENTER; }
+.date-picker-popup > .month-year-pane .spinner { -fx-background-color: transparent; -fx-background-insets: 0; -fx-border-color: transparent; -fx-background-radius: 10; -fx-border-radius: 10; }
+.date-picker-popup > .month-year-pane .spinner .label { -fx-text-fill: #1A1418; -fx-font-size: 14px; -fx-font-weight: bold; }
+.date-picker-popup > .month-year-pane .spinner .button { -fx-background-color: transparent; -fx-background-insets: 0; -fx-background-radius: 10; -fx-cursor: hand; }
+.date-picker-popup > .month-year-pane .spinner .button:hover { -fx-background-color: white; }
+.date-picker-popup .left-arrow, .date-picker-popup .right-arrow { -fx-background-color: #C22A62; }
+.date-picker-popup > .calendar-grid { -fx-background-color: transparent; -fx-padding: 8 0 0 0; }
+.date-picker-popup .day-name-cell { -fx-background-color: transparent; -fx-text-fill: #9A7B88; -fx-font-size: 11px; -fx-font-weight: bold; -fx-alignment: CENTER; }
+.date-picker-popup .week-number-cell { -fx-background-color: transparent; -fx-text-fill: #CDB9C2; -fx-font-size: 10px; }
+.date-picker-popup .day-cell {
+    -fx-background-color: transparent; -fx-background-insets: 0; -fx-background-radius: 12;
+    -fx-border-color: transparent; -fx-border-width: 1.5; -fx-border-radius: 12;
+    -fx-text-fill: #1A1418; -fx-font-size: 13px; -fx-alignment: CENTER;
+    -fx-min-width: 38; -fx-min-height: 34; -fx-cursor: hand;
+}
+.date-picker-popup .day-cell:hover, .date-picker-popup .day-cell:focused { -fx-background-color: #FDE8EF; -fx-text-fill: #1A1418; }
+.date-picker-popup .day-cell.today { -fx-border-color: #C22A62; }
+.date-picker-popup .day-cell.previous-month, .date-picker-popup .day-cell.next-month { -fx-text-fill: #CDB9C2; }
+.date-picker-popup .day-cell:selected, .date-picker-popup .day-cell:selected:hover, .date-picker-popup .day-cell:selected:focused {
+    -fx-background-color: #C22A62; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-color: #C22A62; }
+
+/* ---- Export dialog: check box as a soft row ---- */
+.check-row { -fx-background-color: #FDF2F6; -fx-background-radius: 14; -fx-border-color: #EBD3DD; -fx-border-radius: 14; -fx-border-width: 1;
+    -fx-padding: 12 16 12 16; -fx-text-fill: #1A1418; -fx-font-size: 14px; -fx-label-padding: 0 0 0 10; -fx-cursor: hand; }
+.check-row:hover { -fx-background-color: #FCE8EF; }
+.check-row:selected { -fx-background-color: #FDE8EF; -fx-border-color: #E58FB0; }
+.check-row > .box { -fx-background-color: white; -fx-background-insets: 0; -fx-background-radius: 7;
+    -fx-border-color: #D9B8C7; -fx-border-width: 1.5; -fx-border-radius: 7; -fx-padding: 3 4 3 4; }
+.check-row > .box > .mark { -fx-background-color: transparent; -fx-padding: 5 5 5 5; }
+.check-row:selected > .box { -fx-background-color: #C22A62; -fx-border-color: #C22A62; }
+.check-row:selected > .box > .mark { -fx-background-color: white; }
+
+/* ---- corners: hover / selected rows can no longer poke out of a rounded table ---- */
+.page-v3 .table-view { -fx-padding: 0 0 8 0; }
+.page-v3 .table-view .table-row-cell:odd, .page-v3 .table-view .table-row-cell:even { -fx-border-insets: 0 16 0 16; }
+.page-v3 .table-view .table-row-cell:filled:hover, .page-v3 .table-view .table-row-cell:filled:selected { -fx-background-color: #FDF2F6; -fx-background-insets: 0 8 0 8; -fx-background-radius: 10; }
+.page-v3 .dialog-card .table-view { -fx-background-radius: 18; -fx-border-radius: 18; }
+.page-v3 .dialog-card .table-view .column-header-background { -fx-background-radius: 18 18 0 0; }
+.low-table .table-row-cell { -fx-border-insets: 0 14 0 14; }
+.low-table .table-row-cell:filled:hover, .low-table .table-row-cell:filled:selected { -fx-background-color: #FDF2F6; -fx-background-insets: 0 4 0 4; -fx-background-radius: 10; }
+
+/* ---- dashboard: "View all" pill + year button = same corner / border, every state ---- */
+.dash-v2 .view-all-pill, .dash-v2 .view-all-pill:visited, .dash-v2 .view-all-pill:hover, .dash-v2 .view-all-pill:focused,
+.dash-v2 .view-all-pill:armed, .dash-v2 .view-all-pill:pressed {
+    -fx-background-insets: 0; -fx-border-insets: 0; -fx-background-radius: 14; -fx-border-radius: 14; -fx-border-width: 1.5;
+    -fx-border-color: #C22A62; -fx-text-fill: #C22A62; -fx-underline: false; -fx-padding: 6 16 6 16; }
+.dash-v2 .view-all-pill:hover, .dash-v2 .view-all-pill:pressed { -fx-background-color: #FDF2F6; }
+.combo-box.year-combo, .combo-box.year-combo:hover, .combo-box.year-combo:focused, .combo-box.year-combo:showing {
+    -fx-background-color: white; -fx-background-insets: 0; -fx-background-radius: 14;
+    -fx-border-color: #E8BFD0; -fx-border-width: 1.5; -fx-border-radius: 14; -fx-border-insets: 0; }
+.combo-box.year-combo:hover, .combo-box.year-combo:focused, .combo-box.year-combo:showing { -fx-border-color: #C22A62; }
+.combo-box.year-combo > .list-cell { -fx-background-color: transparent; -fx-text-fill: #1A1418; -fx-font-weight: bold; -fx-padding: 0 0 0 16; }
+.combo-box.year-combo > .arrow-button { -fx-padding: 0 14 0 6; }
+
+/* ---- Inventory: List | Grid switch ---- */
+.ico-list { -fx-shape: "M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"; }
+.ico-grid { -fx-shape: "M3 3v8h8V3H3zm6 6H5V5h4v4zm-6 4v8h8v-8H3zm6 6H5v-4h4v4zm4-16v8h8V3h-8zm6 6h-4V5h4v4zm-6 4v8h8v-8h-8zm6 6h-4v-4h4v4z"; }
+.view-switch { -fx-background-color: white; -fx-background-radius: 14; -fx-border-color: #EBD3DD; -fx-border-radius: 14; -fx-border-width: 1; -fx-padding: 3; }
+.view-seg, .view-seg:hover, .view-seg:focused, .view-seg:armed {
+    -fx-background-color: transparent; -fx-background-insets: 0; -fx-background-radius: 11; -fx-border-color: transparent; -fx-border-radius: 11;
+    -fx-padding: 6 14 6 12; -fx-text-fill: #54454D; -fx-font-size: 13px; -fx-graphic-text-gap: 8; -fx-cursor: hand; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; }
+.view-seg .ico { -fx-background-color: #54454D; -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.view-seg:hover { -fx-background-color: #FDF2F6; }
+.view-seg:selected, .view-seg:selected:hover, .view-seg:selected:focused { -fx-background-color: #C22A62; -fx-text-fill: white; -fx-font-weight: bold; }
+.view-seg:selected .ico { -fx-background-color: white; }
+
+
+/* ===================================================================
+   v17 - inventory corners
+   =================================================================== */
+/* inner shapes follow the INNER curve of the 1px border (24 - 1 = 23) */
+.prod-card { -fx-background-insets: 0; -fx-border-insets: 0; }
+.prod-photo { -fx-background-radius: 23 23 0 0; }
+.prod-btn, .prod-btn:hover, .prod-btn:pressed, .prod-btn:focused { -fx-background-radius: 10; -fx-border-radius: 10; -fx-background-insets: 0; }
+.page-v3 .table-view .column-header-background { -fx-background-radius: 23 23 0 0; }
+.page-v3 .table-view .filler, .page-v3 .table-view .column-header:last-visible { -fx-background-radius: 0 23 0 0; }
+.prod-tile { -fx-background-radius: 12; -fx-background-insets: 0; }
+
+
+/* ===================================================================
+   v18 - filter chips (All / Bouquet / Crochet / Keychain, Pending / Done ...) and Pickup / Meetup:
+   the default ToggleButton paints 3-4 stacked backgrounds with their own insets and radii (and a square focus ring)
+   that peeked out at the corners. Now ONE background, inset 0, radius 14, in every state.
+   =================================================================== */
+.chip, .chip:hover, .chip:focused, .chip:armed, .chip:pressed, .chip:selected, .chip:selected:hover, .chip:selected:focused, .chip:selected:armed,
+.seg, .seg:hover, .seg:focused, .seg:armed, .seg:pressed, .seg:selected, .seg:selected:hover, .seg:selected:focused {
+    -fx-background-insets: 0; -fx-border-insets: 0; -fx-background-radius: 14; -fx-border-radius: 14; -fx-border-width: 1;
+    -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-effect: null; }
+.chip, .chip:focused, .chip:armed, .chip:pressed { -fx-background-color: white; -fx-border-color: #EBD3DD; -fx-text-fill: #1A1418; }
+.chip:hover { -fx-background-color: #FDF2F6; -fx-border-color: #E58FB0; }
+.chip:selected, .chip:selected:focused, .chip:selected:armed { -fx-background-color: #C22A62; -fx-border-color: #C22A62; -fx-text-fill: white; -fx-font-weight: bold; }
+.chip:selected:hover { -fx-background-color: #A8204F; -fx-border-color: #A8204F; -fx-text-fill: white; }
+.seg:selected, .seg:selected:hover, .seg:selected:focused { -fx-background-color: #FDF2F6; -fx-border-color: #C22A62; -fx-text-fill: #A8204F; }
+.page-v3 .chip, .page-v3 .seg, .page-v3 .chip:selected, .page-v3 .seg:selected { -fx-background-radius: 14; -fx-border-radius: 14; }
+
+
+/* ===================================================================
+   v21 - number on a category chip is a small badge, not part of the word
+   =================================================================== */
+.chip-count { -fx-background-color: #FDE8EF; -fx-background-radius: 8; -fx-text-fill: #C22A62; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 1 8 1 8; -fx-min-width: 26; -fx-alignment: CENTER; }
+.chip:selected .chip-count { -fx-background-color: rgba(255,255,255,0.28); -fx-text-fill: white; }
+
+/* ===== v23: inventory grid photos (CSS only - no bindings, works in Scene Builder) ===== */
+.prod-photo { -fx-min-width: 0; -fx-pref-width: 10; -fx-background-repeat: no-repeat; -fx-background-position: center center; -fx-background-size: cover; }
+.pic-big-rose-bouquet { -fx-background-image: url("images/big-rose-bouquet.jpg"); }
+.pic-blooming-grace-bouquet { -fx-background-image: url("images/blooming-grace-bouquet.jpg"); }
+.pic-coffee-bouquet { -fx-background-image: url("images/coffee-bouquet.jpg"); }
+.pic-crochet-cactus-pot { -fx-background-image: url("images/crochet-cactus-pot.jpg"); }
+.pic-crochet-pot-set { -fx-background-image: url("images/crochet-pot-set.jpg"); }
+.pic-crochet-single-tulip { -fx-background-image: url("images/crochet-single-tulip.jpg"); }
+.pic-crochet-sunflower-pot { -fx-background-image: url("images/crochet-sunflower-pot.jpg"); }
+.pic-crochet-tulip-bouquet { -fx-background-image: url("images/crochet-tulip-bouquet.jpg"); }
+.pic-crochet-tulip-pot { -fx-background-image: url("images/crochet-tulip-pot.jpg"); }
+.pic-diamond-top { -fx-background-image: url("images/diamond-top.jpg"); }
+.pic-florea-bouquet { -fx-background-image: url("images/florea-bouquet.jpg"); }
+.pic-florea-bouquet-v2 { -fx-background-image: url("images/florea-bouquet-v2.jpg"); }
+.pic-florea-bouquet-v3 { -fx-background-image: url("images/florea-bouquet-v3.jpg"); }
+.pic-frog-headband { -fx-background-image: url("images/frog-headband.jpg"); }
+.pic-jelly-first-keychain { -fx-background-image: url("images/jelly-first-keychain.jpg"); }
+.pic-little-blossom-serenade { -fx-background-image: url("images/little-blossom-serenade.jpg"); }
+.pic-mini-bouquet-fuzzy-wire { -fx-background-image: url("images/mini-bouquet-fuzzy-wire.jpg"); }
+.pic-mini-bouquet-keychain { -fx-background-image: url("images/mini-bouquet-keychain.jpg"); }
+.pic-mini-flower-pouch { -fx-background-image: url("images/mini-flower-pouch.jpg"); }
+.pic-mini-labubu { -fx-background-image: url("images/mini-labubu.jpg"); }
+.pic-mini-sunflower-35 { -fx-background-image: url("images/mini-sunflower-35.jpg"); }
+.pic-mini-sunflower-50 { -fx-background-image: url("images/mini-sunflower-50.jpg"); }
+.pic-mini-tulip-in-card { -fx-background-image: url("images/mini-tulip-in-card.jpg"); }
+.pic-moana-inspired-keychain { -fx-background-image: url("images/moana-inspired-keychain.jpg"); }
+.pic-puff-flower-pouch { -fx-background-image: url("images/puff-flower-pouch.jpg"); }
+.pic-red-tulip-bouquet { -fx-background-image: url("images/red-tulip-bouquet.jpg"); }
+.pic-rosa-bouquet { -fx-background-image: url("images/rosa-bouquet.jpg"); }
+.pic-rose-serenade { -fx-background-image: url("images/rose-serenade.jpg"); }
+.pic-rosette-charm { -fx-background-image: url("images/rosette-charm.jpg"); }
+.pic-satin-single-tulip { -fx-background-image: url("images/satin-single-tulip.jpg"); }
+.pic-set-gift { -fx-background-image: url("images/set-gift.jpg"); }
+.pic-single-lily-tulip { -fx-background-image: url("images/single-lily-tulip.jpg"); }
+.pic-single-stargazer-bouquet { -fx-background-image: url("images/single-stargazer-bouquet.jpg"); }
+.pic-single-stargazer-v2 { -fx-background-image: url("images/single-stargazer-v2.jpg"); }
+.pic-sophia-bouquet { -fx-background-image: url("images/sophia-bouquet.jpg"); }
+.pic-stargazer-embrace-bouquet { -fx-background-image: url("images/stargazer-embrace-bouquet.jpg"); }
+.pic-sunblush-bouquet { -fx-background-image: url("images/sunblush-bouquet.jpg"); }
+.pic-sunflower-bouquet { -fx-background-image: url("images/sunflower-bouquet.jpg"); }
+.pic-swim-bra { -fx-background-image: url("images/swim-bra.jpg"); }
+.pic-tangled { -fx-background-image: url("images/tangled.jpg"); }
+.pic-tangled-grand { -fx-background-image: url("images/tangled-grand.jpg"); }
+.pic-thumbelina-cone-bouquet { -fx-background-image: url("images/thumbelina-cone-bouquet.jpg"); }
+.pic-thumbler-holder { -fx-background-image: url("images/thumbler-holder.jpg"); }
+
+/* ===== v25: photos are pre-cropped (subject centred) with rounded top corners baked in, in images/card/ ===== */
+.prod-photo { -fx-background-size: 100% 100%; -fx-background-position: center center; -fx-background-color: transparent; }
+.pic-big-rose-bouquet { -fx-background-image: url("images/card/big-rose-bouquet.png"); }
+.pic-blooming-grace-bouquet { -fx-background-image: url("images/card/blooming-grace-bouquet.png"); }
+.pic-coffee-bouquet { -fx-background-image: url("images/card/coffee-bouquet.png"); }
+.pic-crochet-cactus-pot { -fx-background-image: url("images/card/crochet-cactus-pot.png"); }
+.pic-crochet-pot-set { -fx-background-image: url("images/card/crochet-pot-set.png"); }
+.pic-crochet-single-tulip { -fx-background-image: url("images/card/crochet-single-tulip.png"); }
+.pic-crochet-sunflower-pot { -fx-background-image: url("images/card/crochet-sunflower-pot.png"); }
+.pic-crochet-tulip-bouquet { -fx-background-image: url("images/card/crochet-tulip-bouquet.png"); }
+.pic-crochet-tulip-pot { -fx-background-image: url("images/card/crochet-tulip-pot.png"); }
+.pic-diamond-top { -fx-background-image: url("images/card/diamond-top.png"); }
+.pic-florea-bouquet-v2 { -fx-background-image: url("images/card/florea-bouquet-v2.png"); }
+.pic-florea-bouquet-v3 { -fx-background-image: url("images/card/florea-bouquet-v3.png"); }
+.pic-florea-bouquet { -fx-background-image: url("images/card/florea-bouquet.png"); }
+.pic-frog-headband { -fx-background-image: url("images/card/frog-headband.png"); }
+.pic-jelly-first-keychain { -fx-background-image: url("images/card/jelly-first-keychain.png"); }
+.pic-little-blossom-serenade { -fx-background-image: url("images/card/little-blossom-serenade.png"); }
+.pic-mini-bouquet-fuzzy-wire { -fx-background-image: url("images/card/mini-bouquet-fuzzy-wire.png"); }
+.pic-mini-bouquet-keychain { -fx-background-image: url("images/card/mini-bouquet-keychain.png"); }
+.pic-mini-flower-pouch { -fx-background-image: url("images/card/mini-flower-pouch.png"); }
+.pic-mini-labubu { -fx-background-image: url("images/card/mini-labubu.png"); }
+.pic-mini-sunflower-35 { -fx-background-image: url("images/card/mini-sunflower-35.png"); }
+.pic-mini-sunflower-50 { -fx-background-image: url("images/card/mini-sunflower-50.png"); }
+.pic-mini-tulip-in-card { -fx-background-image: url("images/card/mini-tulip-in-card.png"); }
+.pic-moana-inspired-keychain { -fx-background-image: url("images/card/moana-inspired-keychain.png"); }
+.pic-puff-flower-pouch { -fx-background-image: url("images/card/puff-flower-pouch.png"); }
+.pic-red-tulip-bouquet { -fx-background-image: url("images/card/red-tulip-bouquet.png"); }
+.pic-rosa-bouquet { -fx-background-image: url("images/card/rosa-bouquet.png"); }
+.pic-rose-serenade { -fx-background-image: url("images/card/rose-serenade.png"); }
+.pic-rosette-charm { -fx-background-image: url("images/card/rosette-charm.png"); }
+.pic-satin-single-tulip { -fx-background-image: url("images/card/satin-single-tulip.png"); }
+.pic-set-gift { -fx-background-image: url("images/card/set-gift.png"); }
+.pic-single-lily-tulip { -fx-background-image: url("images/card/single-lily-tulip.png"); }
+.pic-single-stargazer-bouquet { -fx-background-image: url("images/card/single-stargazer-bouquet.png"); }
+.pic-single-stargazer-v2 { -fx-background-image: url("images/card/single-stargazer-v2.png"); }
+.pic-sophia-bouquet { -fx-background-image: url("images/card/sophia-bouquet.png"); }
+.pic-stargazer-embrace-bouquet { -fx-background-image: url("images/card/stargazer-embrace-bouquet.png"); }
+.pic-sunblush-bouquet { -fx-background-image: url("images/card/sunblush-bouquet.png"); }
+.pic-sunflower-bouquet { -fx-background-image: url("images/card/sunflower-bouquet.png"); }
+.pic-swim-bra { -fx-background-image: url("images/card/swim-bra.png"); }
+.pic-tangled-grand { -fx-background-image: url("images/card/tangled-grand.png"); }
+.pic-tangled { -fx-background-image: url("images/card/tangled.png"); }
+.pic-thumbelina-cone-bouquet { -fx-background-image: url("images/card/thumbelina-cone-bouquet.png"); }
+.pic-thumbler-holder { -fx-background-image: url("images/card/thumbler-holder.png"); }
+
+/* card shadow */
+.prod-card { -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.20), 16, 0.05, 0, 5); }

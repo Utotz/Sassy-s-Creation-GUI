@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
+
+<StackPane prefHeight="630" prefWidth="480" styleClass="dialog-root, page-v3" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets><URL value="@styles.css" /></stylesheets>
+   <children>
+      <VBox alignment="CENTER">
+   <children>
+      <VBox alignment="CENTER" maxWidth="420.0" spacing="0.0" styleClass="dialog-card, dialog-card-pink">
+         <children>
+            <StackPane styleClass="icon-badge-sm"><children><Region styleClass="ico, ico-download" /></children></StackPane>
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Export data" textAlignment="CENTER" styleClass="dialog-title-dark"><VBox.margin><Insets top="10.0" bottom="10.0" /></VBox.margin></Label>
+            <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="Exporting" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="lblExportTarget" maxWidth="240.0" styleClass="detail-value" text="Orders" textAlignment="RIGHT" wrapText="true" /></children></HBox>
+            <Label styleClass="form-label" text="Format" style="-fx-padding: 16 0 6 0;" />
+            <HBox spacing="8.0"><children><ToggleButton fx:id="tbCsv" prefHeight="40.0" selected="true" styleClass="seg" text="CSV"><toggleGroup><ToggleGroup fx:id="tgFormat" /></toggleGroup></ToggleButton><ToggleButton fx:id="tbPdf" prefHeight="40.0" styleClass="seg" text="PDF" toggleGroup="$tgFormat" /></children></HBox>
+            <Label styleClass="form-label" text="Date range" style="-fx-padding: 16 0 6 0;" />
+            <HBox spacing="12.0"><children><DatePicker fx:id="dpExportFrom" maxWidth="1.7976931348623157E308" prefHeight="40.0" promptText="From" HBox.hgrow="ALWAYS" /><DatePicker fx:id="dpExportTo" maxWidth="1.7976931348623157E308" prefHeight="40.0" promptText="To" HBox.hgrow="ALWAYS" /></children></HBox>
+            <CheckBox fx:id="cbIncludeCancelled" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="check-row" text="Include cancelled orders"><VBox.margin><Insets top="16.0" /></VBox.margin></CheckBox>
+            <HBox spacing="14.0" styleClass="dialog-buttons"><children><Button fx:id="btnCancelExport" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" mnemonicParsing="false" onAction="#handleCancelExport" styleClass="btn-ghost" text="Cancel" /><Button fx:id="btnConfirmExport" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" mnemonicParsing="false" onAction="#handleConfirmExport" styleClass="btn-primary" text="Export" /></children></HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>
+   </children>
+</StackPane>
