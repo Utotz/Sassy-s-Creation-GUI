@@ -134,11 +134,20 @@ public class LoginController implements Initializable {
 
     @FXML
     private void handleForgotPassword() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Forgot password");
-        alert.setHeaderText("Password reset");
-        alert.setContentText("Please contact the system administrator to reset your password.");
-        alert.showAndWait();
+        try {
+            URL resource = getClass().getResource(FXML_PATH + "FORGOTPASSWORD.fxml");
+            if (resource == null) {
+                lblError.setText("FORGOTPASSWORD.fxml was not found in the resources folder.");
+                return;
+            }
+            Parent root = new FXMLLoader(resource).load();
+            Stage stage = (Stage) btnLogin.getScene().getWindow();
+            stage.getScene().setRoot(root);
+            stage.setTitle("Sassy's Creation - Forgot password");
+        } catch (Exception e) {
+            e.printStackTrace();
+            lblError.setText("Could not open the forgot password screen.");
+        }
     }
 
     @FXML

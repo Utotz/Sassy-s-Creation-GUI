@@ -24,6 +24,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StandSaleController implements Initializable {
 
@@ -298,47 +300,49 @@ public class StandSaleController implements Initializable {
     }
 
     private void editSale(Map<String, Object> row) {
-        int oldQty = (Integer) row.get("Qty");
-        String name = String.valueOf(row.get("Product"));
-
-        TextInputDialog dialog = new TextInputDialog(String.valueOf(oldQty));
-        dialog.setTitle("Edit sale");
-        dialog.setHeaderText("Edit quantity for " + name);
-        dialog.setContentText("Quantity sold:");
-
-        Optional<String> result = dialog.showAndWait();
-        if (result.isEmpty()) {
-            return;
-        }
-
-        int newQty;
+        LocalDate date;
         try {
-            newQty = Integer.parseInt(result.get().trim());
-        } catch (NumberFormatException e) {
-            showWarning("Invalid quantity", "Please enter a whole number.");
-            return;
-        }
-        if (newQty < 1) {
-            showWarning("Invalid quantity", "Quantity must be at least 1.");
-            return;
+            date = LocalDate.parse(String.valueOf(row.get("Date")));
+        } catch (Exception e) {
+            date = LocalDate.now();
         }
 
-        Product p = products.get(name);
-        int diff = newQty - oldQty;
-        if (p != null) {
-            if (diff > p.stock) {
-                showWarning("Not enough stock", "Only " + p.stock + " more available.");
-                return;
-            }
-            p.stock -= diff;   // negative diff gives stock back
+        EditSaleController.SaleData data = new EditSaleController.SaleData(
+                String.valueOf(row.get("Product")),
+                (Integer) row.get("Qty"),
+                ((Number) row.get("Price")).doubleValue(),
+                date);
+
+        List<EditSaleController.ProductOption> options = new ArrayList<>();
+        for (Product p : products.values()) {
+            options.add(new EditSaleController.ProductOption(p.name, p.price, p.stock));
+        }
+
+        EditSaleController.open(tvSales.getScene(), data, options,
+                (name, qty, unitPrice, newDate) -> applyEdit(row, name, qty, unitPrice, newDate));
+    }
+
+    /** Gives the old quantity back to the old product, takes the new quantity from the new one. */
+    private void applyEdit(Map<String, Object> row, String newName, int newQty,
+                           double unitPrice, LocalDate newDate) {
+        Product oldProduct = products.get(String.valueOf(row.get("Product")));
+        if (oldProduct != null) {
+            oldProduct.stock += (Integer) row.get("Qty");
+        }
+        Product newProduct = products.get(newName);
+        if (newProduct != null) {
+            newProduct.stock -= newQty;
         }
 
         // TODO: also UPDATE the sale and the stock in the database
-        double price = ((Number) row.get("Price")).doubleValue();
+        row.put("Product", newName);
         row.put("Qty", newQty);
-        row.put("Total", newQty * price);
+        row.put("Price", unitPrice);
+        row.put("Total", newQty * unitPrice);
+        row.put("Date", newDate.toString());
 
         tvSales.refresh();
+        tvSales.sort();
         updateForm();
         updateSummary();
     }
@@ -388,7 +392,28 @@ public class StandSaleController implements Initializable {
 
     @FXML
     private void handleOpenExport() {
-        openDialog("EXPORTDIALOG.fxml", "Export sales");
+        Optional<ExportDialogController.ExportOptions> choice =
+                ExportDialogController.show(currentStage(), "Stand sales", false);
+        if (choice.isEmpty()) {
+            return;
+        }
+        ExportDialogController.ExportOptions opts = choice.get();
+
+        List<List<String>> rows = new ArrayList<>();
+        for (Map<String, Object> s : allSales) {
+            if (!opts.inRange(String.valueOf(s.get("Date")))) continue;
+
+            rows.add(List.of(
+                    String.valueOf(s.get("Date")),
+                    String.valueOf(s.get("Product")),
+                    String.valueOf(s.get("Qty")),
+                    String.format("%.2f", ((Number) s.get("Price")).doubleValue()),
+                    String.format("%.2f", ((Number) s.get("Total")).doubleValue())));
+        }
+
+        ExportDialogController.export(currentStage(), opts, "stand-sales",
+                List.of("Date", "Product", "Qty", "Unit price (PHP)", "Total (PHP)"),
+                rows);
     }
 
     // =====================================================================

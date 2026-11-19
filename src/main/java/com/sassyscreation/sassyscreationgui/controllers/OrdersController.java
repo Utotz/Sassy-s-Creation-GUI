@@ -24,7 +24,9 @@ import javafx.stage.StageStyle;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -450,7 +452,33 @@ public class OrdersController implements Initializable {
 
     @FXML
     private void handleOpenExport() {
-        openDialog("EXPORTDIALOG.fxml", "Export orders", false);
+        Optional<ExportDialogController.ExportOptions> choice =
+                ExportDialogController.show(currentStage(), "Orders", true);
+        if (choice.isEmpty()) {
+            return;
+        }
+        ExportDialogController.ExportOptions opts = choice.get();
+
+        List<List<String>> rows = new ArrayList<>();
+        for (Map<String, Object> o : allOrders) {
+            String status = String.valueOf(o.get("status"));
+            if (!opts.includeCancelled && "Cancelled".equals(status)) continue;
+            if (!opts.inRange(String.valueOf(o.get("date")))) continue;
+
+            rows.add(List.of(
+                    String.valueOf(o.get("id")),
+                    String.valueOf(o.get("fb")),
+                    String.valueOf(o.get("product")),
+                    String.valueOf(o.get("color")),
+                    String.format("%.2f", ((Number) o.get("price")).doubleValue()),
+                    String.valueOf(o.get("type")),
+                    String.valueOf(o.get("date")),
+                    status));
+        }
+
+        ExportDialogController.export(currentStage(), opts, "orders",
+                List.of("Order #", "Customer", "Product", "Color", "Price (PHP)", "Type", "Date", "Status"),
+                rows);
     }
 
     // =====================================================================
