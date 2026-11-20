@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -13,8 +14,10 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 import java.util.ArrayList;
@@ -24,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Controller for the "Low stock items" dialog (LOWSTOCK.fxml).
+ * Controller for the "Low stock items" dialog.
  *
  * Usage:
  *   List<LowStockController.StockItem> items = List.of(
@@ -34,7 +37,7 @@ import java.util.Map;
  */
 public class LowStockController {
 
-    // CHANGE THIS to match the actual file name of your low-stock FXML
+    // CHANGE THIS to the exact file name of your low-stock FXML
     // (it must sit in src/main/resources/com/sassyscreation/sassyscreationgui/)
     private static final String FXML_PATH =
             "/com/sassyscreation/sassyscreationgui/LOWSTOCK.fxml";
@@ -80,16 +83,22 @@ public class LowStockController {
     public static boolean show(Window owner, List<StockItem> items) {
         try {
             FXMLLoader loader = new FXMLLoader(LowStockController.class.getResource(FXML_PATH));
-            Scene scene = new Scene(loader.load());
+            Parent root = loader.load();
+
             LowStockController controller = loader.getController();
             controller.setItems(items);
 
+            Scene scene = new Scene(root);
+            scene.setFill(Color.TRANSPARENT);
+
             Stage stage = new Stage();
-            stage.setTitle("Low stock items");
-            stage.initOwner(owner);
+            stage.initStyle(StageStyle.TRANSPARENT);
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setResizable(false);
+            if (owner != null) {
+                stage.initOwner(owner);
+            }
             stage.setScene(scene);
+            stage.sizeToScene();
             stage.showAndWait();
 
             return controller.goToInventory;
@@ -206,7 +215,6 @@ public class LowStockController {
 
     @FXML
     private void handleCloseLowStock() {
-        goToInventory = false;
         close();
     }
 

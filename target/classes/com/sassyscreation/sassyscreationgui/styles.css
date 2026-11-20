@@ -114,8 +114,7 @@
 .footer-bar { -fx-background-color: #FBE3EB; -fx-background-radius: 16; -fx-padding: 14 24 14 24; -fx-min-height: 56; -fx-alignment: CENTER-LEFT; }
 
 /* ---- dialogs ---- */
-.dialog-card { -fx-background-color: white; -fx-background-radius: 24; -fx-padding: 34 36 30 36; -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.16), 40, 0, 0, 14); }
-.dialog-card-pink { -fx-border-color: transparent; -fx-border-radius: 24; -fx-border-width: 0; }
+.dialog-card {-fx-background-color: white;-fx-background-radius: 24;-fx-effect: dropshadow(gaussian, rgba(194, 42, 98, 0.22), 22, 0.1, 0, 6);}
 .dialog-title         { -fx-text-fill: #B3261E; -fx-font-weight: bold; -fx-font-size: 26px; -fx-padding: 0 0 14 0; }
 .dialog-title-primary { -fx-text-fill: #C22A62; -fx-font-weight: bold; -fx-font-size: 26px; -fx-padding: 0 0 14 0; }
 .dialog-title-warn    { -fx-text-fill: #8A6508; -fx-font-weight: bold; -fx-font-size: 26px; -fx-padding: 0 0 14 0; }

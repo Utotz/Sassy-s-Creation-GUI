@@ -241,7 +241,7 @@ public class AddOrderController {
         // orderDao.save(customer, product.getId(), color, qty, price, date, arrangement, status);
         // inventoryDao.deductStock(product.getId(), qty);
 
-        info("Order saved for " + customer + ".");
+        success("Order saved", "The order for " + customer + " was saved successfully.");
         goOrders();
     }
 
@@ -331,10 +331,15 @@ public class AddOrderController {
     }
 
     // =====================================================================
-    // Alerts
+    // Dialogs
     // =====================================================================
+
+    /** Custom success popup (SUCCESSDIALOG.fxml). */
+    private void success(String title, String msg) {
+        SuccessDialogController.show(currentStage(), title, msg);
+    }
+
     private void warn(String msg)  { show(Alert.AlertType.WARNING, "Check your input", msg); }
-    private void info(String msg)  { show(Alert.AlertType.INFORMATION, "Success", msg); }
     private void error(String msg) { show(Alert.AlertType.ERROR, "Error", msg); }
 
     private void show(Alert.AlertType type, String title, String msg) {

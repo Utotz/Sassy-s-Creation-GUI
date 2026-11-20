@@ -1,25 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Ellipse?>
-<?import javafx.scene.shape.Rectangle?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-<StackPane fx:id="root"
-           fx:controller="com.sassyscreation.sassyscreationgui.controllers.AboutController"
-           prefHeight="400" prefWidth="480"
-           styleClass="dialog-root, page-v3"
-           xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="root" style="-fx-background-color: transparent; -fx-padding: 44;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sassyscreation.sassyscreationgui.controllers.AboutController">
     <stylesheets><URL value="@styles.css" /></stylesheets>
     <children>
-        <VBox alignment="CENTER" maxWidth="420.0" spacing="6.0" styleClass="dialog-card, dialog-card-pink">
+        <VBox alignment="CENTER" maxWidth="480.0" prefWidth="480.0" spacing="12.0"
+              styleClass="dialog-card"
+              style="-fx-background-color: white; -fx-background-radius: 24; -fx-padding: 24; -fx-effect: dropshadow(gaussian, rgba(194, 42, 98, 0.22), 22, 0.1, 0, 6);">
             <children>
                 <Pane maxHeight="72" maxWidth="72" minHeight="72" minWidth="72" prefHeight="72" prefWidth="72">
                     <children>
@@ -32,15 +23,13 @@
                         <Circle centerX="36.0" centerY="36.0" fill="#FFE08A" radius="7.9" />
                     </children>
                 </Pane>
-                <Label styleClass="dialog-title-primary" text="Sassy’s Creation" style="-fx-padding: 10 0 0 0;" />
+                <Label style="-fx-padding: 8 0 0 0;" styleClass="dialog-title-primary" text="Sassy’s Creation" />
                 <Label styleClass="dialog-text" text="Sales and Order Management System" textAlignment="CENTER" wrapText="true" />
                 <Label styleClass="dialog-text" text="Handmade Crochet and Bouquets" />
-                <Label fx:id="lblVersion" styleClass="stat-note" text="Version 1.0.0" style="-fx-padding: 8 0 0 0;" />
-                <HBox alignment="CENTER" spacing="14.0" styleClass="dialog-buttons">
+                <Label fx:id="lblVersion" style="-fx-padding: 6 0 10 0;" styleClass="stat-note" text="Version 1.0.0" />
+                <HBox alignment="CENTER" styleClass="dialog-buttons">
                     <children>
-                        <Button fx:id="btnCloseAbout" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"
-                                mnemonicParsing="false" onAction="#handleCloseAbout"
-                                styleClass="btn-ghost" text="Close" />
+                        <Button fx:id="btnCloseAbout" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCloseAbout" styleClass="btn-primary" text="Close" HBox.hgrow="ALWAYS" />
                     </children>
                 </HBox>
             </children>

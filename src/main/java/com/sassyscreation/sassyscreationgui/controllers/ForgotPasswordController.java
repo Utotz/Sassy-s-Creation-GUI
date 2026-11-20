@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -29,10 +30,11 @@ public class ForgotPasswordController {
 
     // CHANGE THESE if your files have different names
     private static final String FXML_LOGIN = "LOGIN.fxml";
-    private static final String FXML_RESET = "RESETPASSWORD.fxml";   // step 2 (not built yet)
+    private static final String FXML_RESET = "RESETPASSWORD.fxml";
 
     private static final int MAX_ATTEMPTS = 3;
 
+    @FXML private StackPane rootPane;
     @FXML private TextField tfFpUsername;
     @FXML private ComboBox<String> cbSecurityQuestion;
     @FXML private PasswordField pfSecurityAnswer;
@@ -44,6 +46,9 @@ public class ForgotPasswordController {
 
     @FXML
     private void initialize() {
+        // Same flower background as the login screen
+        LoginBackground.apply(rootPane);
+
         // Error label takes no space until there is a message
         lblFpError.managedProperty().bind(lblFpError.visibleProperty());
         hideError();
@@ -97,7 +102,6 @@ public class ForgotPasswordController {
             pfSecurityAnswer.clear();
 
             if (failedAttempts >= MAX_ATTEMPTS) {
-                // Too many wrong tries: send them back to the login screen
                 Alert a = new Alert(Alert.AlertType.WARNING);
                 a.initOwner(btnVerify.getScene().getWindow());
                 a.setTitle("Forgot password");
@@ -154,8 +158,21 @@ public class ForgotPasswordController {
             a.showAndWait();
             return;
         }
-        // TODO: pass `username` to the step 2 controller so it knows whose password to change
-        swapRoot(FXML_RESET, "Reset password");
+        try {
+            FXMLLoader loader = new FXMLLoader(resource);
+            Parent root = loader.load();
+
+            // Tell step 2 whose password is being changed
+            ResetPasswordController reset = loader.getController();
+            reset.setUsername(username);
+
+            Stage stage = (Stage) btnVerify.getScene().getWindow();
+            stage.getScene().setRoot(root);
+            stage.setTitle("Sassy's Creation - Reset password");
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Could not open Reset password.");
+        }
     }
 
     @FXML
