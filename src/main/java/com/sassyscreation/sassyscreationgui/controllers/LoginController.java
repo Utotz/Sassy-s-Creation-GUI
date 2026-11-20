@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -25,6 +26,7 @@ import java.util.prefs.Preferences;
 public class LoginController implements Initializable {
 
     // ---- fx:ids from LOGIN.fxml ----
+    @FXML private StackPane rootPane;
     @FXML private TextField tfUsername;
     @FXML private PasswordField pfPassword;
     @FXML private TextField tfPasswordVisible;
@@ -55,6 +57,17 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // set the background image
+        URL bgUrl = getClass().getResource("/drawables/login-bg.jpg");
+        if (bgUrl != null) {
+            rootPane.setStyle("-fx-background-image: url('" + bgUrl.toExternalForm() + "');"
+                    + "-fx-background-size: cover;"
+                    + "-fx-background-position: center center;"
+                    + "-fx-background-repeat: no-repeat;");
+        } else {
+            System.out.println("login-bg.jpg not found in resources/drawables");
+        }
+
         lblError.setText("");
 
         // Keep the visible and hidden password fields in sync
