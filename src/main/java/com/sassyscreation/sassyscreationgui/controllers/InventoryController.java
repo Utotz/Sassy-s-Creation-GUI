@@ -1,5 +1,6 @@
 package com.sassyscreation.sassyscreationgui.controllers;
 
+import com.sassyscreation.sassyscreationgui.dao.ProductDAO;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,6 +36,7 @@ import javafx.stage.Window;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
@@ -58,12 +60,13 @@ public class InventoryController implements Initializable {
     // FXML file names (inside resources/com/sassyscreation/sassyscreationgui/)
     // ---------------------------------------------------------------
     private static final String FXML_PATH            = "/com/sassyscreation/sassyscreationgui/";
+    private static final String IMAGE_PATH           = FXML_PATH + "images/";
     private static final String FXML_DASHBOARD       = "DASHBOARD.fxml";
     private static final String FXML_ORDERS          = "ORDERS.fxml";
     private static final String FXML_STAND_SALE      = "STANDSALE.fxml";
     private static final String FXML_INVENTORY_LIST  = "INVENTORY_LIST.fxml";
-    private static final String FXML_INVENTORY_GRID  = "INVENTORY_GRID.fxml";   // <-- CHANGE to your grid file name
-    private static final String FXML_ADD_PRODUCT     = "ADDPRODUCT.fxml";       // <-- CHANGE if yours is named differently
+    private static final String FXML_INVENTORY_GRID  = "INVENTORY_GRID.fxml";
+    private static final String FXML_ADD_PRODUCT     = "ADDPRODUCT.fxml";
     private static final String FXML_LOGIN           = "LOGIN.fxml";
     private static final String FXML_ABOUT           = "ABOUT.fxml";
     private static final String FXML_CHANGE_PASSWORD = "CHANGEPASSWORD.fxml";
@@ -85,17 +88,23 @@ public class InventoryController implements Initializable {
         private String category;
         private double price;
         private int stock;
-        /** CSS class that supplies the grid photo (e.g. "pic-diamond-top"); null = draw a category icon. */
+        /** CSS class that supplies the grid photo (e.g. "pic-diamond-top"); null = use imagePath / icon. */
         private final String photoClass;
+        /** From the database: image file name or full path; null = no picture. */
+        private final String imagePath;
 
-        public Product(int id, String name, String category, double price, int stock, String photoClass) {
+        public Product(int id, String name, String category, double price, int stock,
+                       String photoClass, String imagePath) {
             this.id = id;
             this.name = name;
             this.category = category;
             this.price = price;
             this.stock = stock;
             this.photoClass = photoClass;
+            this.imagePath = imagePath;
         }
+
+        public String getImagePath() { return imagePath; }
 
         public int getId() { return id; }
         public String getName() { return name; }
@@ -106,65 +115,72 @@ public class InventoryController implements Initializable {
     }
 
     private static final ObservableList<Product> PRODUCTS = FXCollections.observableArrayList();
-    private static int nextId = 1;
+    private static final ProductDAO productDAO = new ProductDAO();
 
-    static {
-        // TEMPORARY seed data (matches the design) - replace with a database / DAO load
-        // {name, category, price, stock, photo css class}
-        String[][] seed = {
-                {"Little Blossom Serenade - Fuzzy Wire", "Bouquet", "100", "10", "pic-little-blossom-serenade"},
-                {"Single Lily / Tulip - Fuzzy Wire", "Bouquet", "85", "10", "pic-single-lily-tulip"},
-                {"Mini Sunflower - Fuzzy Wire", "Bouquet", "35", "10", "pic-mini-sunflower-35"},
-                {"Mini Sunflower 2 - Fuzzy Wire", "Bouquet", "50", "10", "pic-mini-sunflower-50"},
-                {"Mini Bouquet - Fuzzy Wire", "Bouquet", "55", "10", "pic-mini-bouquet-fuzzy-wire"},
-                {"Sunflower Bouquet - Fuzzy Wire", "Bouquet", "150", "10", "pic-sunflower-bouquet"},
-                {"Sunblush Bouquet - Fuzzy Wire", "Bouquet", "155", "10", "pic-sunblush-bouquet"},
-                {"Rosa Bouquet - Fuzzy Wire", "Bouquet", "155", "10", "pic-rosa-bouquet"},
-                {"Tangled - Fuzzy Wire", "Bouquet", "180", "10", "pic-tangled"},
-                {"Tangled Grand - Fuzzy Wire", "Bouquet", "1000", "10", "pic-tangled-grand"},
-                {"Blooming Grace Bouquet - Fuzzy Wire", "Bouquet", "280", "10", "pic-blooming-grace-bouquet"},
-                {"Single Stargazer Bouquet - Fuzzy Wire", "Bouquet", "300", "10", "pic-single-stargazer-bouquet"},
-                {"Single Stargazer Bouquet Version 2 - Fuzzy Wire", "Bouquet", "450", "10", "pic-single-stargazer-v2"},
-                {"Flor\u00E8a Bouquet - Fuzzy Wire", "Bouquet", "350", "10", "pic-florea-bouquet"},
-                {"Flor\u00E8a Bouquet Version 2 - Fuzzy Wire", "Bouquet", "500", "10", "pic-florea-bouquet-v2"},
-                {"Flor\u00E8a Bouquet Version 3 - Fuzzy Wire", "Bouquet", "650", "10", "pic-florea-bouquet-v3"},
-                {"Stargazer Embrace Bouquet - Fuzzy Wire", "Bouquet", "650", "10", "pic-stargazer-embrace-bouquet"},
-                {"Thumbelina Cone Bouquet - Fuzzy Wire", "Bouquet", "500", "10", "pic-thumbelina-cone-bouquet"},
-                {"Big Rose Bouquet - Fuzzy Wire", "Bouquet", "580", "10", "pic-big-rose-bouquet"},
-                {"Coffee Bouquet - Fuzzy Wire", "Bouquet", "300", "10", "pic-coffee-bouquet"},
-                {"Red Tulip Bouquet - Fuzzy Wire", "Bouquet", "300", "10", "pic-red-tulip-bouquet"},
-                {"Set Gift - Crochet", "Bouquet", "300", "10", "pic-set-gift"},
-                {"Tulip - Crochet", "Bouquet", "135", "10", "pic-crochet-tulip-bouquet"},
-                {"Single Tulip - Crochet", "Bouquet", "150", "10", "pic-crochet-single-tulip"},
-                {"Sophia - Crochet", "Bouquet", "750", "10", "pic-sophia-bouquet"},
-                {"Rose Serenade - Crochet", "Bouquet", "250", "10", "pic-rose-serenade"},
-                {"Single Tulip - Satin", "Bouquet", "100", "10", "pic-satin-single-tulip"},
-                {"Rosette Charm - Satin Ribbon", "Bouquet", "300", "10", "pic-rosette-charm"},
-                {"Jelly First Keychain", "Keychain", "100", "10", "pic-jelly-first-keychain"},
-                {"Mini Bouquet Keychain", "Keychain", "100", "10", "pic-mini-bouquet-keychain"},
-                {"Puff Flower in a Pouch Keychain", "Keychain", "40", "10", "pic-puff-flower-pouch"},
-                {"Mini Flower in a Pouch Keychain", "Keychain", "25", "10", "pic-mini-flower-pouch"},
-                {"Mini Labubu Keychain", "Keychain", "85", "10", "pic-mini-labubu"},
-                {"Moana Inspired Keychain", "Keychain", "200", "10", "pic-moana-inspired-keychain"},
-                {"Frog Headband", "Crochet", "80", "10", "pic-frog-headband"},
-                {"Thumbler Holder", "Crochet", "250", "10", "pic-thumbler-holder"},
-                {"Diamond Top", "Crochet", "200", "4", "pic-diamond-top"},
-                {"Swim Bra", "Crochet", "200", "10", "pic-swim-bra"},
-                {"Mini Tulip in a Card", "Crochet", "70", "10", "pic-mini-tulip-in-card"},
-                {"Tulip Pot - Crochet", "Crochet", "200", "10", "pic-crochet-tulip-pot"},
-                {"Sunflower Pot - Crochet", "Crochet", "200", "10", "pic-crochet-sunflower-pot"},
-                {"Cactus Pot - Crochet", "Crochet", "200", "10", "pic-crochet-cactus-pot"},
-                {"Pot Set (Tulip, Sunflower, Cactus) - Crochet", "Crochet", "200", "10", "pic-crochet-pot-set"},
-        };
-        for (String[] r : seed) {
-            PRODUCTS.add(new Product(nextId++, r[0], r[1], Double.parseDouble(r[2]), Integer.parseInt(r[3]), r[4]));
+    public static void loadProductsFromDB() {
+        PRODUCTS.clear();
+        try {
+            for (var dbProd : productDAO.getAllProducts()) {
+                PRODUCTS.add(new Product(
+                        dbProd.getProductId(),
+                        dbProd.getName(),
+                        dbProd.getCategory(),
+                        dbProd.getPrice().doubleValue(),
+                        dbProd.getStockQuantity(),
+                        null,
+                        dbProd.getImagePath()
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    /** Called by AddProductController when a new product is saved. */
-    public static void addProduct(String name, String category, double price, int stock) {
-        // TODO: also INSERT into the database
-        PRODUCTS.add(new Product(nextId++, name, category, price, stock, null));
+    /**
+     * Called by AddProductController when a new product is saved.
+     * Inserts it into the database and reloads the list.
+     *
+     * @return true if it was saved
+     */
+    public static boolean addProduct(String name, String category, double price, int stock, String imagePath) {
+        try {
+            productDAO.insertProduct(name, category, BigDecimal.valueOf(price), stock, imagePath);
+            loadProductsFromDB();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // Product pictures (products.image_path)
+    // ---------------------------------------------------------------
+
+    /**
+     * Turns a database image_path into a URL the stylesheet can load, or null if there is
+     * no picture (empty path, or the file is not found).
+     */
+    private static String imageUrl(String path) {
+        if (path == null || path.isBlank()) {
+            return null;
+        }
+        File f = new File(path);
+        if (f.isAbsolute() && f.isFile()) {
+            return f.toURI().toString();                         // photo added by the user
+        }
+        URL res = InventoryController.class.getResource(IMAGE_PATH + path.trim());
+        System.out.println("IMG " + path + " -> " + (res == null ? "NOT FOUND" : res.toExternalForm()));
+        return res == null ? null : res.toExternalForm();        // bundled image
+    }
+
+    /** Inline CSS that fills a node with the picture, cropped to cover. */
+    private static String photoStyle(String url, int radius) {
+        return "-fx-background-image: url('" + url.replace("'", "%27") + "');"
+                + "-fx-background-size: cover;"
+                + "-fx-background-position: center center;"
+                + "-fx-background-repeat: no-repeat;"
+                + "-fx-background-radius: " + radius + ";";
     }
 
     /** Filtered view of PRODUCTS used by both the table and the grid. */
@@ -252,6 +268,7 @@ public class InventoryController implements Initializable {
             }
         });
 
+        loadProductsFromDB();
         refresh();
     }
 
@@ -302,28 +319,40 @@ public class InventoryController implements Initializable {
         });
     }
 
-    /** 44x44 tile with the category line-icon (list view photo column). */
+    /** 44x44 tile: the product picture, or the category line-icon when there is none. */
     private Node listTile(Product p) {
-        StackPane tile = new StackPane(glyph(p.getCategory(), 1.1));
+        StackPane tile = new StackPane();
         tile.getStyleClass().add("prod-tile");
+        String url = imageUrl(p.getImagePath());
+        if (url != null) {
+            tile.setStyle(photoStyle(url, 10));
+        } else {
+            tile.getChildren().add(glyph(p.getCategory(), 1.1));
+        }
         tile.setMinSize(44, 44);
         tile.setPrefSize(44, 44);
         tile.setMaxSize(44, 44);
         return tile;
     }
 
-    /** "Edit · Restock" links (list view actions column). */
+    /** "Edit · Restock · Delete" links (list view actions column). */
     private Node listActions(Product p) {
         Button edit = button("Edit", "ico-edit", "Edit", "btn-icon", "btn-edit", "link-pink");
         edit.setOnAction(e -> editProduct(p));
 
-        Label sep = new Label("\u00B7");
-        sep.getStyleClass().add("link-sep");
+        Label sep1 = new Label("\u00B7");
+        sep1.getStyleClass().add("link-sep");
 
         Button restock = button("Restock", null, "Restock", "btn-icon", "link-pink");
         restock.setOnAction(e -> restockProduct(p));
 
-        HBox box = new HBox(4, edit, sep, restock);
+        Label sep2 = new Label("\u00B7");
+        sep2.getStyleClass().add("link-sep");
+
+        Button delete = button("Delete", "ico-delete", "Delete", "btn-icon", "link-pink");
+        delete.setOnAction(e -> deleteProduct(p));
+
+        HBox box = new HBox(4, edit, sep1, restock, sep2, delete);
         box.setAlignment(Pos.CENTER_LEFT);
         return box;
     }
@@ -418,7 +447,10 @@ public class InventoryController implements Initializable {
         photo.setPrefHeight(140);
         photo.setMaxHeight(140);
         photo.setMaxWidth(Double.MAX_VALUE);
-        if (p.getPhotoClass() != null) {
+        String url = imageUrl(p.getImagePath());
+        if (url != null) {
+            photo.setStyle(photoStyle(url, 0));
+        } else if (p.getPhotoClass() != null) {
             photo.getStyleClass().add(p.getPhotoClass());
         } else {
             photo.setStyle("-fx-background-color: " + bgColor(p.getCategory()) + ";");
@@ -592,7 +624,7 @@ public class InventoryController implements Initializable {
         dialog.setHeaderText("Edit " + p.getName());
         dialog.initOwner(ownerWindow());
 
-        // The list design has no delete button, so deleting lives here too
+        // Deleting is also available from inside the edit dialog
         ButtonType deleteType = new ButtonType("Delete product", ButtonBar.ButtonData.LEFT);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL, deleteType);
 

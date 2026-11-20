@@ -9,9 +9,6 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 
-/**
- * Controller for the "Password changed" screen (PASSWORDCHANGED.fxml).
- */
 public class PasswordChangedController {
 
     private static final String FXML_PATH = "/com/sassyscreation/sassyscreationgui/";

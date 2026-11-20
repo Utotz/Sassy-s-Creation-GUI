@@ -11,13 +11,14 @@ public final class LoginBackground {
 
     public static void apply(StackPane root) {
         URL bgUrl = LoginBackground.class.getResource("/drawables/login-bg.jpg");
-        if (bgUrl != null) {
-            root.setStyle("-fx-background-image: url('" + bgUrl.toExternalForm() + "');"
-                    + "-fx-background-size: cover;"
-                    + "-fx-background-position: center center;"
-                    + "-fx-background-repeat: no-repeat;");
-        } else {
-            System.out.println("login-bg.jpg not found in resources/drawables");
+        if (bgUrl == null) {
+            System.out.println("login-bg.jpg NOT FOUND in resources/drawables");
+            return;
         }
+        root.setStyle("-fx-background-color: transparent;"
+                + "-fx-background-image: url('" + bgUrl.toExternalForm() + "');"
+                + "-fx-background-size: cover;"
+                + "-fx-background-position: center center;"
+                + "-fx-background-repeat: no-repeat;");
     }
 }

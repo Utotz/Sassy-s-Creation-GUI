@@ -1,5 +1,11 @@
 package com.sassyscreation.sassyscreationgui.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -136,6 +142,24 @@ public class AddProductController implements Initializable {
         photoPath = file.getAbsolutePath();
     }
 
+    /** Copies the chosen photo into ./product-images and returns the new full path (or null). */
+    private String saveCopyOfPhoto() {
+        if (photoPath == null) {
+            return null;
+        }
+        try {
+            Path dir = Paths.get(System.getProperty("user.dir"), "product-images");
+            Files.createDirectories(dir);
+            String safe = new File(photoPath).getName().replaceAll("[^A-Za-z0-9._-]", "_");
+            Path target = dir.resolve(System.currentTimeMillis() + "-" + safe);
+            Files.copy(Paths.get(photoPath), target, StandardCopyOption.REPLACE_EXISTING);
+            return target.toAbsolutePath().toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     // =====================================================================
     //  Save
     // =====================================================================
@@ -178,8 +202,11 @@ public class AddProductController implements Initializable {
         }
 
         // TODO: also INSERT the product into the database (photoPath is available if you store it)
-        InventoryController.addProduct(name, category, price, stock);
-
+        String savedPhoto = saveCopyOfPhoto();
+        if (!InventoryController.addProduct(name, category, price, stock, savedPhoto)) {
+            showError("Could not save product", "The product could not be saved to the database.");
+            return;
+        }
         Alert ok = new Alert(Alert.AlertType.INFORMATION);
         ok.initOwner(currentStage());
         ok.setTitle("Product saved");
