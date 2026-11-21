@@ -25,6 +25,9 @@ public final class ScreenTransition {
     private static final double IN_MS = 240;
     private static final double SLIDE = 14;
 
+    /** false = instant screen change (the sidebar bar slide is the only animation) */
+    private static final boolean ENABLED = false;
+
     /** true while an animation is playing (ignores extra clicks) */
     private static boolean running = false;
 
@@ -32,6 +35,10 @@ public final class ScreenTransition {
     }
 
     public static void show(Scene scene, Parent newRoot) {
+        if (!ENABLED) {
+            scene.setRoot(newRoot);
+            return;
+        }
         if (running) {
             return;
         }

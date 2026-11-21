@@ -1,9 +1,17 @@
 package com.sassyscreation.sassyscreationgui.controllers;
 
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -12,12 +20,14 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.Optional;
@@ -44,6 +54,22 @@ public class SidebarController implements Initializable {
     private static final String FXML_ABOUT           = "ABOUT.fxml";
     private static final String FXML_CHANGE_PASSWORD = "CHANGEPASSWORD.fxml";
 
+    // ---- sliding pink bar next to the active menu item ----
+    private static final double BAR_WIDTH = 4;
+    private static final double BAR_X = 0;      // move left/right to line up with the old bar
+    private static final double BAR_GAP = 4;    // space above/below the bar inside the row
+    private static final double SLIDE_MS = 320;
+    private static final String OLD_BAR_OFF = "-fx-border-color: transparent; -fx-border-width: 0;";
+
+    /** Where the bar was on the previous screen, so the new screen can slide it from there. */
+    private static double lastY = Double.NaN;
+
+    private VBox navBox;
+    private Region bar;
+    private Node activeRow;
+    private boolean barPlaced = false;
+    private Timeline slide;
+
     @FXML private VBox sidebarRoot;
     @FXML private Button navDashboard;
     @FXML private Button navOrders;
@@ -61,6 +87,20 @@ public class SidebarController implements Initializable {
         // the including page sets styleClass="page-xxx" on the sidebar root AFTER it is loaded,
         // so listen for it and (re)apply the highlight
         sidebarRoot.getStyleClass().addListener((ListChangeListener<String>) c -> applyActiveFromStyleClass());
+
+        // the pink bar is drawn by us now, so turn off the one from the CSS
+        for (Button b : new Button[]{navDashboard, navOrders, navStandSale, navInventory}) {
+            b.setStyle(OLD_BAR_OFF);
+        }
+        navBox = (VBox) navDashboard.getParent();
+        bar = new Region();
+        bar.setManaged(false);
+        bar.setMouseTransparent(true);
+        bar.setVisible(false);
+        bar.setLayoutX(BAR_X);
+        bar.setStyle("-fx-background-color: #C22A62; -fx-background-radius: 3;");
+        navBox.getChildren().add(bar);
+
         applyActiveFromStyleClass();
     }
 
@@ -85,7 +125,62 @@ public class SidebarController implements Initializable {
         };
         if (target != null) {
             target.getStyleClass().add("nav-active");
+            activeRow = rowOf(target);
+            moveBar();
         }
+    }
+
+    /** The direct child of the menu box that holds this button (the Orders button sits in a StackPane). */
+    private Node rowOf(Button b) {
+        Node n = b;
+        while (n.getParent() != navBox) {
+            n = n.getParent();
+        }
+        return n;
+    }
+
+    /** Slides the pink bar to the active row (from where it was on the previous screen). */
+    private void moveBar() {
+        if (activeRow == null || bar == null) {
+            return;
+        }
+        Region row = (Region) activeRow;
+
+        // not laid out yet: wait until the row has a height, then try again
+        if (row.getHeight() <= 0) {
+            row.heightProperty().addListener(new ChangeListener<Number>() {
+                @Override
+                public void changed(ObservableValue<? extends Number> obs, Number oldV, Number newV) {
+                    if (newV.doubleValue() > 0) {
+                        row.heightProperty().removeListener(this);
+                        Platform.runLater(SidebarController.this::moveBar);
+                    }
+                }
+            });
+            return;
+        }
+
+        double y = row.getLayoutY() + BAR_GAP;
+        bar.resize(BAR_WIDTH, row.getHeight() - 2 * BAR_GAP);
+        bar.setVisible(true);
+
+        // start from the previous screen's spot (first time) or where the bar is now
+        double from = barPlaced ? bar.getTranslateY() : lastY;
+        if (Double.isNaN(from)) {
+            from = y;
+        }
+        bar.setTranslateY(from);
+        if (slide != null) {
+            slide.stop();
+        }
+        if (from != y) {
+            slide = new Timeline(new KeyFrame(Duration.millis(SLIDE_MS),
+                    new KeyValue(bar.translateYProperty(), y, Interpolator.EASE_BOTH)));
+            slide.play();
+        }
+
+        barPlaced = true;
+        lastY = y;
     }
 
     /** Updates the red number next to "Orders" (hidden when 0). */
