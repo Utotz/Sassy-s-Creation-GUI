@@ -39,79 +39,8 @@
 <HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.DashboardController" minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets><URL value="@styles.css" /></stylesheets>
    <children>
-      <!-- ================= SIDEBAR ================= -->
-      <VBox minWidth="248.0" prefWidth="248.0" styleClass="sidebar">
-         <padding><Insets bottom="14.0" left="14.0" right="14.0" top="14.0" /></padding>
-         <children>
-            <VBox prefHeight="731.0" prefWidth="248.0" styleClass="side-panel" VBox.vgrow="ALWAYS">
-               <children>
-                  <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="brand-box">
-                     <padding><Insets bottom="14.0" left="8.0" right="8.0" top="10.0" /></padding>
-                     <children>
-                        <Pane maxHeight="38" maxWidth="38" minHeight="38" minWidth="38" prefHeight="38" prefWidth="38">
-                           <children>
-                              <Ellipse centerX="27.9" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="0.0" />
-                              <Ellipse centerX="23.5" centerY="26.7" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="60.0" />
-                              <Ellipse centerX="14.5" centerY="26.7" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="120.0" />
-                              <Ellipse centerX="10.1" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="180.0" />
-                              <Ellipse centerX="14.5" centerY="11.3" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="240.0" />
-                              <Ellipse centerX="23.5" centerY="11.3" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="300.0" />
-                              <Circle centerX="19.0" centerY="19.0" fill="#FFE08A" radius="4.2" />
-                           </children>
-                        </Pane>
-                        <VBox><children>
-                           <Label styleClass="brand-title" text="Sassy’s" />
-                           <Label styleClass="brand-sub" text="Creation" />
-                        </children></VBox>
-                     </children>
-                  </HBox>
-                  <Label styleClass="side-section" text="MENU" />
-                  <VBox spacing="4.0">
-                     <padding><Insets bottom="14.0" top="2.0" /></padding>
-                     <children>
-                        <Button fx:id="navDashboard" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goDashboard" styleClass="nav-btn, nav-active" text="Dashboard"><graphic><Region styleClass="ico, ico-dashboard" /></graphic></Button>
-                        <StackPane>
-                           <children>
-                              <Button fx:id="navOrders" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goOrders" styleClass="nav-btn" text="Orders"><graphic><Region styleClass="ico, ico-cart" /></graphic></Button>
-                              <Label fx:id="lblNavOrdersBadge" mouseTransparent="true" styleClass="nav-badge" text="4" StackPane.alignment="CENTER_RIGHT">
-                                 <StackPane.margin><Insets right="14.0" /></StackPane.margin>
-                              </Label>
-                           </children>
-                        </StackPane>
-                        <Button fx:id="navStandSale" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goStandSale" styleClass="nav-btn" text="Stand Sale"><graphic><Region styleClass="ico, ico-store" /></graphic></Button>
-                        <Button fx:id="navInventory" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goInventory" styleClass="nav-btn" text="Inventory"><graphic><Region styleClass="ico, ico-box" /></graphic></Button>
-                     </children>
-                  </VBox>
-                  <Region VBox.vgrow="ALWAYS" />
-                  <Button fx:id="btnLogout" focusTraversable="false" managed="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-logout" text="Log out" visible="false"><graphic><Region styleClass="ico, ico-logout" /></graphic>
-                     <VBox.margin><Insets bottom="8.0" /></VBox.margin>
-                  </Button>
-                  <!-- Admin Officer card (moved here from the top bar) -->
-                  <MenuButton fx:id="mbAccount" contentDisplay="GRAPHIC_ONLY" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="TOP" styleClass="side-user">
-                     <graphic>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <children>
-                              <Label styleClass="side-user-avatar" text="A" />
-                              <VBox alignment="CENTER_LEFT" spacing="1.0">
-                                 <children>
-                                    <Label styleClass="side-user-name" text="Admin Officer" />
-                                    <Label styleClass="side-user-role" text="Sassy’s Creation" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </HBox>
-                     </graphic>
-                     <items>
-                        <MenuItem fx:id="miChangePassword" mnemonicParsing="false" onAction="#handleOpenChangePassword" styleClass="account-item" text="Change password"><graphic><Region styleClass="ico, ico-key" /></graphic></MenuItem>
-                        <MenuItem fx:id="miAbout" mnemonicParsing="false" onAction="#handleOpenAbout" styleClass="account-item" text="About"><graphic><Region styleClass="ico, ico-info" /></graphic></MenuItem>
-                        <SeparatorMenuItem />
-                        <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#handleLogout" styleClass="account-item" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
-                     </items>
-                  </MenuButton>
-               </children>
-            </VBox>
-         </children>
-      </VBox>
+      <!-- ================= SIDEBAR (shared file: SIDEBAR.fxml) ================= -->
+      <fx:include fx:id="sidebar" source="SIDEBAR.fxml" styleClass="page-dashboard" />
 
       <!-- ================= MAIN AREA ================= -->
       <StackPane HBox.hgrow="ALWAYS">
@@ -196,14 +125,15 @@
                         </HBox>
                         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="clear-scroll" VBox.vgrow="ALWAYS">
                            <content>
-                              <VBox spacing="14.0">
-                                 <padding><Insets bottom="16.0" left="4.0" right="4.0" top="4.0" /></padding>
+                              <!-- more padding + spacing so the 3D card shadows are not clipped by the ScrollPane -->
+                              <VBox spacing="18.0">
+                                 <padding><Insets bottom="32.0" left="18.0" right="18.0" top="18.0" /></padding>
                                  <children>
 
                                     <!-- Good Morning banner -->
                                     <HBox alignment="CENTER_LEFT" fillHeight="false" spacing="6.0">
                                        <children>
-                                          <StackPane maxWidth="1.7976931348623157E308" minHeight="170.0" minWidth="0.0" prefHeight="170.0" styleClass="banner" HBox.hgrow="ALWAYS">
+                                          <StackPane maxWidth="1.7976931348623157E308" minHeight="170.0" minWidth="0.0" prefHeight="170.0" styleClass="banner" style="-fx-effect: dropshadow(gaussian, rgba(150, 30, 80, 0.38), 24, 0.12, 0, 10);" HBox.hgrow="ALWAYS">
                                              <children>
 
                                                 <VBox alignment="CENTER_LEFT" spacing="8.0">
@@ -225,8 +155,8 @@
                                     </HBox>
 
                                     <!-- stat cards -->
-                                    <HBox spacing="14.0"><children>
-                                       <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" HBox.hgrow="ALWAYS">
+                                    <HBox spacing="18.0"><children>
+                                       <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" HBox.hgrow="ALWAYS">
                                           <children>
                                              <HBox alignment="CENTER_LEFT"><children>
                                                 <Label styleClass="stat-label" text="Total Orders" />
@@ -237,7 +167,7 @@
                                              <Label styleClass="stat-note" text="4 pending" wrapText="true" />
                                           </children>
                                        </VBox>
-                                       <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" HBox.hgrow="ALWAYS">
+                                       <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" HBox.hgrow="ALWAYS">
                                           <children>
                                              <HBox alignment="CENTER_LEFT"><children>
                                                 <Label styleClass="stat-label" text="Products Listed" />
@@ -248,7 +178,7 @@
                                              <Label styleClass="stat-note" text="3 out of stock" wrapText="true" />
                                           </children>
                                        </VBox>
-                                       <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" HBox.hgrow="ALWAYS">
+                                       <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" HBox.hgrow="ALWAYS">
                                           <children>
                                              <HBox alignment="CENTER_LEFT"><children>
                                                 <Label styleClass="stat-label" text="Stand Revenue" />
@@ -259,7 +189,7 @@
                                              <Label styleClass="stat-note" text="9 stand sales recorded" wrapText="true" />
                                           </children>
                                        </VBox>
-                                       <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" HBox.hgrow="ALWAYS">
+                                       <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" HBox.hgrow="ALWAYS">
                                           <children>
                                              <HBox alignment="CENTER_LEFT"><children>
                                                 <Label styleClass="stat-label" text="Pending Order Value" />
@@ -273,13 +203,13 @@
                                     </children></HBox>
 
                                     <!-- row 1: revenue chart + reminder -->
-                                    <GridPane hgap="14.0">
+                                    <GridPane hgap="18.0">
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="68.0" />
                                           <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="32.0" />
                                        </columnConstraints>
                                        <children>
-                                          <VBox minWidth="0.0" spacing="6.0" styleClass="card" GridPane.columnIndex="0">
+                                          <VBox minWidth="0.0" spacing="6.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" GridPane.columnIndex="0">
                                              <children>
                                                 <Label styleClass="card-title" text="Stand Revenue by Day" />
                                                 <StackPane VBox.vgrow="ALWAYS">
@@ -326,7 +256,7 @@
                                                 </StackPane>
                                              </children>
                                           </VBox>
-                                          <VBox minWidth="0.0" spacing="14.0" styleClass="card" GridPane.columnIndex="1">
+                                          <VBox minWidth="0.0" spacing="14.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" GridPane.columnIndex="1">
                                              <children>
                                                 <HBox alignment="CENTER_LEFT" spacing="12.0">
                                                    <children>
@@ -347,14 +277,14 @@
                                     </GridPane>
 
                                     <!-- row 2: low stock + orders by status + quick actions -->
-                                    <GridPane hgap="14.0">
+                                    <GridPane hgap="18.0">
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="38.0" />
                                           <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="32.0" />
                                           <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="30.0" />
                                        </columnConstraints>
                                        <children>
-                                          <VBox minWidth="0.0" spacing="10.0" styleClass="card" GridPane.columnIndex="0">
+                                          <VBox minWidth="0.0" spacing="10.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" GridPane.columnIndex="0">
                                              <children>
                                                 <HBox alignment="CENTER_LEFT">
                                                    <children>
@@ -386,7 +316,7 @@
                                              </children>
                                           </VBox>
 
-                                          <VBox minWidth="0.0" spacing="6.0" styleClass="card" GridPane.columnIndex="1">
+                                          <VBox minWidth="0.0" spacing="6.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" GridPane.columnIndex="1">
                                              <children>
                                                 <Label styleClass="card-title" text="Orders by Status" />
                                                 <Label fx:id="lblOrdersYear" managed="false" maxWidth="1.7976931348623157E308" styleClass="stat-note" text="Year 2026" visible="false" />
@@ -431,7 +361,7 @@
                                              </children>
                                           </VBox>
 
-                                          <VBox minWidth="0.0" spacing="4.0" styleClass="card, quick-card" GridPane.columnIndex="2">
+                                          <VBox minWidth="0.0" spacing="4.0" styleClass="card, quick-card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" GridPane.columnIndex="2">
                                              <children>
                                                 <Label styleClass="quick-title" text="Quick actions" />
                                                 <Label styleClass="quick-sub" text="Jump straight to a task" />

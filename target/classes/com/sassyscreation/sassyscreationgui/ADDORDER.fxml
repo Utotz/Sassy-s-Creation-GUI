@@ -8,9 +8,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
@@ -33,79 +30,8 @@
       xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets><URL value="@styles.css" /></stylesheets>
    <children>
-      <!-- ================= SIDEBAR ================= -->
-      <VBox minWidth="248.0" prefWidth="248.0" styleClass="sidebar">
-         <padding><Insets bottom="14.0" left="14.0" right="14.0" top="14.0" /></padding>
-         <children>
-            <VBox styleClass="side-panel" VBox.vgrow="ALWAYS">
-               <children>
-                  <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="brand-box">
-                     <padding><Insets bottom="14.0" left="8.0" right="8.0" top="10.0" /></padding>
-                     <children>
-                        <Pane maxHeight="38" maxWidth="38" minHeight="38" minWidth="38" prefHeight="38" prefWidth="38">
-                           <children>
-                              <Ellipse centerX="27.9" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="0.0" />
-                              <Ellipse centerX="23.5" centerY="26.7" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="60.0" />
-                              <Ellipse centerX="14.5" centerY="26.7" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="120.0" />
-                              <Ellipse centerX="10.1" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="180.0" />
-                              <Ellipse centerX="14.5" centerY="11.3" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="240.0" />
-                              <Ellipse centerX="23.5" centerY="11.3" fill="#C22A62" opacity="1.0" radiusX="8.3" radiusY="5.6" rotate="300.0" />
-                              <Circle centerX="19.0" centerY="19.0" fill="#FFE08A" radius="4.2" />
-                           </children>
-                        </Pane>
-                        <VBox><children>
-                           <Label styleClass="brand-title" text="Sassy’s" />
-                           <Label styleClass="brand-sub" text="Creation" />
-                        </children></VBox>
-                     </children>
-                  </HBox>
-                  <Label styleClass="side-section" text="MENU" />
-                  <VBox spacing="4.0">
-                     <padding><Insets bottom="14.0" top="2.0" /></padding>
-                     <children>
-                        <Button fx:id="navDashboard" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goDashboard" styleClass="nav-btn" text="Dashboard"><graphic><Region styleClass="ico, ico-dashboard" /></graphic></Button>
-                        <StackPane>
-                           <children>
-                              <Button fx:id="navOrders" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goOrders" styleClass="nav-btn, nav-active" text="Orders"><graphic><Region styleClass="ico, ico-cart" /></graphic></Button>
-                              <Label fx:id="lblNavOrdersBadge" mouseTransparent="true" styleClass="nav-badge" text="4" StackPane.alignment="CENTER_RIGHT">
-                                 <StackPane.margin><Insets right="14.0" /></StackPane.margin>
-                              </Label>
-                           </children>
-                        </StackPane>
-                        <Button fx:id="navStandSale" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goStandSale" styleClass="nav-btn" text="Stand Sale"><graphic><Region styleClass="ico, ico-store" /></graphic></Button>
-                        <Button fx:id="navInventory" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goInventory" styleClass="nav-btn" text="Inventory"><graphic><Region styleClass="ico, ico-box" /></graphic></Button>
-                     </children>
-                  </VBox>
-                  <Region VBox.vgrow="ALWAYS" />
-                  <Button fx:id="btnLogout" focusTraversable="false" managed="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-logout" text="Log out" visible="false"><graphic><Region styleClass="ico, ico-logout" /></graphic>
-                     <VBox.margin><Insets bottom="8.0" /></VBox.margin>
-                  </Button>
-                  <!-- Admin Officer card -->
-                  <MenuButton fx:id="mbAccount" contentDisplay="GRAPHIC_ONLY" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="TOP" styleClass="side-user">
-                     <graphic>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <children>
-                              <Label styleClass="side-user-avatar" text="A" />
-                              <VBox alignment="CENTER_LEFT" spacing="1.0">
-                                 <children>
-                                    <Label styleClass="side-user-name" text="Admin Officer" />
-                                    <Label styleClass="side-user-role" text="Sassy’s Creation" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </HBox>
-                     </graphic>
-                     <items>
-                        <MenuItem fx:id="miChangePassword" mnemonicParsing="false" onAction="#handleOpenChangePassword" styleClass="account-item" text="Change password"><graphic><Region styleClass="ico, ico-key" /></graphic></MenuItem>
-                        <MenuItem fx:id="miAbout" mnemonicParsing="false" onAction="#handleOpenAbout" styleClass="account-item" text="About"><graphic><Region styleClass="ico, ico-info" /></graphic></MenuItem>
-                        <SeparatorMenuItem />
-                        <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#handleLogout" styleClass="account-item" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
-                     </items>
-                  </MenuButton>
-               </children>
-            </VBox>
-         </children>
-      </VBox>
+      <!-- ================= SIDEBAR (shared) ================= -->
+      <fx:include fx:id="sidebar" source="SIDEBAR.fxml" styleClass="page-orders" />
 
       <!-- ================= CONTENT ================= -->
       <StackPane HBox.hgrow="ALWAYS">

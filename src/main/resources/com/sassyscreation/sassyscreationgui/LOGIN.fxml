@@ -10,13 +10,12 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.shape.Rectangle?>
 
 <StackPane fx:id="rootPane" fx:controller="com.sassyscreation.sassyscreationgui.controllers.LoginController" minHeight="640.0" minWidth="1000.0" prefHeight="720.0" prefWidth="1180.0" styleClass="root-pane, lg-root" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">   <stylesheets><URL value="@styles.css" /></stylesheets>
@@ -31,27 +30,15 @@
             <!-- LEFT: brand panel -->
             <VBox minWidth="400.0" prefWidth="420.0" spacing="14.0" styleClass="lg-left" HBox.hgrow="NEVER">
                <children>
-                  <HBox alignment="CENTER_LEFT" spacing="12.0">
+                  <!-- BRAND LOGO (now uses sassys-logo.png) -->
+                  <VBox alignment="CENTER_LEFT" spacing="2.0">
                      <children>
-                        <Pane maxHeight="64.0" maxWidth="64.0" minHeight="64.0" minWidth="64.0" prefHeight="64.0" prefWidth="64.0">
-                           <children>
-                              <Ellipse centerX="47.0" centerY="32.0" fill="#C22A62" opacity="1.0" radiusX="14" radiusY="9.5" rotate="0.0" />
-                              <Ellipse centerX="39.5" centerY="45.0" fill="#C22A62" opacity="1.0" radiusX="14" radiusY="9.5" rotate="60.0" />
-                              <Ellipse centerX="24.5" centerY="45.0" fill="#C22A62" opacity="1.0" radiusX="14" radiusY="9.5" rotate="120.0" />
-                              <Ellipse centerX="17.0" centerY="32.0" fill="#C22A62" opacity="1.0" radiusX="14" radiusY="9.5" rotate="180.0" />
-                              <Ellipse centerX="24.5" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="14" radiusY="9.5" rotate="240.0" />
-                              <Ellipse centerX="39.5" centerY="19.0" fill="#C22A62" opacity="1.0" radiusX="14" radiusY="9.5" rotate="300.0" />
-                              <Circle centerX="32" centerY="32" fill="#FFE08A" radius="7" />
-                           </children>
-                        </Pane>
-                        <VBox alignment="CENTER_LEFT" spacing="2.0">
-                           <children>
-                              <Label styleClass="lg-brand-name" text="SASSY’S CREATION" />
-                              <Label styleClass="lg-brand-sub" text="Handmade Crochet and Bouquets" />
-                           </children>
-                        </VBox>
+                        <ImageView fitHeight="100.0" fitWidth="220.0" pickOnBounds="true" preserveRatio="true" smooth="true">
+                           <image><Image url="@../../../drawables/sassys-logo.png" /></image>
+                        </ImageView>
+                        <Label styleClass="lg-brand-sub" text="Handmade Crochet and Bouquets" />
                      </children>
-                  </HBox>
+                  </VBox>
                   <Region prefHeight="34.0" VBox.vgrow="ALWAYS" />
                   <HBox>
                      <children>

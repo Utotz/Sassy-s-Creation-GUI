@@ -1139,3 +1139,31 @@
 
 /* card shadow */
 .prod-card { -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.20), 16, 0.05, 0, 5); }
+
+/* ===== 3D cards (paste at the END of styles.css) ===== */
+
+/* ===== 3D cards (REPLACE the old 3D block at the END of styles.css with this) ===== */
+
+.dash-v2 .card {
+    -fx-background-color: #EBC6D6, white;            /* raised bottom edge, then card face */
+    -fx-background-insets: 0 0 -4 0, 0;
+    -fx-background-radius: 24, 24;                   /* change to match your card radius */
+}
+
+.dash-v2 .card:hover {
+    -fx-translate-y: -2;
+}
+
+/* Quick actions card keeps its crimson look (must come AFTER .card) */
+.dash-v2 .card.quick-card {
+    -fx-background-color: #8F1D49, #C22A62;          /* dark bottom edge, crimson face */
+    -fx-background-insets: 0 0 -4 0, 0;
+    -fx-background-radius: 24, 24;
+}
+
+/* Good Morning banner */
+.dash-v2 .banner {
+    -fx-background-color: #8F1D49, #C22A62;
+    -fx-background-insets: 0 0 -4 0, 0;
+    -fx-background-radius: 24, 24;
+}

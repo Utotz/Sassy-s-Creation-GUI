@@ -13,7 +13,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -29,9 +28,7 @@ import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 import java.io.File;
@@ -61,15 +58,9 @@ public class InventoryController implements Initializable {
     // ---------------------------------------------------------------
     private static final String FXML_PATH            = "/com/sassyscreation/sassyscreationgui/";
     private static final String IMAGE_PATH           = FXML_PATH + "images/";
-    private static final String FXML_DASHBOARD       = "DASHBOARD.fxml";
-    private static final String FXML_ORDERS          = "ORDERS.fxml";
-    private static final String FXML_STAND_SALE      = "STANDSALE.fxml";
     private static final String FXML_INVENTORY_LIST  = "INVENTORY_LIST.fxml";
     private static final String FXML_INVENTORY_GRID  = "INVENTORY_GRID.fxml";
     private static final String FXML_ADD_PRODUCT     = "ADDPRODUCT.fxml";
-    private static final String FXML_LOGIN           = "LOGIN.fxml";
-    private static final String FXML_ABOUT           = "ABOUT.fxml";
-    private static final String FXML_CHANGE_PASSWORD = "CHANGEPASSWORD.fxml";
 
     /** Number of card columns in the grid view (matches the FXML column constraints). */
     private static final int GRID_COLUMNS = 3;
@@ -187,20 +178,11 @@ public class InventoryController implements Initializable {
     private final FilteredList<Product> filteredProducts = new FilteredList<>(PRODUCTS, p -> true);
 
     // ---------------------------------------------------------------
-    // FXML fields - sidebar
+    // FXML fields
     // ---------------------------------------------------------------
-    @FXML private Button navDashboard;
-    @FXML private Button navOrders;
-    @FXML private Label lblNavOrdersBadge;
-    @FXML private Button navStandSale;
-    @FXML private Button navInventory;
-    @FXML private Button btnLogout;
 
-    // ---- account menu ----
-    @FXML private MenuButton mbAccount;
-    @FXML private MenuItem miChangePassword;
-    @FXML private MenuItem miAbout;
-    @FXML private MenuItem miLogout;
+    /** Set by <fx:include fx:id="sidebar"> in the FXML files. */
+    @FXML private SidebarController sidebarController;
 
     // ---- header / toolbar ----
     @FXML private Button btnExportInventory;
@@ -238,6 +220,8 @@ public class InventoryController implements Initializable {
     // =====================================================================
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        sidebarController.setActive("inventory");
+
         if (tvProducts != null) {
             setupTable();
         }
@@ -740,51 +724,14 @@ public class InventoryController implements Initializable {
     }
 
     // =====================================================================
-    // Navigation (sidebar)
-    // =====================================================================
-    @FXML private void goDashboard() { switchScreen(FXML_DASHBOARD, "Dashboard"); }
-    @FXML private void goOrders()    { switchScreen(FXML_ORDERS, "Orders"); }
-    @FXML private void goStandSale() { switchScreen(FXML_STAND_SALE, "Stand Sale"); }
-    @FXML private void goInventory() { switchScreen(FXML_INVENTORY_LIST, "Inventory"); }
-
-    // =====================================================================
-    // Account menu
-    // =====================================================================
-    @FXML
-    private void handleOpenChangePassword() {
-        openDialog(FXML_CHANGE_PASSWORD, "Change password", false);
-    }
-
-    @FXML
-    private void handleOpenAbout() {
-        openDialog(FXML_ABOUT, "About", true);
-    }
-
-    @FXML
-    private void handleLogout() {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Log out");
-        confirm.setHeaderText(null);
-        confirm.setContentText("Are you sure you want to log out?");
-        confirm.initOwner(ownerWindow());
-
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            // TODO: clear your session / current user here
-            currentStage().setMaximized(false);
-            switchScreen(FXML_LOGIN, "Login");
-        }
-    }
-
-    // =====================================================================
     // Helpers
     // =====================================================================
     private Window ownerWindow() {
-        return navInventory.getScene().getWindow();
+        return tfProductSearch.getScene().getWindow();
     }
 
     private Stage currentStage() {
-        return (Stage) navInventory.getScene().getWindow();
+        return (Stage) tfProductSearch.getScene().getWindow();
     }
 
     private void switchScreen(String fxmlName, String title) {
@@ -796,36 +743,8 @@ public class InventoryController implements Initializable {
             }
             Parent root = new FXMLLoader(resource).load();
             Stage stage = currentStage();
-            stage.getScene().setRoot(root);
+            ScreenTransition.show(stage.getScene(), root);
             stage.setTitle("Sassy's Creation - " + title);
-        } catch (Exception e) {
-            e.printStackTrace();
-            error("Could not open " + title, rootCause(e));
-        }
-    }
-
-    /** @param borderless true = no title bar, transparent background (for rounded dialogs like About) */
-    private void openDialog(String fxmlName, String title, boolean borderless) {
-        try {
-            URL resource = getClass().getResource(FXML_PATH + fxmlName);
-            if (resource == null) {
-                error("Screen not found", fxmlName + " could not be found in the resources folder.");
-                return;
-            }
-            Parent root = new FXMLLoader(resource).load();
-
-            Stage dialog = new Stage(borderless ? StageStyle.TRANSPARENT : StageStyle.DECORATED);
-            dialog.initOwner(currentStage());
-            dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.setTitle("Sassy's Creation - " + title);
-            dialog.setResizable(false);
-
-            Scene scene = new Scene(root);
-            if (borderless) {
-                scene.setFill(Color.TRANSPARENT);
-            }
-            dialog.setScene(scene);
-            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
             error("Could not open " + title, rootCause(e));

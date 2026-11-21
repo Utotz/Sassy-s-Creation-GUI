@@ -4,18 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -29,22 +23,8 @@ import java.util.List;
 
 public class StandSaleController implements Initializable {
 
-    /** Folder (inside resources) where all the FXML files live. */
-    private static final String FXML_PATH = "/com/sassyscreation/sassyscreationgui/";
-
-    // ---- sidebar ----
-    @FXML private Button navDashboard;
-    @FXML private Button navOrders;
-    @FXML private Label lblNavOrdersBadge;
-    @FXML private Button navStandSale;
-    @FXML private Button navInventory;
-    @FXML private Button btnLogout;
-
-    // ---- account menu ----
-    @FXML private MenuButton mbAccount;
-    @FXML private MenuItem miChangePassword;
-    @FXML private MenuItem miAbout;
-    @FXML private MenuItem miLogout;
+    // ---- sidebar (set by <fx:include fx:id="sidebar"> in STANDSALE.fxml) ----
+    @FXML private SidebarController sidebarController;
 
     // ---- header ----
     @FXML private Button btnExportSales;
@@ -88,6 +68,8 @@ public class StandSaleController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        sidebarController.setActive("standsale");
+
         loadProducts();
         loadSales();
         setUpForm();
@@ -417,118 +399,11 @@ public class StandSaleController implements Initializable {
     }
 
     // =====================================================================
-    //  Navigation (sidebar)
-    // =====================================================================
-
-    @FXML
-    private void goDashboard() {
-        switchScreen("DASHBOARD.fxml", "Dashboard");
-    }
-
-    @FXML
-    private void goOrders() {
-        switchScreen("ORDERS.fxml", "Orders");
-    }
-
-    @FXML
-    private void goStandSale() {
-        // Already on the stand sale screen
-    }
-
-    @FXML
-    private void goInventory() {
-        switchScreen("INVENTORY_LIST.fxml", "Inventory");
-    }
-
-    // =====================================================================
-    //  Account menu
-    // =====================================================================
-
-    @FXML
-    private void handleOpenChangePassword() {
-        openDialog("CHANGEPASSWORD.fxml", "Change password");
-    }
-
-    @FXML
-    private void handleOpenAbout() {
-        // borderless = true -> no Windows title bar, rounded transparent window
-        openDialog("ABOUT.fxml", "About", true);
-    }
-
-    @FXML
-    private void handleLogout() {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Log out");
-        confirm.setHeaderText(null);
-        confirm.setContentText("Are you sure you want to log out?");
-
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            currentStage().setMaximized(false);
-            switchScreen("LOGIN.fxml", "Login");
-        }
-    }
-
-    // =====================================================================
     //  Helpers
     // =====================================================================
 
     private Stage currentStage() {
-        return (Stage) navStandSale.getScene().getWindow();
-    }
-
-    /** Replaces the content of the current window with another FXML screen. */
-    private void switchScreen(String fxmlName, String title) {
-        try {
-            URL resource = getClass().getResource(FXML_PATH + fxmlName);
-            if (resource == null) {
-                showError("Screen not found", fxmlName + " could not be found in the resources folder.");
-                return;
-            }
-            Parent root = new FXMLLoader(resource).load();
-            Stage stage = currentStage();
-            stage.getScene().setRoot(root);
-            stage.setTitle("Sassy's Creation - " + title);
-        } catch (Exception e) {
-            e.printStackTrace();
-            showError("Could not open " + title, e.getMessage());
-        }
-    }
-
-    /** Opens an FXML screen in a normal pop-up window (with title bar). */
-    private void openDialog(String fxmlName, String title) {
-        openDialog(fxmlName, title, false);
-    }
-
-    /**
-     * Opens an FXML screen in a pop-up window on top of this screen.
-     *
-     * @param borderless true = no title bar, transparent background (for rounded dialogs like About)
-     */
-    private void openDialog(String fxmlName, String title, boolean borderless) {
-        try {
-            URL resource = getClass().getResource(FXML_PATH + fxmlName);
-            if (resource == null) {
-                showError("Screen not found", fxmlName + " could not be found in the resources folder.");
-                return;
-            }
-            Parent root = new FXMLLoader(resource).load();
-
-            Stage dialog = new Stage(borderless ? StageStyle.TRANSPARENT : StageStyle.DECORATED);
-            dialog.initOwner(currentStage());
-            dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.setTitle("Sassy's Creation - " + title);
-
-            Scene scene = new Scene(root);
-            if (borderless) {
-                scene.setFill(Color.TRANSPARENT);
-            }
-            dialog.setScene(scene);
-            dialog.showAndWait();
-        } catch (Exception e) {
-            e.printStackTrace();
-            showError("Could not open " + title, e.getMessage());
-        }
+        return (Stage) btnRecordSale.getScene().getWindow();
     }
 
     private void showWarning(String header, String message) {
@@ -536,14 +411,6 @@ public class StandSaleController implements Initializable {
         alert.setTitle("Stand Sale");
         alert.setHeaderText(header);
         alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private void showError(String header, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(header);
-        alert.setContentText(message == null ? "Unknown error. Check the console for details." : message);
         alert.showAndWait();
     }
 }

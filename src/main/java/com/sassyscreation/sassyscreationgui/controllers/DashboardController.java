@@ -14,7 +14,6 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
@@ -28,7 +27,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
@@ -36,19 +34,8 @@ public class DashboardController implements Initializable {
     /** Folder (inside resources) where all the FXML files live. */
     private static final String FXML_PATH = "/com/sassyscreation/sassyscreationgui/";
 
-    // ---- sidebar ----
-    @FXML private Button navDashboard;
-    @FXML private Button navOrders;
-    @FXML private Label lblNavOrdersBadge;
-    @FXML private Button navStandSale;
-    @FXML private Button navInventory;
-    @FXML private Button btnLogout;
-
-    // ---- top bar ----
-    @FXML private MenuButton mbAccount;
-    @FXML private MenuItem miChangePassword;
-    @FXML private MenuItem miAbout;
-    @FXML private MenuItem miLogout;
+    // ---- sidebar (set by <fx:include fx:id="sidebar"> in DASHBOARD.fxml) ----
+    @FXML private SidebarController sidebarController;
 
     // ---- header ----
     @FXML private TextField txtSearch;
@@ -100,6 +87,8 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        sidebarController.setActive("dashboard");
+
         // The pill bars and the gauge are the real display now,
         // so hide the plain BarChart / PieChart instead.
         hide(revenueChart);
@@ -136,7 +125,7 @@ public class DashboardController implements Initializable {
         lblProducts.setText("44");
         lblRevenue.setText("\u20B11,210.00");
         lblPending.setText("\u20B11,560.00");
-        lblNavOrdersBadge.setText(String.valueOf(pendingOrders));
+        sidebarController.setOrdersBadge(pendingOrders);
         lblReminderTitle.setText(pendingOrders + (pendingOrders == 1 ? " order" : " orders") + " awaiting pickup");
         lblOrdersYear.setText("Year " + year);
 
@@ -316,13 +305,8 @@ public class DashboardController implements Initializable {
     }
 
     // =====================================================================
-    //  Navigation (sidebar, banner, quick actions)
+    //  Navigation (banner and quick actions)
     // =====================================================================
-
-    @FXML
-    private void goDashboard() {
-        // Already on the dashboard
-    }
 
     @FXML
     private void goOrders() {
@@ -339,38 +323,9 @@ public class DashboardController implements Initializable {
         switchScreen("INVENTORY_LIST.fxml", "Inventory");
     }
 
-    // =====================================================================
-    //  Account menu
-    // =====================================================================
-
-    @FXML
-    private void handleOpenChangePassword() {
-        openDialog("CHANGEPASSWORD.fxml", "Change password");
-    }
-
-    @FXML
-    private void handleOpenAbout() {
-        // borderless = true -> no Windows title bar, rounded transparent window
-        openDialog("ABOUT.fxml", "About", true);
-    }
-
     @FXML
     private void handleOpenLowStock() {
         openDialog("LOWSTOCK.fxml", "Low stock");
-    }
-
-    @FXML
-    private void handleLogout() {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Log out");
-        confirm.setHeaderText(null);
-        confirm.setContentText("Are you sure you want to log out?");
-
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            currentStage().setMaximized(false);
-            switchScreen("LOGIN.fxml", "Login");
-        }
     }
 
     // =====================================================================
@@ -378,7 +333,7 @@ public class DashboardController implements Initializable {
     // =====================================================================
 
     private Stage currentStage() {
-        return (Stage) navDashboard.getScene().getWindow();
+        return (Stage) txtSearch.getScene().getWindow();
     }
 
     /** Replaces the content of the current window with another FXML screen. */
@@ -391,7 +346,7 @@ public class DashboardController implements Initializable {
             }
             Parent root = new FXMLLoader(resource).load();
             Stage stage = currentStage();
-            stage.getScene().setRoot(root);
+            ScreenTransition.show(stage.getScene(), root);
             stage.setTitle("Sassy's Creation - " + title);
         } catch (Exception e) {
             e.printStackTrace();
@@ -401,15 +356,6 @@ public class DashboardController implements Initializable {
 
     /** Opens an FXML screen in a normal pop-up window (with title bar). */
     private void openDialog(String fxmlName, String title) {
-        openDialog(fxmlName, title, false);
-    }
-
-    /**
-     * Opens an FXML screen in a pop-up window on top of the dashboard.
-     *
-     * @param borderless true = no title bar, transparent background (for rounded dialogs like About)
-     */
-    private void openDialog(String fxmlName, String title, boolean borderless) {
         try {
             URL resource = getClass().getResource(FXML_PATH + fxmlName);
             if (resource == null) {
@@ -418,15 +364,12 @@ public class DashboardController implements Initializable {
             }
             Parent root = new FXMLLoader(resource).load();
 
-            Stage dialog = new Stage(borderless ? StageStyle.TRANSPARENT : StageStyle.DECORATED);
+            Stage dialog = new Stage(StageStyle.DECORATED);
             dialog.initOwner(currentStage());
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.setTitle("Sassy's Creation - " + title);
 
             Scene scene = new Scene(root);
-            if (borderless) {
-                scene.setFill(Color.TRANSPARENT);
-            }
             dialog.setScene(scene);
             dialog.showAndWait();
         } catch (Exception e) {
