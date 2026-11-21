@@ -235,7 +235,7 @@ public class DashboardController implements Initializable {
             Label day = new Label(entry.getKey());
             day.setAlignment(Pos.CENTER);
             day.setTextAlignment(TextAlignment.CENTER);
-            day.setStyle("-fx-font-size: 11px; -fx-text-fill: #6F6570;");
+            day.setStyle("-fx-font-size: 13px; -fx-text-fill: #6F6570;");
 
             VBox column = new VBox(5.0, bar, day);
             column.setAlignment(Pos.BOTTOM_CENTER);

@@ -18,7 +18,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<StackPane fx:id="rootPane" fx:controller="com.sassyscreation.sassyscreationgui.controllers.LoginController" minHeight="640.0" minWidth="1000.0" prefHeight="720.0" prefWidth="1180.0" styleClass="root-pane, lg-root" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">   <stylesheets><URL value="@styles.css" /></stylesheets>
+<StackPane fx:id="rootPane" fx:controller="com.sassyscreation.sassyscreationgui.controllers.LoginController" minHeight="640.0" minWidth="1000.0" prefHeight="720.0" prefWidth="1180.0" styleClass="root-pane, lg-root" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets><URL value="@styles.css" /><URL value="@text-large.css" /></stylesheets>
    <children>
       <!-- tint over the flower photo (background picture is set on the root StackPane above: drawables/login-bg.jpg) -->
       <Region mouseTransparent="true" style="-fx-background-color: rgba(122, 24, 66, 0.35);" styleClass="lg-overlay" />
@@ -52,7 +53,7 @@
                         <Label styleClass="lg-big-rose" text="MANAGEMENT" />
                      </children>
                   </VBox>
-                  <Label maxWidth="320.0" styleClass="lg-big-sub" text="SYSTEM FOR HANDMADE CROCHET AND BOUQUETS" wrapText="true" />
+                  <Label maxWidth="320.0" styleClass="lg-big-sub" text="Loop by loop, stitch by stitch, garden made of love." wrapText="true" />
                   <Region prefHeight="60.0" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>

@@ -30,7 +30,7 @@
 <?import javafx.scene.shape.SVGPath?>
 
 <HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.InventoryController" minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2, page-v3" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
-   <stylesheets><URL value="@styles.css" /></stylesheets>
+   <stylesheets><URL value="@styles.css" /><URL value="@text-large.css" /></stylesheets>
    <children>
       <!-- ================= SIDEBAR (shared file: SIDEBAR.fxml) ================= -->
       <fx:include fx:id="sidebar" source="SIDEBAR.fxml" styleClass="page-inventory" />

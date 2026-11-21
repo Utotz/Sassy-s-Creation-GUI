@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.*?>
 
 <StackPane fx:id="root" style="-fx-background-color: transparent; -fx-padding: 44;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sassyscreation.sassyscreationgui.controllers.AboutController">
-    <stylesheets><URL value="@styles.css" /></stylesheets>
+    <stylesheets><URL value="@styles.css" /><URL value="@text-large.css" /></stylesheets>
     <children>
         <VBox alignment="CENTER" maxWidth="480.0" prefWidth="480.0" spacing="12.0"
               styleClass="dialog-card"

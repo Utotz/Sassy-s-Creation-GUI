@@ -30,7 +30,7 @@
 <?import javafx.scene.shape.SVGPath?>
 
 <HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.StandSaleController" minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2, page-v3" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
-   <stylesheets><URL value="@styles.css" /></stylesheets>
+   <stylesheets><URL value="@styles.css" /><URL value="@text-large.css" /></stylesheets>
    <children>
       <!-- ================= SIDEBAR (shared file: SIDEBAR.fxml) ================= -->
       <fx:include fx:id="sidebar" source="SIDEBAR.fxml" styleClass="page-standsale" />
@@ -108,6 +108,8 @@
                            </children>
                         </HBox>
                         <HBox alignment="TOP_LEFT" spacing="18.0" VBox.vgrow="ALWAYS"><children>
+                           <VBox maxHeight="1.7976931348623157E308" maxWidth="330.0" minWidth="330.0" prefWidth="330.0" spacing="18.0">
+                           <children>
                            <VBox maxHeight="-Infinity" maxWidth="330.0" minWidth="330.0" prefWidth="330.0" spacing="12.0" styleClass="card">
                               <padding><Insets bottom="22.0" left="22.0" right="22.0" top="20.0" /></padding>
                               <children>
@@ -124,6 +126,17 @@
                                  <Label fx:id="lblStockInfo" styleClass="stat-note" text="Current stock: 12 (deducted automatically)" wrapText="true" />
                                  <Button maxWidth="1.7976931348623157E308" fx:id="btnRecordSale" onAction="#handleRecordSale" styleClass="btn-primary" text="Record Sale" ><graphic><Region styleClass="ico, ico-check" /></graphic></Button>
                               </children>
+                           </VBox>
+                           <!-- TOP SELLERS: ranked by units sold (filled in by StandSaleController) -->
+                           <VBox maxHeight="-Infinity" spacing="12.0" styleClass="card">
+                              <padding><Insets bottom="20.0" left="22.0" right="22.0" top="20.0" /></padding>
+                              <children>
+                                 <Label styleClass="card-title" text="Top sellers" />
+                                 <Label styleClass="page-sub" text="Most products sold, by units" />
+                                 <VBox fx:id="vbTopSellers" spacing="12.0" />
+                              </children>
+                           </VBox>
+                           </children>
                            </VBox>
                            <VBox spacing="12.0" HBox.hgrow="ALWAYS"><children>
                               <HBox spacing="10.0"><children>

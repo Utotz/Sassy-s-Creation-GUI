@@ -27,7 +27,8 @@
 <HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.AddProductController"
       minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0"
       styleClass="root-pane, dash-v2, page-v3"
-      xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">   <stylesheets><URL value="@styles.css" /></stylesheets>
+      xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets><URL value="@styles.css" /><URL value="@text-large.css" /></stylesheets>
    <children>
       <!-- ================= SIDEBAR ================= -->
       <VBox minWidth="248.0" prefWidth="248.0" styleClass="sidebar">

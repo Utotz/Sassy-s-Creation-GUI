@@ -5,10 +5,14 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -41,6 +45,9 @@ public class StandSaleController implements Initializable {
     @FXML private Label lblSaleCount;
     @FXML private Label lblSaleRevenue;
 
+    // ---- top sellers ranking ----
+    @FXML private VBox vbTopSellers;
+
     // ---- sales history table ----
     @FXML private TableView<Map<String, Object>> tvSales;
     @FXML private TableColumn<Map<String, Object>, Object> colSaleDate;
@@ -62,6 +69,9 @@ public class StandSaleController implements Initializable {
             this.stock = stock;
         }
     }
+
+    /** How many products the Top sellers list shows. */
+    private static final int TOP_COUNT = 7;
 
     private final Map<String, Product> products = new LinkedHashMap<>();
     private final ObservableList<Map<String, Object>> allSales = FXCollections.observableArrayList();
@@ -362,6 +372,94 @@ public class StandSaleController implements Initializable {
         // The "Total Stand Sales:" / "Total Revenue:" text is in the FXML; only set the values here
         lblSaleCount.setText(String.valueOf(allSales.size()));
         lblSaleRevenue.setText(peso(revenue));
+
+        updateTopSellers();
+    }
+
+    // =====================================================================
+    //  Top sellers (ranked by units sold)
+    // =====================================================================
+
+    /** Rebuilds the ranking from all sales: most units first, then most revenue. */
+    private void updateTopSellers() {
+        Map<String, Integer> units = new HashMap<>();
+        Map<String, Double> money = new HashMap<>();
+        for (Map<String, Object> s : allSales) {
+            String name = String.valueOf(s.get("Product"));
+            units.merge(name, (Integer) s.get("Qty"), Integer::sum);
+            money.merge(name, ((Number) s.get("Total")).doubleValue(), Double::sum);
+        }
+
+        List<String> ranked = new ArrayList<>(units.keySet());
+        ranked.sort((a, b) -> {
+            int byUnits = units.get(b) - units.get(a);
+            return byUnits != 0 ? byUnits : Double.compare(money.get(b), money.get(a));
+        });
+
+        vbTopSellers.getChildren().clear();
+        if (ranked.isEmpty()) {
+            Label none = new Label("No sales yet");
+            none.getStyleClass().add("page-sub");
+            vbTopSellers.getChildren().add(none);
+            return;
+        }
+
+        int best = units.get(ranked.get(0));
+        int count = Math.min(TOP_COUNT, ranked.size());
+        for (int i = 0; i < count; i++) {
+            String name = ranked.get(i);
+            vbTopSellers.getChildren().add(topSellerRow(i + 1, name, units.get(name), (double) units.get(name) / best));
+        }
+    }
+
+    /** One row: rank circle, product name, units sold, and a bar next to the best seller. */
+    private VBox topSellerRow(int rank, String name, int sold, double ratio) {
+        Label badge = new Label(String.valueOf(rank));
+        badge.setMinSize(32, 32);
+        badge.setPrefSize(32, 32);
+        badge.setMaxSize(32, 32);
+        badge.setAlignment(Pos.CENTER);
+        badge.setStyle("-fx-background-color: " + rankColor(rank) + "; -fx-background-radius: 16;"
+                + "-fx-text-fill: " + (rank <= 3 ? "white" : "#7A1842") + ";"
+                + "-fx-font-weight: bold; -fx-font-size: 15px;");
+
+        Label product = new Label(name);
+        product.setMaxWidth(Double.MAX_VALUE);
+        product.setTextOverrun(OverrunStyle.ELLIPSIS);
+        product.setStyle("-fx-font-size: 16px; -fx-text-fill: #2B2230;");
+        HBox.setHgrow(product, Priority.ALWAYS);
+
+        Label units = new Label(sold + " sold");
+        units.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #C22A62;");
+
+        HBox top = new HBox(12, badge, product, units);
+        top.setAlignment(Pos.CENTER_LEFT);
+
+        // grey track with a pink fill, the fill width is a share of the best seller
+        Region track = new Region();
+        track.setStyle("-fx-background-color: #F6DCE6; -fx-background-radius: 5;");
+        Region fill = new Region();
+        fill.setStyle("-fx-background-color: #C22A62; -fx-background-radius: 5;");
+        for (Region r : new Region[]{track, fill}) {
+            r.setMinHeight(8);
+            r.setPrefHeight(8);
+            r.setMaxHeight(8);
+        }
+        StackPane bar = new StackPane(track, fill);
+        StackPane.setAlignment(fill, Pos.CENTER_LEFT);
+        fill.maxWidthProperty().bind(bar.widthProperty().multiply(ratio));
+        VBox.setMargin(bar, new Insets(0, 0, 0, 44));
+
+        return new VBox(8, top, bar);
+    }
+
+    private String rankColor(int rank) {
+        return switch (rank) {
+            case 1 -> "#C22A62";
+            case 2 -> "#E64980";
+            case 3 -> "#F48FB1";
+            default -> "#F8BBD0";
+        };
     }
 
     private String peso(double amount) {

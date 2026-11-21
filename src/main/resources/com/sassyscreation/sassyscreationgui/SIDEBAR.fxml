@@ -20,7 +20,7 @@
   styleClass = page-dashboard | page-orders | page-standsale | page-inventory  (highlights that menu item)
 -->
 <VBox fx:id="sidebarRoot" fx:controller="com.sassyscreation.sassyscreationgui.controllers.SidebarController" minWidth="228.0" prefWidth="228.0" styleClass="sidebar" viewOrder="-1.0" style="-fx-background-color: #F8D3E2; -fx-background-insets: 0; -fx-background-radius: 0 28 28 0; -fx-border-color: transparent; -fx-border-width: 0; -fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.20), 30, 0.10, 8, 0);" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
-   <stylesheets><URL value="@styles.css" /></stylesheets>
+   <stylesheets><URL value="@styles.css" /><URL value="@text-large.css" /></stylesheets>
    <padding><Insets bottom="4.0" left="4.0" right="4.0" top="4.0" /></padding>
    <children>
       <VBox prefHeight="731.0" prefWidth="220.0" styleClass="side-panel" style="-fx-background-radius: 24;" VBox.vgrow="ALWAYS">

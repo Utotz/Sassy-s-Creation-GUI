@@ -36,8 +36,8 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.shape.Rectangle?>
 
-<HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.DashboardController" minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
-   <stylesheets><URL value="@styles.css" /></stylesheets>
+<HBox fx:controller="com.sassyscreation.sassyscreationgui.controllers.DashboardController" minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2, dash-large" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets><URL value="@styles.css" /><URL value="@text-large.css" /></stylesheets>
    <children>
       <!-- ================= SIDEBAR (shared file: SIDEBAR.fxml) ================= -->
       <fx:include fx:id="sidebar" source="SIDEBAR.fxml" styleClass="page-dashboard" />
@@ -133,14 +133,14 @@
                                     <!-- Good Morning banner -->
                                     <HBox alignment="CENTER_LEFT" fillHeight="false" spacing="6.0">
                                        <children>
-                                          <StackPane maxWidth="1.7976931348623157E308" minHeight="170.0" minWidth="0.0" prefHeight="170.0" styleClass="banner" style="-fx-effect: dropshadow(gaussian, rgba(150, 30, 80, 0.38), 24, 0.12, 0, 10);" HBox.hgrow="ALWAYS">
+                                          <StackPane maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="0.0" prefHeight="200.0" styleClass="banner" style="-fx-effect: dropshadow(gaussian, rgba(150, 30, 80, 0.38), 24, 0.12, 0, 10);" HBox.hgrow="ALWAYS">
                                              <children>
 
                                                 <VBox alignment="CENTER_LEFT" spacing="8.0">
                                                    <padding><Insets bottom="20.0" left="34.0" right="34.0" top="20.0" /></padding>
                                                    <children>
                                                       <Label styleClass="banner-title" text="Good Morning, Admin" />
-                                                      <Label maxWidth="572.0" prefHeight="19.0" prefWidth="572.0" styleClass="banner-sub" text="Here is what is happening with your orders, stand sales and stock. Let’s get started." wrapText="true" />
+                                                      <Label maxWidth="640.0" styleClass="banner-sub" text="Here is what is happening with your orders, stand sales and stock. Let’s get started." wrapText="true" />
                                                       <Button fx:id="btnReviewOrders" focusTraversable="false" mnemonicParsing="false" onAction="#goOrders" styleClass="banner-btn" text="Review orders">
                                                          <VBox.margin><Insets top="6.0" /></VBox.margin>
                                                       </Button>
@@ -156,7 +156,7 @@
 
                                     <!-- stat cards -->
                                     <HBox spacing="18.0"><children>
-                                       <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" HBox.hgrow="ALWAYS">
+                                       <VBox minWidth="0.0" minHeight="150.0" prefHeight="150.0" prefWidth="100.0" spacing="4.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" HBox.hgrow="ALWAYS">
                                           <children>
                                              <HBox alignment="CENTER_LEFT"><children>
                                                 <Label styleClass="stat-label" text="Total Orders" />
@@ -167,7 +167,7 @@
                                              <Label styleClass="stat-note" text="4 pending" wrapText="true" />
                                           </children>
                                        </VBox>
-                                       <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" HBox.hgrow="ALWAYS">
+                                       <VBox minWidth="0.0" minHeight="150.0" prefHeight="150.0" prefWidth="100.0" spacing="4.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" HBox.hgrow="ALWAYS">
                                           <children>
                                              <HBox alignment="CENTER_LEFT"><children>
                                                 <Label styleClass="stat-label" text="Products Listed" />
@@ -178,7 +178,7 @@
                                              <Label styleClass="stat-note" text="3 out of stock" wrapText="true" />
                                           </children>
                                        </VBox>
-                                       <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" HBox.hgrow="ALWAYS">
+                                       <VBox minWidth="0.0" minHeight="150.0" prefHeight="150.0" prefWidth="100.0" spacing="4.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" HBox.hgrow="ALWAYS">
                                           <children>
                                              <HBox alignment="CENTER_LEFT"><children>
                                                 <Label styleClass="stat-label" text="Stand Revenue" />
@@ -189,7 +189,7 @@
                                              <Label styleClass="stat-note" text="9 stand sales recorded" wrapText="true" />
                                           </children>
                                        </VBox>
-                                       <VBox minWidth="0.0" prefHeight="132.0" prefWidth="100.0" spacing="4.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" HBox.hgrow="ALWAYS">
+                                       <VBox minWidth="0.0" minHeight="150.0" prefHeight="150.0" prefWidth="100.0" spacing="4.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" HBox.hgrow="ALWAYS">
                                           <children>
                                              <HBox alignment="CENTER_LEFT"><children>
                                                 <Label styleClass="stat-label" text="Pending Order Value" />
@@ -344,11 +344,11 @@
                                                                         </VBox>
                                                                      </children>
                                                                   </StackPane>
-                                                                  <HBox alignment="CENTER" spacing="14.0">
+                                                                  <HBox alignment="CENTER" spacing="10.0">
                                                                      <children>
-                                                                        <Label fx:id="lblLegendPending" text="Pending  4" textFill="#5B5159"><graphic><Circle fill="#C22A62" radius="5.0" /></graphic></Label>
-                                                                        <Label fx:id="lblLegendDone" text="Done  1" textFill="#5B5159"><graphic><Circle fill="#E8A0BC" radius="5.0" /></graphic></Label>
-                                                                        <Label fx:id="lblLegendCancelled" text="Cancelled  1" textFill="#5B5159"><graphic><Circle fill="#DDD0D6" radius="5.0" /></graphic></Label>
+                                                                        <Label fx:id="lblLegendPending" style="-fx-font-size: 13px;" text="Pending  4" textFill="#5B5159"><graphic><Circle fill="#C22A62" radius="5.0" /></graphic></Label>
+                                                                        <Label fx:id="lblLegendDone" style="-fx-font-size: 13px;" text="Done  1" textFill="#5B5159"><graphic><Circle fill="#E8A0BC" radius="5.0" /></graphic></Label>
+                                                                        <Label fx:id="lblLegendCancelled" style="-fx-font-size: 13px;" text="Cancelled  1" textFill="#5B5159"><graphic><Circle fill="#DDD0D6" radius="5.0" /></graphic></Label>
                                                                      </children>
                                                                   </HBox>
                                                                </children>
