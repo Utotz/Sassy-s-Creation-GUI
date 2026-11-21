@@ -59,6 +59,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javafx.application.Platform;
+import com.sassyscreation.sassyscreationgui.dao.ProductDAO;
+import java.sql.SQLException;
 
 /**
  * Controller for the Product & Inventory screens.
@@ -161,15 +164,31 @@ public class InventoryController implements Initializable {
                 {"Hat - Customize", "Crochet", "0", "0"},
                 {"Bag - Customize", "Crochet", "0", "5"},
         };
-        for (String[] r : seed) {
+        /*for (String[] r : seed) {
             addProduct(r[0], r[1], Double.parseDouble(r[2]), Integer.parseInt(r[3]));
-        }
+        }*/
     }
 
     /** Called by AddProductController when a new product is saved. */
     public static void addProduct(String name, String category, double price, int stock) {
         // TODO: also INSERT into the database
         PRODUCTS.add(new Product(nextId++, name, category, price, stock));
+    }
+
+    /** Replaces the in-memory list with the rows currently stored in MariaDB. */
+    private void loadProductsFromDatabase() {
+        try {
+            PRODUCTS.clear();
+            nextId = 1;
+            for (com.sassyscreation.sassyscreationgui.model.Product row : new ProductDAO().getAllProducts()) {
+                PRODUCTS.add(new Product(row.getProductId(), row.getName(), row.getCategory(),
+                        row.getPrice().doubleValue(), row.getStockQuantity()));
+                nextId = Math.max(nextId, row.getProductId() + 1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Platform.runLater(() -> error("Could not load products", e.getMessage()));
+        }
     }
 
     // ---------------------------------------------------------------
@@ -222,6 +241,7 @@ public class InventoryController implements Initializable {
     // =====================================================================
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        loadProductsFromDatabase();
         if (tvProducts != null) {
             setupTable();
         }
