@@ -4,18 +4,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
-import javafx.stage.Modality;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -24,25 +22,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StandSaleController implements Initializable {
 
-    /** Folder (inside resources) where all the FXML files live. */
-    private static final String FXML_PATH = "/com/sassyscreation/sassyscreationgui/";
-
-    // ---- sidebar ----
-    @FXML private Button navDashboard;
-    @FXML private Button navOrders;
-    @FXML private Label lblNavOrdersBadge;
-    @FXML private Button navStandSale;
-    @FXML private Button navInventory;
-    @FXML private Button btnLogout;
-
-    // ---- top bar ----
-    @FXML private MenuButton mbAccount;
-    @FXML private MenuItem miChangePassword;
-    @FXML private MenuItem miAbout;
-    @FXML private MenuItem miLogout;
+    // ---- sidebar (set by <fx:include fx:id="sidebar"> in STANDSALE.fxml) ----
+    @FXML private SidebarController sidebarController;
 
     // ---- header ----
     @FXML private Button btnExportSales;
@@ -55,17 +41,20 @@ public class StandSaleController implements Initializable {
     @FXML private Label lblStockInfo;
     @FXML private Button btnRecordSale;
 
-    // ---- summary bar ----
+    // ---- summary chips (the FXML holds the "Total Stand Sales:" / "Total Revenue:" text; these hold only the values) ----
     @FXML private Label lblSaleCount;
     @FXML private Label lblSaleRevenue;
 
+    // ---- top sellers ranking ----
+    @FXML private VBox vbTopSellers;
+
     // ---- sales history table ----
     @FXML private TableView<Map<String, Object>> tvSales;
+    @FXML private TableColumn<Map<String, Object>, Object> colSaleDate;
     @FXML private TableColumn<Map<String, Object>, Object> colSaleProduct;
     @FXML private TableColumn<Map<String, Object>, Object> colSaleQty;
     @FXML private TableColumn<Map<String, Object>, Object> colSalePrice;
     @FXML private TableColumn<Map<String, Object>, Object> colSaleTotal;
-    @FXML private TableColumn<Map<String, Object>, Object> colSaleDate;
     @FXML private TableColumn<Map<String, Object>, Object> colSaleActions;
 
     /** A sellable product with its price and remaining stock. */
@@ -81,11 +70,16 @@ public class StandSaleController implements Initializable {
         }
     }
 
+    /** How many products the Top sellers list shows. */
+    private static final int TOP_COUNT = 7;
+
     private final Map<String, Product> products = new LinkedHashMap<>();
     private final ObservableList<Map<String, Object>> allSales = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        sidebarController.setActive("standsale");
+
         loadProducts();
         loadSales();
         setUpForm();
@@ -149,9 +143,7 @@ public class StandSaleController implements Initializable {
 
     private void setUpForm() {
         cbSaleProduct.setItems(FXCollections.observableArrayList(products.keySet()));
-        if (cbSaleProduct.getValue() == null || !products.containsKey(cbSaleProduct.getValue())) {
-            cbSaleProduct.getSelectionModel().selectFirst();
-        }
+        cbSaleProduct.getSelectionModel().selectFirst();
 
         spQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 999, 1));
 
@@ -254,6 +246,7 @@ public class StandSaleController implements Initializable {
             }
         });
 
+        // Actions: icon-only edit + delete buttons (matches the design)
         colSaleActions.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(Object item, boolean empty) {
@@ -264,11 +257,10 @@ public class StandSaleController implements Initializable {
                     return;
                 }
 
-                Button edit = iconButton("ico-edit", "Edit", "btn-icon", "btn-edit");
-                edit.setText("Edit");
+                Button edit = iconButton("ico-edit-o", "Edit", "btn-icon", "btn-edit");
                 edit.setOnAction(e -> editSale(row));
 
-                Button delete = iconButton("ico-delete", "Delete", "btn-icon", "btn-icon-danger");
+                Button delete = iconButton("ico-delete-o", "Delete", "btn-icon", "btn-icon-danger");
                 delete.setOnAction(e -> deleteSale(row));
 
                 HBox box = new HBox(10, edit, delete);
@@ -281,6 +273,10 @@ public class StandSaleController implements Initializable {
         SortedList<Map<String, Object>> sorted = new SortedList<>(allSales);
         sorted.comparatorProperty().bind(tvSales.comparatorProperty());
         tvSales.setItems(sorted);
+
+        // Newest sales first, like the design
+        colSaleDate.setSortType(TableColumn.SortType.DESCENDING);
+        tvSales.getSortOrder().setAll(colSaleDate);
     }
 
     private Button iconButton(String icon, String tooltip, String... styleClasses) {
@@ -296,47 +292,49 @@ public class StandSaleController implements Initializable {
     }
 
     private void editSale(Map<String, Object> row) {
-        int oldQty = (Integer) row.get("Qty");
-        String name = String.valueOf(row.get("Product"));
-
-        TextInputDialog dialog = new TextInputDialog(String.valueOf(oldQty));
-        dialog.setTitle("Edit sale");
-        dialog.setHeaderText("Edit quantity for " + name);
-        dialog.setContentText("Quantity sold:");
-
-        Optional<String> result = dialog.showAndWait();
-        if (result.isEmpty()) {
-            return;
-        }
-
-        int newQty;
+        LocalDate date;
         try {
-            newQty = Integer.parseInt(result.get().trim());
-        } catch (NumberFormatException e) {
-            showWarning("Invalid quantity", "Please enter a whole number.");
-            return;
-        }
-        if (newQty < 1) {
-            showWarning("Invalid quantity", "Quantity must be at least 1.");
-            return;
+            date = LocalDate.parse(String.valueOf(row.get("Date")));
+        } catch (Exception e) {
+            date = LocalDate.now();
         }
 
-        Product p = products.get(name);
-        int diff = newQty - oldQty;
-        if (p != null) {
-            if (diff > p.stock) {
-                showWarning("Not enough stock", "Only " + p.stock + " more available.");
-                return;
-            }
-            p.stock -= diff;   // negative diff gives stock back
+        EditSaleController.SaleData data = new EditSaleController.SaleData(
+                String.valueOf(row.get("Product")),
+                (Integer) row.get("Qty"),
+                ((Number) row.get("Price")).doubleValue(),
+                date);
+
+        List<EditSaleController.ProductOption> options = new ArrayList<>();
+        for (Product p : products.values()) {
+            options.add(new EditSaleController.ProductOption(p.name, p.price, p.stock));
+        }
+
+        EditSaleController.open(tvSales.getScene(), data, options,
+                (name, qty, unitPrice, newDate) -> applyEdit(row, name, qty, unitPrice, newDate));
+    }
+
+    /** Gives the old quantity back to the old product, takes the new quantity from the new one. */
+    private void applyEdit(Map<String, Object> row, String newName, int newQty,
+                           double unitPrice, LocalDate newDate) {
+        Product oldProduct = products.get(String.valueOf(row.get("Product")));
+        if (oldProduct != null) {
+            oldProduct.stock += (Integer) row.get("Qty");
+        }
+        Product newProduct = products.get(newName);
+        if (newProduct != null) {
+            newProduct.stock -= newQty;
         }
 
         // TODO: also UPDATE the sale and the stock in the database
-        double price = ((Number) row.get("Price")).doubleValue();
+        row.put("Product", newName);
         row.put("Qty", newQty);
-        row.put("Total", newQty * price);
+        row.put("Price", unitPrice);
+        row.put("Total", newQty * unitPrice);
+        row.put("Date", newDate.toString());
 
         tvSales.refresh();
+        tvSales.sort();
         updateForm();
         updateSummary();
     }
@@ -371,8 +369,97 @@ public class StandSaleController implements Initializable {
                 .mapToDouble(s -> ((Number) s.get("Total")).doubleValue())
                 .sum();
 
-        lblSaleCount.setText("Total Stand Sales: " + allSales.size());
+        // The "Total Stand Sales:" / "Total Revenue:" text is in the FXML; only set the values here
+        lblSaleCount.setText(String.valueOf(allSales.size()));
         lblSaleRevenue.setText(peso(revenue));
+
+        updateTopSellers();
+    }
+
+    // =====================================================================
+    //  Top sellers (ranked by units sold)
+    // =====================================================================
+
+    /** Rebuilds the ranking from all sales: most units first, then most revenue. */
+    private void updateTopSellers() {
+        Map<String, Integer> units = new HashMap<>();
+        Map<String, Double> money = new HashMap<>();
+        for (Map<String, Object> s : allSales) {
+            String name = String.valueOf(s.get("Product"));
+            units.merge(name, (Integer) s.get("Qty"), Integer::sum);
+            money.merge(name, ((Number) s.get("Total")).doubleValue(), Double::sum);
+        }
+
+        List<String> ranked = new ArrayList<>(units.keySet());
+        ranked.sort((a, b) -> {
+            int byUnits = units.get(b) - units.get(a);
+            return byUnits != 0 ? byUnits : Double.compare(money.get(b), money.get(a));
+        });
+
+        vbTopSellers.getChildren().clear();
+        if (ranked.isEmpty()) {
+            Label none = new Label("No sales yet");
+            none.getStyleClass().add("page-sub");
+            vbTopSellers.getChildren().add(none);
+            return;
+        }
+
+        int best = units.get(ranked.get(0));
+        int count = Math.min(TOP_COUNT, ranked.size());
+        for (int i = 0; i < count; i++) {
+            String name = ranked.get(i);
+            vbTopSellers.getChildren().add(topSellerRow(i + 1, name, units.get(name), (double) units.get(name) / best));
+        }
+    }
+
+    /** One row: rank circle, product name, units sold, and a bar next to the best seller. */
+    private VBox topSellerRow(int rank, String name, int sold, double ratio) {
+        Label badge = new Label(String.valueOf(rank));
+        badge.setMinSize(32, 32);
+        badge.setPrefSize(32, 32);
+        badge.setMaxSize(32, 32);
+        badge.setAlignment(Pos.CENTER);
+        badge.setStyle("-fx-background-color: " + rankColor(rank) + "; -fx-background-radius: 16;"
+                + "-fx-text-fill: " + (rank <= 3 ? "white" : "#7A1842") + ";"
+                + "-fx-font-weight: bold; -fx-font-size: 15px;");
+
+        Label product = new Label(name);
+        product.setMaxWidth(Double.MAX_VALUE);
+        product.setTextOverrun(OverrunStyle.ELLIPSIS);
+        product.setStyle("-fx-font-size: 16px; -fx-text-fill: #2B2230;");
+        HBox.setHgrow(product, Priority.ALWAYS);
+
+        Label units = new Label(sold + " sold");
+        units.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #C22A62;");
+
+        HBox top = new HBox(12, badge, product, units);
+        top.setAlignment(Pos.CENTER_LEFT);
+
+        // grey track with a pink fill, the fill width is a share of the best seller
+        Region track = new Region();
+        track.setStyle("-fx-background-color: #F6DCE6; -fx-background-radius: 5;");
+        Region fill = new Region();
+        fill.setStyle("-fx-background-color: #C22A62; -fx-background-radius: 5;");
+        for (Region r : new Region[]{track, fill}) {
+            r.setMinHeight(8);
+            r.setPrefHeight(8);
+            r.setMaxHeight(8);
+        }
+        StackPane bar = new StackPane(track, fill);
+        StackPane.setAlignment(fill, Pos.CENTER_LEFT);
+        fill.maxWidthProperty().bind(bar.widthProperty().multiply(ratio));
+        VBox.setMargin(bar, new Insets(0, 0, 0, 44));
+
+        return new VBox(8, top, bar);
+    }
+
+    private String rankColor(int rank) {
+        return switch (rank) {
+            case 1 -> "#C22A62";
+            case 2 -> "#E64980";
+            case 3 -> "#F48FB1";
+            default -> "#F8BBD0";
+        };
     }
 
     private String peso(double amount) {
@@ -385,60 +472,28 @@ public class StandSaleController implements Initializable {
 
     @FXML
     private void handleOpenExport() {
-        openDialog("EXPORTDIALOG.fxml", "Export sales");
-    }
-
-    // =====================================================================
-    //  Navigation (sidebar)
-    // =====================================================================
-
-    @FXML
-    private void goDashboard() {
-        switchScreen("DASHBOARD.fxml", "Dashboard");
-    }
-
-    @FXML
-    private void goOrders() {
-        switchScreen("ORDERS.fxml", "Orders");
-    }
-
-    @FXML
-    private void goStandSale() {
-        // Already on the stand sale screen
-    }
-
-    @FXML
-    private void goInventory() {
-        switchScreen("INVENTORY_LIST.fxml", "Inventory");
-    }
-
-    // =====================================================================
-    //  Account menu
-    // =====================================================================
-
-    @FXML
-    private void handleOpenChangePassword() {
-        openDialog("CHANGEPASSWORD.fxml", "Change password");
-    }
-
-    @FXML
-    private void handleOpenAbout() {
-        // borderless = true -> no Windows title bar, rounded transparent window
-        openDialog("ABOUT.fxml", "About", true);
-    }
-
-    @FXML
-    private void handleLogout() {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Log out");
-        confirm.setHeaderText(null);
-        confirm.setContentText("Are you sure you want to log out?");
-
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            currentStage().setMaximized(false);
-            switchScreen("LOGIN.fxml", "Login");
+        Optional<ExportDialogController.ExportOptions> choice =
+                ExportDialogController.show(currentStage(), "Stand sales", false);
+        if (choice.isEmpty()) {
+            return;
         }
+        ExportDialogController.ExportOptions opts = choice.get();
+
+        List<List<String>> rows = new ArrayList<>();
+        for (Map<String, Object> s : allSales) {
+            if (!opts.inRange(String.valueOf(s.get("Date")))) continue;
+
+            rows.add(List.of(
+                    String.valueOf(s.get("Date")),
+                    String.valueOf(s.get("Product")),
+                    String.valueOf(s.get("Qty")),
+                    String.format("%.2f", ((Number) s.get("Price")).doubleValue()),
+                    String.format("%.2f", ((Number) s.get("Total")).doubleValue())));
+        }
+
+        ExportDialogController.export(currentStage(), opts, "stand-sales",
+                List.of("Date", "Product", "Qty", "Unit price (PHP)", "Total (PHP)"),
+                rows);
     }
 
     // =====================================================================
@@ -446,61 +501,7 @@ public class StandSaleController implements Initializable {
     // =====================================================================
 
     private Stage currentStage() {
-        return (Stage) navStandSale.getScene().getWindow();
-    }
-
-    /** Replaces the content of the current window with another FXML screen. */
-    private void switchScreen(String fxmlName, String title) {
-        try {
-            URL resource = getClass().getResource(FXML_PATH + fxmlName);
-            if (resource == null) {
-                showError("Screen not found", fxmlName + " could not be found in the resources folder.");
-                return;
-            }
-            Parent root = new FXMLLoader(resource).load();
-            Stage stage = currentStage();
-            stage.getScene().setRoot(root);
-            stage.setTitle("Sassy's Creation - " + title);
-        } catch (Exception e) {
-            e.printStackTrace();
-            showError("Could not open " + title, e.getMessage());
-        }
-    }
-
-    /** Opens an FXML screen in a normal pop-up window (with title bar). */
-    private void openDialog(String fxmlName, String title) {
-        openDialog(fxmlName, title, false);
-    }
-
-    /**
-     * Opens an FXML screen in a pop-up window on top of this screen.
-     *
-     * @param borderless true = no title bar, transparent background (for rounded dialogs like About)
-     */
-    private void openDialog(String fxmlName, String title, boolean borderless) {
-        try {
-            URL resource = getClass().getResource(FXML_PATH + fxmlName);
-            if (resource == null) {
-                showError("Screen not found", fxmlName + " could not be found in the resources folder.");
-                return;
-            }
-            Parent root = new FXMLLoader(resource).load();
-
-            Stage dialog = new Stage(borderless ? StageStyle.TRANSPARENT : StageStyle.DECORATED);
-            dialog.initOwner(currentStage());
-            dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.setTitle("Sassy's Creation - " + title);
-
-            Scene scene = new Scene(root);
-            if (borderless) {
-                scene.setFill(Color.TRANSPARENT);
-            }
-            dialog.setScene(scene);
-            dialog.showAndWait();
-        } catch (Exception e) {
-            e.printStackTrace();
-            showError("Could not open " + title, e.getMessage());
-        }
+        return (Stage) btnRecordSale.getScene().getWindow();
     }
 
     private void showWarning(String header, String message) {
@@ -508,14 +509,6 @@ public class StandSaleController implements Initializable {
         alert.setTitle("Stand Sale");
         alert.setHeaderText(header);
         alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private void showError(String header, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(header);
-        alert.setContentText(message == null ? "Unknown error. Check the console for details." : message);
         alert.showAndWait();
     }
 }

@@ -1,16 +1,28 @@
 package com.sassyscreation.sassyscreationgui.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -23,6 +35,9 @@ public class AddProductController implements Initializable {
     /** Folder (inside resources) where all the FXML files live. */
     private static final String FXML_PATH = "/com/sassyscreation/sassyscreationgui/";
 
+    private static final int STOCK_MIN = 0;
+    private static final int STOCK_MAX = 9999;
+
     // ---- sidebar ----
     @FXML private Button navDashboard;
     @FXML private Button navOrders;
@@ -31,7 +46,7 @@ public class AddProductController implements Initializable {
     @FXML private Button navInventory;
     @FXML private Button btnLogout;
 
-    // ---- top bar ----
+    // ---- account menu ----
     @FXML private MenuButton mbAccount;
     @FXML private MenuItem miChangePassword;
     @FXML private MenuItem miAbout;
@@ -39,6 +54,11 @@ public class AddProductController implements Initializable {
 
     // ---- header ----
     @FXML private Button btnBackInv;
+
+    // ---- photo ----
+    @FXML private StackPane boxProductPhoto;
+    @FXML private ImageView ivProductPhoto;
+    @FXML private Label lblPhotoHint;
 
     // ---- form ----
     @FXML private TextField tfProdName;
@@ -48,33 +68,96 @@ public class AddProductController implements Initializable {
     @FXML private Button btnCancelProduct;
     @FXML private Button btnSaveProduct;
 
+    /** Path of the chosen photo, or null if none was picked. */
+    private String photoPath;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Make sure the spinner has a value factory (0 - 9999, start at 0)
         if (spStock.getValueFactory() == null) {
-            spStock.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 9999, 0));
+            spStock.setValueFactory(
+                    new SpinnerValueFactory.IntegerSpinnerValueFactory(STOCK_MIN, STOCK_MAX, 0));
         }
 
-        // Only allow digits and one decimal point in the price field
+        // Only allow digits and one decimal point (max 2 decimals) in the price field
         tfProdPrice.textProperty().addListener((obs, oldText, newText) -> {
             if (newText != null && !newText.matches("\\d*(\\.\\d{0,2})?")) {
                 tfProdPrice.setText(oldText);
             }
         });
 
-        // Only allow digits in the stock spinner's editor
+        // Only allow digits (max 4) in the stock spinner's editor
         spStock.getEditor().textProperty().addListener((obs, oldText, newText) -> {
-            if (newText != null && !newText.matches("\\d*")) {
+            if (newText != null && !newText.matches("\\d{0,4}")) {
                 spStock.getEditor().setText(oldText);
             }
         });
 
         // Commit the typed spinner value when the field loses focus
-        spStock.focusedProperty().addListener((obs, was, is) -> {
-            if (!is) {
+        spStock.focusedProperty().addListener((obs, was, isFocused) -> {
+            if (!isFocused) {
                 readStock();
             }
         });
+
+        // Badge: don't reserve space when hidden
+        lblNavOrdersBadge.managedProperty().bind(lblNavOrdersBadge.visibleProperty());
+
+        // Click the photo box to choose an image
+        boxProductPhoto.setCursor(Cursor.HAND);
+        boxProductPhoto.setOnMouseClicked(e -> choosePhoto());
+
+        // TODO: call setOrdersBadge(<pending order count from DB>)
+    }
+
+    /** Updates the sidebar badge on "Orders"; hides it when the count is 0. */
+    public void setOrdersBadge(int count) {
+        lblNavOrdersBadge.setText(String.valueOf(count));
+        lblNavOrdersBadge.setVisible(count > 0);
+    }
+
+    // =====================================================================
+    //  Photo
+    // =====================================================================
+
+    private void choosePhoto() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Choose product photo");
+        chooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp"));
+
+        File file = chooser.showOpenDialog(currentStage());
+        if (file == null) {
+            return;
+        }
+
+        Image image = new Image(file.toURI().toString(), 160, 150, true, true);
+        if (image.isError()) {
+            showError("Invalid image", "That file could not be loaded as an image.");
+            return;
+        }
+
+        ivProductPhoto.setImage(image);
+        lblPhotoHint.setVisible(false);
+        photoPath = file.getAbsolutePath();
+    }
+
+    /** Copies the chosen photo into ./product-images and returns the new full path (or null). */
+    private String saveCopyOfPhoto() {
+        if (photoPath == null) {
+            return null;
+        }
+        try {
+            Path dir = Paths.get(System.getProperty("user.dir"), "product-images");
+            Files.createDirectories(dir);
+            String safe = new File(photoPath).getName().replaceAll("[^A-Za-z0-9._-]", "_");
+            Path target = dir.resolve(System.currentTimeMillis() + "-" + safe);
+            Files.copy(Paths.get(photoPath), target, StandardCopyOption.REPLACE_EXISTING);
+            return target.toAbsolutePath().toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // =====================================================================
@@ -112,15 +195,20 @@ public class AddProductController implements Initializable {
 
         int stock = readStock();
         if (stock < 0) {
-            showWarning("Invalid stock", "Stock must be a whole number of 0 or more.");
+            showWarning("Invalid stock",
+                    "Stock must be a whole number from " + STOCK_MIN + " to " + STOCK_MAX + ".");
             spStock.requestFocus();
             return;
         }
 
-        // TODO: also INSERT the product into the database
-        InventoryController.addProduct(name, category, price, stock);
-
+        // TODO: also INSERT the product into the database (photoPath is available if you store it)
+        String savedPhoto = saveCopyOfPhoto();
+        if (!InventoryController.addProduct(name, category, price, stock, savedPhoto)) {
+            showError("Could not save product", "The product could not be saved to the database.");
+            return;
+        }
         Alert ok = new Alert(Alert.AlertType.INFORMATION);
+        ok.initOwner(currentStage());
         ok.setTitle("Product saved");
         ok.setHeaderText(null);
         ok.setContentText("\"" + name + "\" was added to the inventory.");
@@ -129,15 +217,19 @@ public class AddProductController implements Initializable {
         goInventory();
     }
 
-    /** Reads the spinner's text (it is editable). Returns -1 if invalid. */
+    /**
+     * Reads the spinner's text (it is editable), writes the clean value back
+     * into the editor, and returns it. Returns -1 if invalid.
+     */
     private int readStock() {
         try {
-            String text = spStock.getEditor().getText().trim();
+            String text = spStock.getEditor().getText() == null ? "" : spStock.getEditor().getText().trim();
             int value = text.isEmpty() ? 0 : Integer.parseInt(text);
-            if (value < 0 || value > 9999) {
+            if (value < STOCK_MIN || value > STOCK_MAX) {
                 return -1;
             }
             spStock.getValueFactory().setValue(value);
+            spStock.getEditor().setText(String.valueOf(value));
             return value;
         } catch (NumberFormatException e) {
             return -1;
@@ -175,7 +267,7 @@ public class AddProductController implements Initializable {
 
     @FXML
     private void handleOpenChangePassword() {
-        openDialog("CHANGEPASSWORD.fxml", "Change password");
+        openDialog("CHANGEPASSWORD.fxml", "Change password", false);
     }
 
     @FXML
@@ -187,6 +279,7 @@ public class AddProductController implements Initializable {
     @FXML
     private void handleLogout() {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.initOwner(currentStage());
         confirm.setTitle("Log out");
         confirm.setHeaderText(null);
         confirm.setContentText("Are you sure you want to log out?");
@@ -203,7 +296,7 @@ public class AddProductController implements Initializable {
     // =====================================================================
 
     private Stage currentStage() {
-        return (Stage) navInventory.getScene().getWindow();
+        return (Stage) btnSaveProduct.getScene().getWindow();
     }
 
     private void switchScreen(String fxmlName, String title) {
@@ -219,12 +312,8 @@ public class AddProductController implements Initializable {
             stage.setTitle("Sassy's Creation - " + title);
         } catch (Exception e) {
             e.printStackTrace();
-            showError("Could not open " + title, e.getMessage());
+            showError("Could not open " + title, rootCause(e));
         }
-    }
-
-    private void openDialog(String fxmlName, String title) {
-        openDialog(fxmlName, title, false);
     }
 
     /** @param borderless true = no title bar, transparent background (for rounded dialogs like About) */
@@ -241,6 +330,7 @@ public class AddProductController implements Initializable {
             dialog.initOwner(currentStage());
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.setTitle("Sassy's Creation - " + title);
+            dialog.setResizable(false);
 
             Scene scene = new Scene(root);
             if (borderless) {
@@ -250,12 +340,20 @@ public class AddProductController implements Initializable {
             dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
-            showError("Could not open " + title, e.getMessage());
+            showError("Could not open " + title, rootCause(e));
         }
+    }
+
+    private String rootCause(Throwable t) {
+        while (t.getCause() != null) {
+            t = t.getCause();
+        }
+        return t.toString();
     }
 
     private void showWarning(String header, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.initOwner(currentStage());
         alert.setTitle("Add Product");
         alert.setHeaderText(header);
         alert.setContentText(message);
@@ -264,6 +362,7 @@ public class AddProductController implements Initializable {
 
     private void showError(String header, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initOwner(currentStage());
         alert.setTitle("Error");
         alert.setHeaderText(header);
         alert.setContentText(message == null ? "Unknown error. Check the console for details." : message);

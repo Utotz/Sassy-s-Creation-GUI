@@ -1,0 +1,70 @@
+/* text-large.css  -  load AFTER styles.css (and dashboard-large.css) */
+/* Tweak the numbers below to taste. Every rule is prefixed with .root-pane
+   so it out-ranks the matching rules in styles.css. */
+
+.root-pane { -fx-font-size: 15px; }
+
+/* ---------- titles ---------- */
+.root-pane .page-title   { -fx-font-size: 32px; }
+.root-pane .page-sub     { -fx-font-size: 15px; }
+.root-pane .card-title   { -fx-font-size: 20px; }
+.root-pane .banner-title { -fx-font-size: 34px; }
+.root-pane .banner-sub   { -fx-font-size: 17px; }
+.root-pane .quick-title  { -fx-font-size: 20px; }
+.root-pane .quick-sub    { -fx-font-size: 15px; }
+
+/* ---------- dashboard stats ---------- */
+.root-pane .stat-label   { -fx-font-size: 15px; }
+.root-pane .stat-value   { -fx-font-size: 34px; }
+.root-pane .stat-note    { -fx-font-size: 14px; }
+.root-pane .gauge-pct    { -fx-font-size: 30px; }
+.root-pane .reminder-big { -fx-font-size: 24px; }
+.root-pane .reminder-note{ -fx-font-size: 15px; }
+.root-pane .stat-chip    { -fx-font-size: 16px; }
+
+/* ---------- buttons, chips, links ---------- */
+.root-pane .btn-primary,
+.root-pane .btn-ghost,
+.root-pane .banner-btn,
+.root-pane .quick-btn      { -fx-font-size: 16px; }
+.root-pane .chip           { -fx-font-size: 16px; }
+.root-pane .chip-count     { -fx-font-size: 13px; }
+.root-pane .view-seg       { -fx-font-size: 15px; }
+.root-pane .seg            { -fx-font-size: 16px; }
+.root-pane .view-all-pill  { -fx-font-size: 14px; }
+.root-pane .btn-icon,
+.root-pane .link-pink,
+.root-pane .link-sep       { -fx-font-size: 15px; }
+
+/* ---------- badges ---------- */
+.root-pane .badge-done,
+.root-pane .badge-pending,
+.root-pane .badge-cancelled,
+.root-pane .badge-low,
+.root-pane .stock-plain    { -fx-font-size: 14px; }
+
+/* ---------- product cards ---------- */
+.root-pane .prod-name  { -fx-font-size: 16px; }
+.root-pane .prod-price { -fx-font-size: 17px; }
+.root-pane .prod-btn   { -fx-font-size: 14px; }
+
+/* ---------- order cards ---------- */
+.root-pane .order-cust    { -fx-font-size: 17px; }
+.root-pane .order-product { -fx-font-size: 16px; }
+.root-pane .order-price   { -fx-font-size: 19px; }
+.root-pane .order-avatar  { -fx-font-size: 15px; }
+.root-pane .order-btn     { -fx-font-size: 14px; }
+
+/* ---------- forms ---------- */
+.root-pane .form-label { -fx-font-size: 15px; }
+.root-pane .text-field,
+.root-pane .search-box .text-field,
+.root-pane .combo-box .list-cell,
+.root-pane .combo-box-base .text-input,
+.root-pane .spinner .text-field,
+.root-pane .date-picker .text-field { -fx-font-size: 16px; }
+
+/* ---------- tables ---------- */
+.root-pane .table-view .column-header .label { -fx-font-size: 15px; }
+.root-pane .table-view .table-cell           { -fx-font-size: 15px; }
+.root-pane .table-view .placeholder .label   { -fx-font-size: 16px; }

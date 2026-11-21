@@ -9,10 +9,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
-import java.io.IOException;
-
 /**
- * Controller for the "Delete this order?" confirmation dialog.
+ * Controller for the "Delete this order?" confirmation dialog (DELETEORDER.fxml).
  *
  * The FXML root declares
  *   fx:controller="com.sassyscreation.sassyscreationgui.controllers.DeleteOrderController"
@@ -29,12 +27,10 @@ import java.io.IOException;
  */
 public class DeleteOrderController {
 
-    // CHANGE THIS to match the actual file name of your delete-order FXML
-    // (it must sit in src/main/resources/com/sassyscreation/sassyscreationgui/)
+    // Must sit in src/main/resources/com/sassyscreation/sassyscreationgui/
     private static final String FXML_PATH =
             "/com/sassyscreation/sassyscreationgui/DELETEORDER.fxml";
 
-    // ---- fields from the FXML ----
     @FXML private Label dID;
     @FXML private Label dCustomer;
     @FXML private Label dProduct;
@@ -53,7 +49,7 @@ public class DeleteOrderController {
     /**
      * Shows the dialog and blocks until it is closed.
      *
-     * @return true if the user clicked "Yes, delete", false otherwise
+     * @return true only if the user clicked "Yes, delete"
      */
     public static boolean show(Window owner, Object id, String customer,
                                String product, String price, String status) {
@@ -72,10 +68,23 @@ public class DeleteOrderController {
             stage.showAndWait();
 
             return controller.confirmed;
-        } catch (IOException e) {
+        } catch (Exception e) {
+            // Any failure means "do not delete"
             e.printStackTrace();
             return false;
         }
+    }
+
+    // ---------------------------------------------------------------
+    // Init
+    // ---------------------------------------------------------------
+
+    @FXML
+    private void initialize() {
+        // Esc = cancel (safe default for a destructive dialog)
+        btnCancelDelete.setCancelButton(true);
+        // Start focus on Cancel so a stray Enter can't delete the order
+        btnCancelDelete.setDefaultButton(true);
     }
 
     // ---------------------------------------------------------------
@@ -84,15 +93,19 @@ public class DeleteOrderController {
 
     public void setOrder(Object id, String customer, String product, String price, String status) {
         dID.setText(String.valueOf(id));
-        dCustomer.setText(customer);
-        dProduct.setText(product);
-        dPrice.setText(price);
-        dStatus.setText(status);
-        lblRestoreNote.setText("Stock for " + product + " will be restored.");
+        dCustomer.setText(nz(customer));
+        dProduct.setText(nz(product));
+        dPrice.setText(nz(price));
+        dStatus.setText(nz(status));
+        lblRestoreNote.setText("Stock for " + nz(product) + " will be restored.");
+    }
+
+    private static String nz(String s) {
+        return s == null ? "" : s;
     }
 
     // ---------------------------------------------------------------
-    // Button handlers (names match onAction in the FXML)
+    // Button handlers
     // ---------------------------------------------------------------
 
     @FXML

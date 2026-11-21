@@ -11,10 +11,20 @@ public class Product {
     private final int stockQuantity;
     private final int lowStockThreshold;
     private final boolean customizable;
+    /** File name inside resources/.../images/ (e.g. "diamond-top.jpg") or a full file path; may be null. */
+    private final String imagePath;
 
-    public Product (int productId, String name,
-                    String category, BigDecimal price,
-                    int stockQuantity, int lowStockThreshold, boolean customizable) {
+    /** Old constructor kept so existing code (e.g. ProductDAOTest) still compiles. */
+    public Product(int productId, String name,
+                   String category, BigDecimal price,
+                   int stockQuantity, int lowStockThreshold, boolean customizable) {
+        this(productId, name, category, price, stockQuantity, lowStockThreshold, customizable, null);
+    }
+
+    public Product(int productId, String name,
+                   String category, BigDecimal price,
+                   int stockQuantity, int lowStockThreshold, boolean customizable,
+                   String imagePath) {
 
         this.productId = productId;
         this.name = name;
@@ -23,15 +33,17 @@ public class Product {
         this.stockQuantity = stockQuantity;
         this.lowStockThreshold = lowStockThreshold;
         this.customizable = customizable;
+        this.imagePath = imagePath;
     }
 
-    public int getProductId() {return productId; }
-    public String getName() {return name; }
-    public String getCategory() {return category; }
+    public int getProductId() { return productId; }
+    public String getName() { return name; }
+    public String getCategory() { return category; }
     public BigDecimal getPrice() { return price; }
-    public int getStockQuantity() {return stockQuantity; }
-    public int getLowStockThreshold() {return  lowStockThreshold; }
-    public boolean isCustomizable() {return customizable; }
+    public int getStockQuantity() { return stockQuantity; }
+    public int getLowStockThreshold() { return lowStockThreshold; }
+    public boolean isCustomizable() { return customizable; }
+    public String getImagePath() { return imagePath; }
 
     @Override
     public String toString() {
@@ -39,8 +51,9 @@ public class Product {
                 ", name='" + name +
                 "', category='" + category +
                 "', price=" + price +
-                ",stock=" + stockQuantity +
+                ", stock=" + stockQuantity +
                 ", lowStockAt=" + lowStockThreshold +
-                ", customizable=" + customizable + "}";
+                ", customizable=" + customizable +
+                ", imagePath=" + imagePath + "}";
     }
 }

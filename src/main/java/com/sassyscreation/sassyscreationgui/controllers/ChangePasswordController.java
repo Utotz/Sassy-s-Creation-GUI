@@ -1,32 +1,21 @@
 package com.sassyscreation.sassyscreationgui.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.stage.Modality;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-
-import java.io.IOException;
 
 /**
- * Controller for the "Change password" dialog.
- *
- * The FXML has no fx:controller attribute, so this controller is attached in code
- * by {@link #show(Window)}. Call that from the miChangePassword handler in
- * DashboardController, OrdersController, InventoryController, StandSaleController, etc.
+ * Controller for the "Change password" dialog (CHANGEPASSWORD.fxml).
+ * Attached through fx:controller in the FXML, so any controller can open it
+ * with a plain FXMLLoader (see openModal / openDialog).
  */
 public class ChangePasswordController {
 
-    // CHANGE THIS to match the actual file name of your change-password FXML
-    // (it must sit in src/main/resources/com/sassyscreation/sassyscreationgui/)
-    private static final String FXML_PATH =
-            "/com/sassyscreation/sassyscreationgui/change-password.fxml";
+    private static final int MIN_LENGTH = 8;
 
-    // ---- fields from the FXML ----
     @FXML private PasswordField pfCurrentPassword;
     @FXML private PasswordField pfChangeNew;
     @FXML private PasswordField pfChangeConfirm;
@@ -34,32 +23,24 @@ public class ChangePasswordController {
     @FXML private Button btnCancelPassword;
     @FXML private Button btnSavePassword;
 
-    // ---------------------------------------------------------------
-    // Opening the dialog
-    // ---------------------------------------------------------------
+    @FXML
+    private void initialize() {
+        // Error label takes no space until there is something to show
+        lblChangeError.managedProperty().bind(lblChangeError.visibleProperty());
+        hideError();
 
-    /** Opens the dialog as a modal window on top of {@code owner}. */
-    public static void show(Window owner) {
-        try {
-            FXMLLoader loader = new FXMLLoader(ChangePasswordController.class.getResource(FXML_PATH));
-            loader.setController(new ChangePasswordController());
-            Scene scene = new Scene(loader.load());
+        // Clear the error as soon as the user edits any field
+        pfCurrentPassword.textProperty().addListener((obs, o, n) -> hideError());
+        pfChangeNew.textProperty().addListener((obs, o, n) -> hideError());
+        pfChangeConfirm.textProperty().addListener((obs, o, n) -> hideError());
 
-            Stage stage = new Stage();
-            stage.setTitle("Change password");
-            stage.initOwner(owner);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setResizable(false);
-            stage.setScene(scene);
-            stage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Enter in the last field submits
+        pfChangeConfirm.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                handleSavePassword();
+            }
+        });
     }
-
-    // ---------------------------------------------------------------
-    // Button handlers (names match onAction in the FXML)
-    // ---------------------------------------------------------------
 
     @FXML
     private void handleCancelPassword() {
@@ -68,29 +49,32 @@ public class ChangePasswordController {
 
     @FXML
     private void handleSavePassword() {
-        String current = pfCurrentPassword.getText();
-        String newPass = pfChangeNew.getText();
-        String confirm = pfChangeConfirm.getText();
+        String current = pfCurrentPassword.getText() == null ? "" : pfCurrentPassword.getText();
+        String newPass = pfChangeNew.getText() == null ? "" : pfChangeNew.getText();
+        String confirm = pfChangeConfirm.getText() == null ? "" : pfChangeConfirm.getText();
 
-        // Validation
         if (current.isEmpty() || newPass.isEmpty() || confirm.isEmpty()) {
             showError("Please fill in all fields.");
             return;
         }
-        if (newPass.length() < 8 || !newPass.matches(".*\\d.*")) {
-            showError("New password must be at least 8 characters and include a number.");
+        if (newPass.length() < MIN_LENGTH || !newPass.matches(".*\\d.*")) {
+            showError("New password must be at least " + MIN_LENGTH + " characters and include a number.");
+            pfChangeNew.requestFocus();
             return;
         }
         if (!newPass.equals(confirm)) {
             showError("New password and confirmation do not match.");
+            pfChangeConfirm.requestFocus();
             return;
         }
         if (newPass.equals(current)) {
             showError("New password must be different from the current one.");
+            pfChangeNew.requestFocus();
             return;
         }
         if (!verifyCurrentPassword(current)) {
             showError("Current password is incorrect.");
+            pfCurrentPassword.requestFocus();
             return;
         }
 
@@ -109,6 +93,7 @@ public class ChangePasswordController {
     private boolean verifyCurrentPassword(String password) {
         // TODO: use the same check LoginController uses
         // (query your users table, compare hash, etc.)
+        // NOTE: returns true for now, so ANY current password is accepted until you implement this.
         return true;
     }
 
@@ -124,6 +109,12 @@ public class ChangePasswordController {
 
     private void showError(String message) {
         lblChangeError.setText(message);
+        lblChangeError.setVisible(true);
+    }
+
+    private void hideError() {
+        lblChangeError.setText("");
+        lblChangeError.setVisible(false);
     }
 
     private void close() {

@@ -16,7 +16,7 @@
 /* ---- root ---- */
 .root-pane, .dialog-root, .fl-bg {
     -fx-focus-color: #C22A62; -fx-faint-focus-color: #C22A6233;
-    -fx-font-family: "Inter"; -fx-font-size: 13px;
+    -fx-font-family: "Poppins"; -fx-font-size: 13px;
     -fx-background-color: linear-gradient(to bottom right, #FFF5F8, #FCE4EC);
 }
 
@@ -26,10 +26,10 @@
 .brand-icon { -fx-background-color: #C22A62; -fx-background-radius: 9; }
 .brand-title { -fx-text-fill: #1A1418; -fx-font-size: 15px; }
 .brand-sub { -fx-text-fill: #54454D; -fx-font-size: 12px; }
-.nav-btn { -fx-background-color: transparent; -fx-text-fill: #1A1418; -fx-alignment: CENTER_LEFT; -fx-padding: 11 16; -fx-background-radius: 30; -fx-font-size: 14px; -fx-cursor: hand; }
+.nav-btn { -fx-background-color: transparent; -fx-text-fill: #1A1418; -fx-alignment: CENTER_LEFT; -fx-padding: 11 16; -fx-background-radius: 14; -fx-font-size: 14px; -fx-cursor: hand; }
 .nav-btn:hover { -fx-background-color: #FDF2F6; }
 .nav-active, .nav-active:hover { -fx-background-color: #C22A62; -fx-text-fill: white; -fx-font-weight: bold; }
-.nav-logout { -fx-background-color: transparent; -fx-text-fill: #1A1418; -fx-alignment: CENTER_LEFT; -fx-padding: 11 16; -fx-background-radius: 30; -fx-border-color: #E8D0DB; -fx-border-width: 1; -fx-border-radius: 30; -fx-font-size: 14px; -fx-cursor: hand; }
+.nav-logout { -fx-background-color: transparent; -fx-text-fill: #1A1418; -fx-alignment: CENTER_LEFT; -fx-padding: 11 16; -fx-background-radius: 14; -fx-border-color: #E8D0DB; -fx-border-width: 1; -fx-border-radius: 14; -fx-font-size: 14px; -fx-cursor: hand; }
 .nav-logout:hover { -fx-background-color: #FDF2F6; }
 .side-footer { -fx-background-color: #FDF2F6; -fx-background-radius: 16; -fx-padding: 12; }
 .side-footer-sub { -fx-text-fill: #54454D; -fx-font-size: 11px; }
@@ -38,7 +38,7 @@
 /* ---- top bar (one fixed height on every screen, floats on the blush background) ---- */
 .topbar { -fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0; -fx-min-height: 48; -fx-pref-height: 48; -fx-max-height: 48; }
 .avatar { -fx-background-color: white; -fx-text-fill: #C22A62; -fx-background-radius: 20; -fx-min-width: 28; -fx-min-height: 28; -fx-alignment: CENTER; -fx-font-weight: bold; }
-.account-menu { -fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: #1A1418; -fx-cursor: hand; }
+.account-menu { -fx-background-color: transparent; -fx-background-radius: 14; -fx-text-fill: #1A1418; -fx-cursor: hand; }
 .account-menu:hover, .account-menu:showing { -fx-background-color: white; }
 .account-menu .label { -fx-text-fill: #1A1418; }
 .account-menu > .arrow-button > .arrow { -fx-background-color: #54454D; }
@@ -56,16 +56,16 @@
 .icon-gold { -fx-background-color: #FBF3E1; } .icon-red { -fx-background-color: #FDECEA; }
 
 /* ---- buttons: crimson pills ---- */
-.btn-primary { -fx-background-color: #C22A62; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 30; -fx-padding: 10 22; -fx-cursor: hand; }
+.btn-primary { -fx-background-color: #C22A62; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 14; -fx-padding: 10 22; -fx-cursor: hand; }
 .btn-primary:hover { -fx-background-color: #A8204F; }
 .btn-primary:disabled { -fx-background-color: #E6D3DB; -fx-text-fill: #8A7A82; -fx-opacity: 1; -fx-cursor: default; }
-.btn-warn { -fx-background-color: #8A6508; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 30; -fx-padding: 10 22; -fx-cursor: hand; }
-.btn-success { -fx-background-color: #1E7A4C; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 30; -fx-padding: 10 22; -fx-cursor: hand; }
-.btn-danger { -fx-background-color: #B3261E; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 30; -fx-padding: 10 22; -fx-cursor: hand; }
+.btn-warn { -fx-background-color: #8A6508; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 14; -fx-padding: 10 22; -fx-cursor: hand; }
+.btn-success { -fx-background-color: #1E7A4C; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 14; -fx-padding: 10 22; -fx-cursor: hand; }
+.btn-danger { -fx-background-color: #B3261E; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 14; -fx-padding: 10 22; -fx-cursor: hand; }
 .btn-warn:hover { -fx-background-color: #6F5106; } .btn-success:hover { -fx-background-color: #176340; } .btn-danger:hover { -fx-background-color: #96201A; }
-.btn-ghost { -fx-background-color: white; -fx-text-fill: #1A1418; -fx-font-weight: bold; -fx-border-color: #E8D0DB; -fx-border-radius: 30; -fx-background-radius: 30; -fx-padding: 10 22; -fx-cursor: hand; }
+.btn-ghost { -fx-background-color: white; -fx-text-fill: #1A1418; -fx-font-weight: bold; -fx-border-color: #E8D0DB; -fx-border-radius: 14; -fx-background-radius: 14; -fx-padding: 10 22; -fx-cursor: hand; }
 .btn-ghost:hover { -fx-background-color: #FDF2F6; }
-.btn-icon { -fx-background-color: transparent; -fx-text-fill: #C22A62; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 4 10; -fx-background-radius: 20; -fx-cursor: hand; }
+.btn-icon { -fx-background-color: transparent; -fx-text-fill: #C22A62; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 4 10; -fx-background-radius: 14; -fx-cursor: hand; }
 .btn-icon:hover { -fx-background-color: #FDF2F6; -fx-text-fill: #A8204F; }
 .btn-icon-danger { -fx-text-fill: #B3261E; }
 .btn-icon-danger:hover { -fx-background-color: #FDECEA; -fx-text-fill: #B3261E; }
@@ -82,14 +82,14 @@
 .text-field:focused, .password-field:focused, .combo-box:focused, .date-picker:focused, .spinner:focused { -fx-background-color: white; -fx-border-color: #C22A62; }
 .spinner .text-field, .date-picker .text-field, .combo-box .text-field { -fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 14; }
 .text-field, .password-field, .combo-box-base, .date-picker, .spinner .text-field { -fx-prompt-text-fill: #7A6571; }
-.search-field { -fx-background-color: white; -fx-background-radius: 30; -fx-border-radius: 30; -fx-padding: 0 18 0 18; }
+.search-field { -fx-background-color: white; -fx-background-radius: 14; -fx-border-radius: 14; -fx-padding: 0 18 0 18; }
 .error-label { -fx-text-fill: #B3261E; -fx-font-size: 12px; -fx-min-height: 18; }
 .hint-label { -fx-text-fill: #62525B; -fx-font-size: 12px; }
 .step-label { -fx-text-fill: #C22A62; -fx-font-size: 11px; -fx-font-weight: bold; }
 .check-box { -fx-text-fill: #1A1418; }
 .check-box:selected .mark { -fx-background-color: white; }
 .check-box:selected .box { -fx-background-color: #C22A62; -fx-border-color: #C22A62; }
-.chip, .seg { -fx-background-color: white; -fx-border-color: #E8D0DB; -fx-background-radius: 30; -fx-border-radius: 30; -fx-padding: 5 16; -fx-text-fill: #1A1418; }
+.chip, .seg { -fx-background-color: white; -fx-border-color: #E8D0DB; -fx-background-radius: 14; -fx-border-radius: 14; -fx-padding: 5 16; -fx-text-fill: #1A1418; }
 .chip:selected { -fx-background-color: #C22A62; -fx-text-fill: white; -fx-border-color: #C22A62; }
 .seg { -fx-background-radius: 14; -fx-border-radius: 14; -fx-pref-width: 140; }
 .seg:selected { -fx-background-color: #FDF2F6; -fx-border-color: #C22A62; -fx-text-fill: #A8204F; -fx-font-weight: bold; }
@@ -114,8 +114,7 @@
 .footer-bar { -fx-background-color: #FBE3EB; -fx-background-radius: 16; -fx-padding: 14 24 14 24; -fx-min-height: 56; -fx-alignment: CENTER-LEFT; }
 
 /* ---- dialogs ---- */
-.dialog-card { -fx-background-color: white; -fx-background-radius: 28; -fx-padding: 34 36 30 36; -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.16), 40, 0, 0, 14); }
-.dialog-card-pink { -fx-border-color: transparent; -fx-border-radius: 28; -fx-border-width: 0; }
+.dialog-card {-fx-background-color: white;-fx-background-radius: 24;-fx-effect: dropshadow(gaussian, rgba(194, 42, 98, 0.22), 22, 0.1, 0, 6);}
 .dialog-title         { -fx-text-fill: #B3261E; -fx-font-weight: bold; -fx-font-size: 26px; -fx-padding: 0 0 14 0; }
 .dialog-title-primary { -fx-text-fill: #C22A62; -fx-font-weight: bold; -fx-font-size: 26px; -fx-padding: 0 0 14 0; }
 .dialog-title-warn    { -fx-text-fill: #8A6508; -fx-font-weight: bold; -fx-font-size: 26px; -fx-padding: 0 0 14 0; }
@@ -127,8 +126,8 @@
 .detail-value { -fx-text-fill: #111111; -fx-font-size: 17px; }
 .restore-note { -fx-text-fill: #17714A; -fx-font-size: 15px; -fx-padding: 12 0 0 0; }
 .dialog-buttons { -fx-padding: 22 0 0 0; }
-.dialog-card .btn-danger, .dialog-card .btn-primary, .dialog-card .btn-warn, .dialog-card .btn-success { -fx-background-radius: 30; -fx-font-size: 15px; -fx-padding: 13 28 13 28; }
-.dialog-card .btn-ghost { -fx-background-radius: 30; -fx-border-radius: 30; -fx-text-fill: #1A1418; -fx-font-size: 15px; -fx-padding: 13 26 13 26; }
+.dialog-card .btn-danger, .dialog-card .btn-primary, .dialog-card .btn-warn, .dialog-card .btn-success { -fx-background-radius: 14; -fx-font-size: 15px; -fx-padding: 13 28 13 28; }
+.dialog-card .btn-ghost { -fx-background-radius: 14; -fx-border-radius: 14; -fx-text-fill: #1A1418; -fx-font-size: 15px; -fx-padding: 13 26 13 26; }
 .success-circle { -fx-background-color: #E4F3EA; -fx-text-fill: #1E6B44; -fx-background-radius: 40; -fx-min-width: 72; -fx-min-height: 72; -fx-pref-width: 72; -fx-pref-height: 72; -fx-alignment: CENTER; -fx-font-size: 32px; -fx-font-weight: bold; }
 .error-circle { -fx-background-color: #FDECEA; -fx-text-fill: #B3261E; -fx-background-radius: 40; -fx-min-width: 72; -fx-min-height: 72; -fx-pref-width: 72; -fx-pref-height: 72; -fx-alignment: CENTER; -fx-font-size: 32px; -fx-font-weight: bold; }
 
@@ -146,7 +145,7 @@
 .fl-tagline { -fx-text-fill: #8A4A69; -fx-font-size: 12px; }
 .fl-field { -fx-background-color: #FDF2F6; -fx-background-radius: 14; -fx-border-color: #E8D0DB; -fx-border-radius: 14; -fx-border-width: 1; -fx-padding: 0 16 0 16; -fx-font-size: 14px; }
 .fl-field:focused { -fx-background-color: white; -fx-border-color: #C22A62; }
-.fl-primary { -fx-background-radius: 30; -fx-font-size: 14px; }
+.fl-primary { -fx-background-radius: 14; -fx-font-size: 14px; }
 .fl-exit { -fx-background-color: transparent; -fx-text-fill: #54454D; -fx-font-size: 13px; -fx-cursor: hand; }
 .fl-exit:hover { -fx-text-fill: #C22A62; }
 
@@ -175,6 +174,7 @@
 .ico-lock { -fx-shape: "M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"; }
 .ico-receipt { -fx-shape: "M18 17H6v-2h12v2zm0-4H6v-2h12v2zm0-4H6V7h12v2zM3 22l1.5-1.5L6 22l1.5-1.5L9 22l1.5-1.5L12 22l1.5-1.5L15 22l1.5-1.5L18 22l1.5-1.5L21 22V2l-1.5 1.5L18 2l-1.5 1.5L15 2l-1.5 1.5L12 2l-1.5 1.5L9 2 7.5 3.5 6 2 4.5 3.5 3 2v20z"; }
 .ico-sync { -fx-shape: "M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"; }
+.ico-person { -fx-shape: "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"; }
 .ico-trend { -fx-shape: "M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"; }
 
 /* icon colours follow their parent */
@@ -213,14 +213,14 @@
 .btn-icon .ico { -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
 
 /* ================= Dashboard low-stock table ================= */
-.low-table-wrap { -fx-background-color: white; -fx-background-radius: 14; -fx-border-color: #E8D0DB; -fx-border-radius: 14; }
-.low-table, .low-table:focused { -fx-background-color: transparent; -fx-border-color: transparent; -fx-effect: null; -fx-padding: 0 6 0 6; -fx-background-radius: 14 14 0 0; }
+.low-table-wrap { -fx-background-color: white; -fx-background-radius: 18; -fx-border-color: #E8D0DB; -fx-border-radius: 18; }
+.low-table, .low-table:focused { -fx-background-color: transparent; -fx-border-color: transparent; -fx-effect: null; -fx-padding: 0 6 0 6; -fx-background-radius: 18 18 0 0; }
 .low-table .column-header-background, .low-table .column-header, .low-table .filler { -fx-background-color: transparent; }
 .low-table .column-header .label { -fx-padding: 10 0 10 12; }
 .low-table .table-cell { -fx-padding: 0 0 0 12; -fx-font-size: 13px; }
 .low-table .table-row-cell { -fx-cell-size: 44; }
 /* "View all" = the last row of the table: same 44px height and 13px size as the other rows */
-.table-footer-row, .table-footer-row:visited { -fx-background-color: #FDF2F6; -fx-background-radius: 0 0 14 14; -fx-border-color: #E8D0DB transparent transparent transparent; -fx-border-width: 1 0 0 0; -fx-padding: 0 12 0 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #C22A62; -fx-cursor: hand; -fx-min-height: 44; -fx-pref-height: 44; -fx-max-height: 44; -fx-text-overrun: clip; -fx-underline: false; }
+.table-footer-row, .table-footer-row:visited { -fx-background-color: #FDF2F6; -fx-background-radius: 0 0 18 18; -fx-border-color: #E8D0DB transparent transparent transparent; -fx-border-width: 1 0 0 0; -fx-padding: 0 12 0 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #C22A62; -fx-cursor: hand; -fx-min-height: 44; -fx-pref-height: 44; -fx-max-height: 44; -fx-text-overrun: clip; -fx-underline: false; }
 .table-footer-row:hover { -fx-background-color: #FCE4EC; -fx-text-fill: #A8204F; }
 .table-footer-row .ico { -fx-background-color: #C22A62; -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
 
@@ -245,12 +245,12 @@
 .nav-btn, .nav-active, .nav-logout, .fl-primary, .fl-exit, .login-link, .pink-link, .table-footer-row,
 .chip, .seg, .badge-pending, .badge-done, .badge-cancelled,
 .avatar, .success-circle, .error-circle
-{ -fx-font-family: "SF Pro Rounded"; }
+{ -fx-font-family: "Poppins"; }
 
 /* table cells and everything inside popups stay Inter */
-.table-view .table-cell { -fx-font-family: "Inter"; }
+.table-view .table-cell { -fx-font-family: "Poppins"; }
 .context-menu, .menu-item .label, .combo-box-popup .list-cell, .date-picker-popup, .tooltip
-{ -fx-font-family: "Inter"; }
+{ -fx-font-family: "Poppins"; }
 
 /* row-action icons follow the crimson theme */
 .btn-icon .ico, .btn-edit .ico { -fx-background-color: #C22A62; }
@@ -488,15 +488,15 @@
 .dash-v2 .nav-active, .dash-v2 .nav-active:hover { -fx-background-color: transparent; -fx-border-color: transparent transparent transparent #C22A62; -fx-text-fill: #2A2227; -fx-font-weight: bold; }
 .dash-v2 .nav-active .ico, .dash-v2 .nav-active:hover .ico { -fx-background-color: #C22A62; }
 .dash-v2 .nav-badge { -fx-background-color: #C22A62; -fx-text-fill: white; -fx-background-radius: 20; -fx-padding: 1 9 1 9; -fx-font-size: 12px; -fx-font-weight: bold; }
-.dash-v2 .side-footer { -fx-background-color: #C22A62; -fx-background-radius: 20; -fx-padding: 16; }
+.dash-v2 .side-footer { -fx-background-color: #C22A62; -fx-background-radius: 14; -fx-padding: 16; }
 .dash-v2 .side-footer-sub { -fx-text-fill: #FDE6EE; -fx-font-size: 12px; }
 .dash-v2 .side-footer-title { -fx-text-fill: white; -fx-font-size: 14px; }
-.dash-v2 .side-footer-pill { -fx-background-color: white; -fx-text-fill: #C22A62; -fx-font-weight: bold; -fx-background-radius: 30; -fx-alignment: CENTER; -fx-padding: 9 0 9 0; -fx-font-size: 13px; }
+.dash-v2 .side-footer-pill { -fx-background-color: white; -fx-text-fill: #C22A62; -fx-font-weight: bold; -fx-background-radius: 14; -fx-alignment: CENTER; -fx-padding: 9 0 9 0; -fx-font-size: 13px; }
 
 /* ---- top bar: white strip, search on the left, admin on the right ---- */
 .dash-v2 .topbar { -fx-background-color: white; -fx-border-color: transparent transparent #F3DDE5 transparent; -fx-border-width: 0 0 1 0; -fx-min-height: 64; -fx-pref-height: 64; -fx-max-height: 64; }
-.dash-v2 .search-box { -fx-background-color: white; -fx-background-radius: 30; -fx-border-color: #DCCDD4; -fx-border-radius: 30; -fx-padding: 0 16 0 4; }
-.dash-v2 .search-box .text-field, .dash-v2 .search-box .text-field:focused { -fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 30; -fx-prompt-text-fill: #6F6570; }
+.dash-v2 .search-box { -fx-background-color: white; -fx-background-radius: 14; -fx-border-color: #DCCDD4; -fx-border-radius: 14; -fx-padding: 0 16 0 4; }
+.dash-v2 .search-box .text-field, .dash-v2 .search-box .text-field:focused { -fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 14; -fx-prompt-text-fill: #6F6570; }
 .dash-v2 .search-box .ico { -fx-background-color: #6F6570; }
 .dash-v2 .avatar { -fx-background-color: #C22A62; -fx-text-fill: white; -fx-background-radius: 30; -fx-min-width: 38; -fx-min-height: 38; }
 
@@ -507,7 +507,7 @@
 }
 .dash-v2 .banner-title { -fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: bold; -fx-font-family: "Poppins"; }
 .dash-v2 .banner-sub { -fx-text-fill: white; -fx-font-size: 14px; }
-.dash-v2 .banner-btn { -fx-background-color: white; -fx-text-fill: #C22A62; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 30; -fx-padding: 11 24 11 24; -fx-cursor: hand; }
+.dash-v2 .banner-btn { -fx-background-color: white; -fx-text-fill: #C22A62; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 14; -fx-padding: 11 24 11 24; -fx-cursor: hand; }
 .dash-v2 .banner-btn:hover { -fx-background-color: #FDF2F6; }
 
 /* ---- Revenue by Day: pill bars, hatched / pink shades, no grid ---- */
@@ -547,7 +547,7 @@
 
 /* ---- Low stock: no header row, "View all" pill in the title row ---- */
 .dash-v2 .low-table .column-header-background { -fx-max-height: 0; -fx-pref-height: 0; -fx-min-height: 0; -fx-opacity: 0; }
-.dash-v2 .view-all-pill, .dash-v2 .view-all-pill:visited, .dash-v2 .view-all-pill:hover { -fx-background-color: white; -fx-border-color: #C22A62; -fx-border-width: 1.5; -fx-border-radius: 30; -fx-background-radius: 30; -fx-text-fill: #C22A62; -fx-padding: 5 16 5 16; -fx-font-size: 13px; -fx-font-weight: bold; -fx-underline: false; -fx-cursor: hand; }
+.dash-v2 .view-all-pill, .dash-v2 .view-all-pill:visited, .dash-v2 .view-all-pill:hover { -fx-background-color: white; -fx-border-color: #C22A62; -fx-border-width: 1.5; -fx-border-radius: 14; -fx-background-radius: 14; -fx-text-fill: #C22A62; -fx-padding: 5 16 5 16; -fx-font-size: 13px; -fx-font-weight: bold; -fx-underline: false; -fx-cursor: hand; }
 .dash-v2 .view-all-pill:hover { -fx-background-color: #FDF2F6; }
 
 /* ---- Orders by Status (pie colours + legend underneath; gauge preview) ---- */
@@ -565,7 +565,7 @@
 .dash-v2 .quick-card { -fx-background-color: #C22A62; }
 .dash-v2 .quick-title { -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: "Poppins"; }
 .dash-v2 .quick-sub { -fx-text-fill: #FDE6EE; -fx-font-size: 12px; }
-.dash-v2 .quick-btn { -fx-background-color: transparent; -fx-border-color: #F4D6E1; -fx-border-width: 1.5; -fx-border-radius: 30; -fx-background-radius: 30; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT; -fx-padding: 11 18 11 18; -fx-graphic-text-gap: 10; -fx-cursor: hand; }
+.dash-v2 .quick-btn { -fx-background-color: transparent; -fx-border-color: #F4D6E1; -fx-border-width: 1.5; -fx-border-radius: 14; -fx-background-radius: 14; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT; -fx-padding: 11 18 11 18; -fx-graphic-text-gap: 10; -fx-cursor: hand; }
 .dash-v2 .quick-btn:hover { -fx-background-color: rgba(255,255,255,0.12); }
 .dash-v2 .quick-btn .ico { -fx-background-color: white; -fx-min-width: 14; -fx-pref-width: 14; -fx-max-width: 14; -fx-min-height: 14; -fx-pref-height: 14; -fx-max-height: 14; }
 .dash-v2 .quick-btn-primary, .dash-v2 .quick-btn-primary:hover { -fx-background-color: white; -fx-border-color: white; -fx-text-fill: #C22A62; -fx-font-weight: bold; }
@@ -603,10 +603,10 @@
 /* ---- year dropdown (and other combo boxes): same look as the account menu ---- */
 .combo-box-popup > .list-view {
     -fx-background-color: white;
-    -fx-background-radius: 18;
+    -fx-background-radius: 14;
     -fx-border-color: #F3C6D6;
     -fx-border-width: 1.5;
-    -fx-border-radius: 18;
+    -fx-border-radius: 14;
     -fx-padding: 8;
     -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.22), 26, 0, 0, 8);
 }
@@ -626,4 +626,544 @@
 .combo-box-popup .list-cell:filled:focused {
     -fx-background-color: #FCE4EC;
     -fx-text-fill: #C22A62;
+}
+
+/* ===================================================================
+   v3 THEME - only screens whose root has the "page-v3" class.
+   UNCHANGED: DASHBOARD only (LOGIN now uses v3 too). Everything else uses these tokens:
+     corner radius : tag 12 | tile 12 | panel 18 | input + button 14 | card, table, dialog 24
+     colours       : crimson #C22A62 (hover #A8204F), blush #FDF2F6,
+                     control border #EBD3DD, card border #F3DCE5,
+                     text #1A1418, muted #54454D
+     no big shadows - thin borders instead
+   =================================================================== */
+.page-v3 .page-title { -fx-font-size: 24px; }
+
+/* cards, tables, dialogs: radius 24 */
+.page-v3 .card, .page-v3 .fl-card, .page-v3 .dialog-card, .page-v3 .dialog-card-pink, .page-v3 .table-view {
+    -fx-background-radius: 24; -fx-border-radius: 24; -fx-border-color: #F3DCE5; -fx-border-width: 1; -fx-effect: null; }
+.page-v3 .dialog-card, .page-v3 .fl-card { -fx-padding: 24; }
+.page-v3 .footer-bar { -fx-background-radius: 16; }
+.dialog-root.page-v3 { -fx-background-color: transparent; }
+
+/* controls: input 18 / button pill 30 */
+.page-v3 .btn-primary, .page-v3 .btn-ghost, .page-v3 .btn-danger, .page-v3 .btn-warn, .page-v3 .btn-success, .page-v3 .btn-icon,
+.page-v3 .dialog-card .btn-primary, .page-v3 .dialog-card .btn-ghost, .page-v3 .dialog-card .btn-danger, .page-v3 .dialog-card .btn-warn, .page-v3 .dialog-card .btn-success {
+    -fx-background-radius: 14; -fx-border-radius: 14; }
+.page-v3 .text-field, .page-v3 .password-field, .page-v3 .combo-box, .page-v3 .date-picker, .page-v3 .spinner,
+.page-v3 .chip, .page-v3 .seg, .page-v3 .search-box, .page-v3 .search-box .text-field {
+    -fx-background-radius: 14; -fx-border-radius: 14; }
+.page-v3 .btn-ghost { -fx-border-color: #EBD3DD; -fx-border-width: 1; }
+.page-v3 .text-field, .page-v3 .password-field, .page-v3 .combo-box, .page-v3 .date-picker, .page-v3 .spinner { -fx-border-color: #EBD3DD; }
+.page-v3 .text-field:focused, .page-v3 .password-field:focused, .page-v3 .combo-box:focused, .page-v3 .date-picker:focused, .page-v3 .spinner:focused { -fx-border-color: #C22A62; }
+
+/* tables */
+.page-v3 .table-view { -fx-padding: 0; }
+.page-v3 .table-view .column-header-background { -fx-background-color: #FDF2F6; -fx-background-radius: 24 24 0 0; }
+.page-v3 .table-view .column-header, .page-v3 .table-view .filler { -fx-background-color: #FDF2F6; -fx-border-color: transparent transparent #F3DCE5 transparent; }
+.page-v3 .table-view .column-header .label { -fx-text-fill: #54454D; -fx-font-size: 11px; -fx-padding: 12 0 12 12; }
+.page-v3 .table-view .table-row-cell:odd, .page-v3 .table-view .table-row-cell:even { -fx-background-color: white; -fx-border-color: transparent transparent #F3E6EC transparent; }
+.page-v3 .table-view .table-row-cell:filled:hover { -fx-background-color: #FDF7F9; }
+
+/* status tags: radius 12 */
+.page-v3 .badge-pending, .page-v3 .badge-done, .page-v3 .badge-cancelled, .page-v3 .badge-low,
+.page-v3 .table-view .badge-pending, .page-v3 .table-view .badge-done, .page-v3 .table-view .badge-cancelled, .page-v3 .table-view .badge-low {
+    -fx-background-radius: 12; -fx-padding: 4 12; -fx-font-size: 12px; }
+
+/* quantity spinner: [ - 3 + ] */
+.page-v3 .spinner.split-arrows-horizontal .increment-arrow-button, .page-v3 .spinner.split-arrows-horizontal .decrement-arrow-button {
+    -fx-background-color: transparent; -fx-background-radius: 14; -fx-padding: 0 14 0 14; -fx-cursor: hand; }
+.page-v3 .spinner.split-arrows-horizontal .increment-arrow-button:hover, .page-v3 .spinner.split-arrows-horizontal .decrement-arrow-button:hover { -fx-background-color: #FDE8EF; }
+.page-v3 .spinner .increment-arrow { -fx-background-color: #C22A62; -fx-shape: "M5 0 H7 V5 H12 V7 H7 V12 H5 V7 H0 V5 H5 Z"; -fx-padding: 6; }
+.page-v3 .spinner .decrement-arrow { -fx-background-color: #C22A62; -fx-shape: "M0 0 H12 V2 H0 Z"; -fx-padding: 1 6 1 6; }
+.page-v3 .spinner .text-field { -fx-alignment: CENTER; -fx-font-weight: bold; -fx-background-color: transparent; -fx-border-color: transparent; }
+
+/* dialog text */
+.page-v3 .detail-row { -fx-padding: 8 0 8 0; }
+.page-v3 .detail-key, .page-v3 .detail-value, .page-v3 .dialog-text { -fx-font-size: 14px; }
+.page-v3 .detail-value { -fx-font-weight: bold; }
+
+/* stand sale chips + centred small dialogs */
+.page-v3 .stat-chip { -fx-background-color: white; -fx-background-radius: 14; -fx-border-color: #EBD3DD; -fx-border-radius: 14; -fx-padding: 8 14 8 14; -fx-text-fill: #1A1418; }
+.page-v3 .dialog-buttons { -fx-padding: 14 0 0 0; }
+.page-v3 .dialog-title, .page-v3 .dialog-title-primary, .page-v3 .dialog-title-warn, .page-v3 .dialog-title-success, .page-v3 .dialog-title-error { -fx-font-size: 20px; }
+
+
+/* ===================================================================
+   v5 - Admin Officer card in the sidebar + new LOGIN (split card on flower photo)
+   =================================================================== */
+
+/* ---- sidebar footer: Admin Officer card (replaces the "Handmade Crochet and Bouquets" box) ---- */
+.side-user { -fx-background-color: linear-gradient(to bottom right, #D6336C, #C22A62 55%, #A8204F); -fx-background-radius: 16; -fx-padding: 10 10 10 12; -fx-alignment: CENTER_LEFT; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.28), 14, 0, 0, 4); }
+.side-user:hover, .side-user:showing { -fx-background-color: linear-gradient(to bottom right, #E0407A, #CC2F69 55%, #B3245A); }
+.side-user > .arrow-button { -fx-background-color: transparent; -fx-padding: 0 0 0 4; }
+.side-user > .arrow-button > .arrow { -fx-background-color: white; }
+.side-user-avatar { -fx-background-color: white; -fx-text-fill: #C22A62; -fx-background-radius: 20; -fx-min-width: 38; -fx-pref-width: 38; -fx-max-width: 38; -fx-min-height: 38; -fx-pref-height: 38; -fx-max-height: 38; -fx-alignment: CENTER; -fx-font-weight: bold; -fx-font-size: 15px; }
+.side-user-name { -fx-text-fill: white; -fx-font-family: "Poppins Medium"; -fx-font-size: 13px; }
+.side-user-role { -fx-text-fill: #FFD3E2; -fx-font-size: 11px; }
+
+/* ---- LOGIN: photo background + split card (white brand panel | rose form panel) ---- */
+.lg-root { -fx-background-color: #7A1F47; -fx-background-image: url("drawables/login-bg.jpg"); -fx-background-size: cover; -fx-background-position: center center; -fx-background-repeat: no-repeat; }
+.lg-overlay { -fx-background-color: linear-gradient(to bottom, rgba(122,20,64,0.34), rgba(70,8,36,0.64)); }
+.lg-shell { -fx-background-color: white; -fx-background-radius: 24; -fx-effect: dropshadow(gaussian, rgba(40,0,20,0.50), 44, 0, 0, 16); }
+
+/* left: brand panel */
+.lg-left { -fx-background-color: white; -fx-background-radius: 24 0 0 24; -fx-padding: 36 40 32 40; }
+.lg-brand-name { -fx-text-fill: #C22A62; -fx-font-family: "Poppins"; -fx-font-weight: bold; -fx-font-size: 13px; }
+.lg-brand-sub { -fx-text-fill: #54454D; -fx-font-size: 11px; }
+.lg-pill { -fx-background-color: white; -fx-border-color: #C22A62; -fx-border-width: 1; -fx-border-radius: 14; -fx-background-radius: 14; -fx-padding: 4 12 4 12; -fx-text-fill: #C22A62; -fx-font-weight: bold; -fx-font-size: 10px; -fx-graphic-text-gap: 6; }
+.lg-pill .ico { -fx-background-color: #C22A62; }
+.lg-big-dark { -fx-text-fill: #1A1418; -fx-font-family: "Poppins"; -fx-font-weight: bold; -fx-font-size: 40px; }
+.lg-big-rose { -fx-text-fill: #C22A62; -fx-font-family: "Poppins"; -fx-font-weight: bold; -fx-font-size: 40px; }
+.lg-big-sub { -fx-text-fill: #7A6571; -fx-font-size: 12px; }
+
+/* right: form panel */
+.lg-right { -fx-background-color: linear-gradient(to bottom right, #D6336C, #B02358 60%, #8E1B49); -fx-background-radius: 0 24 24 0; -fx-padding: 34 40 28 40; }
+.lg-signin { -fx-text-fill: white; -fx-font-family: "Poppins"; -fx-font-weight: bold; -fx-font-size: 28px; }
+.lg-signin-sub { -fx-text-fill: #FFD3E2; -fx-font-size: 12px; }
+.lg-label { -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; }
+.lg-field { -fx-background-color: #FFF1F6; -fx-background-insets: 0; -fx-background-radius: 14; -fx-border-color: transparent; -fx-border-width: 2; -fx-border-radius: 14; -fx-padding: 0 14 0 14; -fx-font-size: 14px; -fx-text-fill: #1A1418; -fx-prompt-text-fill: #9A7B88; }
+.lg-field:focused { -fx-background-color: white; -fx-border-color: white; }
+.lg-right .check-box { -fx-text-fill: white; -fx-font-size: 12px; }
+.lg-right .check-box .box { -fx-background-color: rgba(255,255,255,0.92); -fx-background-radius: 5; -fx-border-color: transparent; }
+.lg-right .check-box:selected .box { -fx-background-color: white; -fx-border-color: transparent; }
+.lg-right .check-box:selected .mark { -fx-background-color: #C22A62; }
+.lg-right .lg-link { -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; -fx-underline: false; -fx-border-color: transparent; }
+.lg-right .lg-link:visited { -fx-text-fill: white; }
+.lg-right .lg-link:hover { -fx-text-fill: #FFD3E2; }
+.lg-right .error-label { -fx-text-fill: white; -fx-font-weight: bold; }
+.lg-login { -fx-background-color: white; -fx-background-radius: 14; -fx-text-fill: #A8204F; -fx-font-family: "Poppins"; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand; }
+.lg-login:hover { -fx-background-color: #FFE4EE; }
+.lg-login:disabled { -fx-opacity: 0.7; }
+.lg-line { -fx-background-color: rgba(255,255,255,0.35); -fx-min-height: 1; -fx-pref-height: 1; -fx-max-height: 1; }
+.lg-or { -fx-text-fill: #FFD3E2; -fx-font-size: 11px; }
+.lg-exit { -fx-background-color: transparent; -fx-border-color: rgba(255,255,255,0.7); -fx-border-width: 1; -fx-border-radius: 14; -fx-background-radius: 14; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px; -fx-cursor: hand; }
+.lg-exit:hover { -fx-background-color: rgba(255,255,255,0.16); }
+.lg-note { -fx-text-fill: #FFD3E2; -fx-font-size: 11px; }
+.lg-tagline { -fx-text-fill: rgba(255,255,255,0.85); -fx-font-size: 12px; }
+.lg-right .lockout-box { -fx-background-color: #FFF0F5; -fx-background-radius: 14; -fx-border-color: transparent; }
+.lg-right .lockout-title, .lg-right .lockout-text { -fx-text-fill: #8A1E4D; }
+.lg-right .lockout-title .ico { -fx-background-color: #8A1E4D; }
+.lg-right .lockout-box .progress-bar > .track { -fx-background-color: #F6D3E0; }
+.lg-right .lockout-box .progress-bar > .bar { -fx-background-color: #C22A62; -fx-background-insets: 0; }
+
+
+/* ===================================================================
+   v6 - Poppins everywhere, blurred flower background on the pages,
+        shared sign-in look for FORGOT / RESET / PASSWORD CHANGED
+   =================================================================== */
+.root-pane, .dialog-root, .fl-bg, .lg-root { -fx-font-family: "Poppins"; }
+
+
+/* extra pieces used by the password screens (same card + same position as LOGIN) */
+.lg-step { -fx-text-fill: #FFD3E2; -fx-font-size: 10px; -fx-font-weight: bold; }
+.lg-hint { -fx-text-fill: #FFD3E2; -fx-font-size: 11px; }
+.lg-right .combo-box.lg-combo { -fx-background-color: #FFF1F6; -fx-background-insets: 0; -fx-background-radius: 14; -fx-border-color: transparent; -fx-border-width: 2; -fx-border-radius: 14; -fx-pref-height: 44; }
+.lg-right .combo-box.lg-combo:focused { -fx-background-color: white; -fx-border-color: white; }
+.lg-right .combo-box.lg-combo .list-cell { -fx-text-fill: #1A1418; -fx-background-color: transparent; -fx-font-size: 13px; -fx-padding: 0 8 0 8; }
+.lg-right .combo-box.lg-combo > .arrow-button { -fx-background-color: transparent; }
+.lg-right .combo-box.lg-combo > .arrow-button > .arrow { -fx-background-color: #8A1E4D; }
+.lg-right .progress-bar > .track { -fx-background-color: rgba(255,255,255,0.30); -fx-background-radius: 4; -fx-background-insets: 0; }
+.lg-right .progress-bar > .bar { -fx-background-color: white; -fx-background-radius: 4; -fx-background-insets: 0; -fx-padding: 3; }
+.lg-success { -fx-background-color: white; -fx-background-radius: 40; -fx-min-width: 72; -fx-pref-width: 72; -fx-max-width: 72; -fx-min-height: 72; -fx-pref-height: 72; -fx-max-height: 72; -fx-alignment: CENTER; }
+.lg-success .ico { -fx-background-color: #C22A62; -fx-min-width: 30; -fx-pref-width: 30; -fx-max-width: 30; -fx-min-height: 22.5; -fx-pref-height: 22.5; -fx-max-height: 22.5; }
+
+
+/* ===================================================================
+   v7 - dialog shadows, key badge, centred sign-in form, visible sidebar
+   =================================================================== */
+
+/* person icon in the "ADMIN OFFICER PORTAL" pill (square icon, so no per-context size rules needed) */
+.lg-pill .ico.ico-person { -fx-min-width: 11; -fx-pref-width: 11; -fx-max-width: 11; -fx-min-height: 11; -fx-pref-height: 11; -fx-max-height: 11; }
+
+/* dialogs: soft shadow so the white card pops off the pink window (windows are 30px wider than the card so it is not cut) */
+.dialog-root.page-v3 .dialog-card, .dialog-root.page-v3 .dialog-card-pink {
+    -fx-effect: dropshadow(gaussian, rgba(94,22,56,0.40), 26, 0.08, 0, 8); }
+
+/* big round icon badge on top of a dialog (CHANGEPASSWORD = key) */
+.icon-badge { -fx-background-color: #FDE8EF; -fx-background-radius: 40; -fx-alignment: CENTER;
+    -fx-min-width: 64; -fx-pref-width: 64; -fx-max-width: 64; -fx-min-height: 64; -fx-pref-height: 64; -fx-max-height: 64; }
+.icon-badge .ico { -fx-background-color: #C22A62; }
+.icon-badge .ico.ico-key { -fx-min-width: 30; -fx-pref-width: 30; -fx-max-width: 30; -fx-min-height: 16.5; -fx-pref-height: 16.5; -fx-max-height: 16.5; }
+
+/* sidebar: white frame with a shadow + a clearly visible blush panel inside (no longer blends into the page) */
+.dash-v2 .sidebar { -fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.22), 22, 0, 4, 0); -fx-border-color: transparent #F0D3DE transparent transparent; -fx-border-width: 0 1 0 0; }
+.dash-v2 .side-panel { -fx-background-color: #FCE9F0; -fx-border-color: #F0CFDC; -fx-border-width: 1; -fx-border-radius: 22; -fx-background-radius: 22; }
+
+
+/* ===================================================================
+   v8 - MATCH THE HTML DESIGN (all 30 screens canvas)
+   =================================================================== */
+/* dialogs: dark title + small round icon badge on top (LOGOUT, EXITCONFIRM) */
+.dialog-title-dark { -fx-text-fill: #1A1418; -fx-font-weight: bold; -fx-font-size: 20px; -fx-alignment: CENTER; }
+.icon-badge-sm { -fx-background-color: #FDE8EF; -fx-background-radius: 40; -fx-alignment: CENTER;
+    -fx-min-width: 48; -fx-pref-width: 48; -fx-max-width: 48; -fx-min-height: 48; -fx-pref-height: 48; -fx-max-height: 48; }
+.icon-badge-sm .ico { -fx-background-color: #C22A62;
+    -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+
+/* dashed divider (order cards, edit sale total) */
+.dash-line { -fx-border-color: #EBD3DD; -fx-border-style: dashed; -fx-border-width: 1 0 0 0;
+    -fx-min-height: 1; -fx-pref-height: 1; -fx-max-height: 1; }
+
+/* order cards (ORDERS) */
+.order-card { -fx-background-color: white; -fx-background-radius: 24; -fx-border-color: #F3DCE5; -fx-border-radius: 24; -fx-padding: 14 16 14 16; }
+.order-avatar { -fx-background-color: #FDE8EF; -fx-text-fill: #C22A62; -fx-background-radius: 12; -fx-font-weight: bold; -fx-font-size: 13px; -fx-alignment: CENTER;
+    -fx-min-width: 40; -fx-pref-width: 40; -fx-max-width: 40; -fx-min-height: 40; -fx-pref-height: 40; -fx-max-height: 40; }
+.order-cust { -fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #1A1418; }
+.order-product { -fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #1A1418; }
+.order-price { -fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #1A1418; }
+.order-btn { -fx-padding: 5 14 5 14; -fx-font-size: 12px; -fx-graphic-text-gap: 6; -fx-text-fill: #1A1418; }
+.order-btn .ico { -fx-background-color: #1A1418; }
+.order-btn-edit, .order-btn-edit:hover { -fx-text-fill: #C22A62; }
+.order-btn-edit .ico, .order-btn-edit:hover .ico { -fx-background-color: #C22A62; }
+.order-btn-del .ico, .order-btn-del:hover .ico { -fx-background-color: #B3261E; }
+
+/* inventory grid cards (INVENTORY_GRID) */
+.prod-card { -fx-background-color: white; -fx-background-radius: 24; -fx-border-color: #F3DCE5; -fx-border-radius: 24; }
+.prod-photo { -fx-background-color: #FDE8EF; -fx-background-radius: 24 24 0 0; }
+.prod-photo-text { -fx-text-fill: #C22A62; -fx-font-size: 13px; }
+.prod-name { -fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #1A1418; }
+.prod-price { -fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #1A1418; }
+.prod-btn { -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-graphic-text-gap: 5; -fx-text-fill: #1A1418; }
+.prod-btn-edit, .prod-btn-edit:hover { -fx-text-fill: #C22A62; }
+.prod-btn-edit .ico, .prod-btn-edit:hover .ico { -fx-background-color: #C22A62; }
+.prod-btn-del .ico, .prod-btn-del:hover .ico { -fx-background-color: #B3261E; }
+
+/* product list: "20 in stock" plain text, link-style "Edit . Restock" */
+.stock-plain { -fx-text-fill: #1A1418; }
+.link-pink, .link-pink:hover { -fx-text-fill: #C22A62; -fx-font-size: 13px; }
+.link-sep { -fx-text-fill: #C22A62; -fx-font-size: 13px; }
+
+/* add/edit product: photo box */
+.photo-drop { -fx-background-color: #FDF2F6; -fx-background-radius: 24; -fx-border-color: #E58FB0; -fx-border-style: dashed; -fx-border-radius: 24; -fx-border-width: 1.2; }
+.photo-drop-text { -fx-text-fill: #C22A62; -fx-font-size: 13px; -fx-text-alignment: CENTER; }
+
+/* edit sale: big total */
+.total-big { -fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1A1418; }
+
+/* round icon badge size fixes inside dialogs (keeps each icon's aspect) */
+.icon-badge-sm .ico.ico-check { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 16.5; -fx-pref-height: 16.5; -fx-max-height: 16.5; }
+.icon-badge-sm .ico.ico-delete { -fx-min-width: 17; -fx-pref-width: 17; -fx-max-width: 17; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.icon-badge-sm .ico.ico-sync { -fx-min-width: 16; -fx-pref-width: 16; -fx-max-width: 16; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.icon-badge-sm .ico.ico-download { -fx-min-width: 18; -fx-pref-width: 18; -fx-max-width: 18; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+.icon-badge-sm .ico.ico-warning { -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 19; -fx-pref-height: 19; -fx-max-height: 19; }
+.icon-badge-sm .ico.ico-receipt { -fx-min-width: 19.8; -fx-pref-width: 19.8; -fx-max-width: 19.8; -fx-min-height: 22; -fx-pref-height: 22; -fx-max-height: 22; }
+
+
+/* ===================================================================
+   v11 - one set of corners everywhere + pink scroll bars + inventory icons
+   Corner tokens (same as DASHBOARD):
+     card / table / dialog 24 | inner panel 18 | input 18 | button = pill 30 | icon tile 12 | tag 12
+   =================================================================== */
+
+/* inventory list: pink icon tile (same as the icon-box on the dashboard: 12) */
+.prod-tile { -fx-background-color: #FDE8EF; -fx-background-radius: 12; }
+
+/* tables: header + rows must not paint over the rounded card corners */
+.page-v3 .table-view .column-header-background { -fx-background-color: #FDF2F6; -fx-background-radius: 24 24 0 0; }
+.page-v3 .table-view .column-header, .page-v3 .table-view .filler { -fx-background-color: transparent; -fx-border-color: transparent transparent #F3DCE5 transparent; }
+.page-v3 .table-view .table-row-cell:odd, .page-v3 .table-view .table-row-cell:even { -fx-background-color: transparent; -fx-border-color: transparent transparent #F3E6EC transparent; }
+.page-v3 .table-view .table-row-cell:filled:hover { -fx-background-color: #FDF7F9; }
+.page-v3 .table-view .table-cell { -fx-padding: 0 0 0 12; }
+
+/* stock tags in the product list: same shape as every other tag */
+.page-v3 .table-view .stock-plain { -fx-font-size: 13px; }
+
+/* ---- scroll bars: slim pink thumb on a soft blush groove, no arrows, no white strip ---- */
+.scroll-bar { -fx-background-color: transparent; -fx-background-insets: 0; -fx-padding: 0; }
+.scroll-bar:vertical { -fx-pref-width: 12; -fx-min-width: 12; }
+.scroll-bar:horizontal { -fx-pref-height: 12; -fx-min-height: 12; }
+.clear-scroll .scroll-bar:vertical { -fx-pref-width: 12; }
+.scroll-bar > .track { -fx-background-color: rgba(194,42,98,0.07); -fx-background-radius: 10; -fx-background-insets: 3; -fx-border-color: transparent; }
+.scroll-bar > .track-background { -fx-background-color: transparent; -fx-background-insets: 0; }
+.scroll-bar > .thumb { -fx-background-color: #E58FB0; -fx-background-radius: 10; -fx-background-insets: 3; }
+.scroll-bar > .thumb:hover { -fx-background-color: #D4547F; }
+.scroll-bar > .thumb:pressed { -fx-background-color: #C22A62; }
+.scroll-bar > .increment-button, .scroll-bar > .decrement-button { -fx-background-color: transparent; -fx-background-insets: 0; -fx-padding: 0; }
+.scroll-bar:vertical > .increment-button, .scroll-bar:vertical > .decrement-button { -fx-pref-height: 0; -fx-min-height: 0; -fx-max-height: 0; }
+.scroll-bar:horizontal > .increment-button, .scroll-bar:horizontal > .decrement-button { -fx-pref-width: 0; -fx-min-width: 0; -fx-max-width: 0; }
+.scroll-bar .increment-arrow, .scroll-bar .decrement-arrow { -fx-shape: " "; -fx-padding: 0; -fx-background-color: transparent; }
+.scroll-pane > .corner, .table-view .corner, .list-view .corner { -fx-background-color: transparent; }
+.scroll-pane > .viewport { -fx-background-color: transparent; }
+
+
+/* ---- v11b: inputs AND buttons share one corner (14) like the design; no pills ---- */
+.page-v3 .btn-primary, .page-v3 .btn-ghost, .page-v3 .btn-danger, .page-v3 .btn-warn, .page-v3 .btn-success, .page-v3 .btn-icon,
+.page-v3 .dialog-card .btn-primary, .page-v3 .dialog-card .btn-ghost, .page-v3 .dialog-card .btn-danger, .page-v3 .dialog-card .btn-warn, .page-v3 .dialog-card .btn-success,
+.page-v3 .text-field, .page-v3 .password-field, .page-v3 .combo-box, .page-v3 .date-picker, .page-v3 .spinner,
+.page-v3 .chip, .page-v3 .seg, .page-v3 .search-box, .page-v3 .search-box .text-field, .page-v3 .stat-chip {
+    -fx-background-radius: 14; -fx-border-radius: 14; }
+.page-v3 .badge-pending, .page-v3 .badge-done, .page-v3 .badge-cancelled, .page-v3 .badge-low,
+.page-v3 .table-view .badge-pending, .page-v3 .table-view .badge-done, .page-v3 .table-view .badge-cancelled, .page-v3 .table-view .badge-low { -fx-background-radius: 8; }
+
+/* ---- eye icon that replaces "Show password" (still the CheckBox cbShowPassword) ---- */
+.lg-right .check-box.eye-toggle { -fx-padding: 0; -fx-cursor: hand; }
+.lg-right .check-box.eye-toggle > .box { -fx-background-color: transparent; -fx-background-insets: 0; -fx-border-color: transparent; -fx-padding: 0; }
+.lg-right .check-box.eye-toggle > .box > .mark, .lg-right .check-box.eye-toggle:selected > .box > .mark {
+    -fx-background-color: #9A7B88; -fx-scale-shape: true; -fx-padding: 0;
+    -fx-min-width: 22; -fx-pref-width: 22; -fx-max-width: 22; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15;
+    -fx-shape: "M12 5C7 5 2.7 8.1 1 12.5 2.7 16.9 7 20 12 20s9.3-3.1 11-7.5C21.3 8.1 17 5 12 5zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"; }
+.lg-right .check-box.eye-toggle:selected > .box > .mark {
+    -fx-background-color: #C22A62; -fx-min-height: 18.9; -fx-pref-height: 18.9; -fx-max-height: 18.9;
+    -fx-shape: "M12 5C7 5 2.7 8.1 1 12.5 2.7 16.9 7 20 12 20s9.3-3.1 11-7.5C21.3 8.1 17 5 12 5zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM3 3.5l1.4-1.4 17.5 17.5-1.4 1.4z"; }
+.lg-right .check-box.eye-toggle:hover > .box > .mark { -fx-background-color: #C22A62; }
+
+/* ---- v12: outline pencil / trash for the Stand Sale rows (as in the design) ---- */
+.ico-edit-o { -fx-shape: "M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"; -fx-scale-shape: true; }
+.ico-delete-o { -fx-shape: "M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"; -fx-scale-shape: true; }
+.btn-icon .ico.ico-edit-o, .btn-icon .ico.ico-delete-o { -fx-min-width: 17; -fx-pref-width: 17; -fx-max-width: 17; -fx-min-height: 17; -fx-pref-height: 17; -fx-max-height: 17; }
+
+
+/* ---- v14: Stand Sale = design (table header same size as rows, regular weight; smaller - / + ) ---- */
+.page-v3 .table-view .column-header .label { -fx-text-fill: #54454D; -fx-font-size: 13px; -fx-font-weight: normal; }
+.page-v3 .spinner .increment-arrow { -fx-padding: 4.5; }
+.page-v3 .spinner .decrement-arrow { -fx-padding: 1 5 1 5; }
+
+
+/* ===================================================================
+   v16
+   =================================================================== */
+
+/* ---- one explicit background inset for every input, in every state (no half-square corners on focus / hover) ---- */
+.text-field, .text-field:focused, .text-field:hover, .password-field, .password-field:focused,
+.combo-box, .combo-box:hover, .combo-box:focused, .combo-box:showing,
+.date-picker, .date-picker:hover, .date-picker:focused, .date-picker:showing,
+.spinner, .spinner:focused { -fx-background-insets: 0; -fx-border-insets: 0; }
+.combo-box-base > .arrow-button, .date-picker > .arrow-button { -fx-background-color: transparent; -fx-background-insets: 0; -fx-background-radius: 0 14 14 0; }
+.combo-box-base > .arrow-button > .arrow { -fx-background-color: #C22A62; }
+.date-picker > .arrow-button { -fx-padding: 0 12 0 6; }
+.date-picker > .arrow-button > .arrow { -fx-background-color: #C22A62; -fx-background-insets: 0; }
+.date-picker .text-field { -fx-background-insets: 0; }
+
+/* ---- calendar pop-up (Add order, Edit order, Export data, ...) ---- */
+.date-picker-popup {
+    -fx-background-color: white; -fx-background-insets: 0; -fx-background-radius: 20;
+    -fx-border-color: #F3C6D6; -fx-border-width: 1.5; -fx-border-radius: 20;
+    -fx-padding: 14 14 12 14;
+    -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.22), 26, 0, 0, 8);
+    -fx-font-family: "Poppins";
+}
+.date-picker-popup > .month-year-pane { -fx-background-color: #FDF2F6; -fx-background-insets: 0; -fx-background-radius: 14; -fx-padding: 6 8 6 8; -fx-alignment: CENTER; }
+.date-picker-popup > .month-year-pane .spinner { -fx-background-color: transparent; -fx-background-insets: 0; -fx-border-color: transparent; -fx-background-radius: 10; -fx-border-radius: 10; }
+.date-picker-popup > .month-year-pane .spinner .label { -fx-text-fill: #1A1418; -fx-font-size: 14px; -fx-font-weight: bold; }
+.date-picker-popup > .month-year-pane .spinner .button { -fx-background-color: transparent; -fx-background-insets: 0; -fx-background-radius: 10; -fx-cursor: hand; }
+.date-picker-popup > .month-year-pane .spinner .button:hover { -fx-background-color: white; }
+.date-picker-popup .left-arrow, .date-picker-popup .right-arrow { -fx-background-color: #C22A62; }
+.date-picker-popup > .calendar-grid { -fx-background-color: transparent; -fx-padding: 8 0 0 0; }
+.date-picker-popup .day-name-cell { -fx-background-color: transparent; -fx-text-fill: #9A7B88; -fx-font-size: 11px; -fx-font-weight: bold; -fx-alignment: CENTER; }
+.date-picker-popup .week-number-cell { -fx-background-color: transparent; -fx-text-fill: #CDB9C2; -fx-font-size: 10px; }
+.date-picker-popup .day-cell {
+    -fx-background-color: transparent; -fx-background-insets: 0; -fx-background-radius: 12;
+    -fx-border-color: transparent; -fx-border-width: 1.5; -fx-border-radius: 12;
+    -fx-text-fill: #1A1418; -fx-font-size: 13px; -fx-alignment: CENTER;
+    -fx-min-width: 38; -fx-min-height: 34; -fx-cursor: hand;
+}
+.date-picker-popup .day-cell:hover, .date-picker-popup .day-cell:focused { -fx-background-color: #FDE8EF; -fx-text-fill: #1A1418; }
+.date-picker-popup .day-cell.today { -fx-border-color: #C22A62; }
+.date-picker-popup .day-cell.previous-month, .date-picker-popup .day-cell.next-month { -fx-text-fill: #CDB9C2; }
+.date-picker-popup .day-cell:selected, .date-picker-popup .day-cell:selected:hover, .date-picker-popup .day-cell:selected:focused {
+    -fx-background-color: #C22A62; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-color: #C22A62; }
+
+/* ---- Export dialog: check box as a soft row ---- */
+.check-row { -fx-background-color: #FDF2F6; -fx-background-radius: 14; -fx-border-color: #EBD3DD; -fx-border-radius: 14; -fx-border-width: 1;
+    -fx-padding: 12 16 12 16; -fx-text-fill: #1A1418; -fx-font-size: 14px; -fx-label-padding: 0 0 0 10; -fx-cursor: hand; }
+.check-row:hover { -fx-background-color: #FCE8EF; }
+.check-row:selected { -fx-background-color: #FDE8EF; -fx-border-color: #E58FB0; }
+.check-row > .box { -fx-background-color: white; -fx-background-insets: 0; -fx-background-radius: 7;
+    -fx-border-color: #D9B8C7; -fx-border-width: 1.5; -fx-border-radius: 7; -fx-padding: 3 4 3 4; }
+.check-row > .box > .mark { -fx-background-color: transparent; -fx-padding: 5 5 5 5; }
+.check-row:selected > .box { -fx-background-color: #C22A62; -fx-border-color: #C22A62; }
+.check-row:selected > .box > .mark { -fx-background-color: white; }
+
+/* ---- corners: hover / selected rows can no longer poke out of a rounded table ---- */
+.page-v3 .table-view { -fx-padding: 0 0 8 0; }
+.page-v3 .table-view .table-row-cell:odd, .page-v3 .table-view .table-row-cell:even { -fx-border-insets: 0 16 0 16; }
+.page-v3 .table-view .table-row-cell:filled:hover, .page-v3 .table-view .table-row-cell:filled:selected { -fx-background-color: #FDF2F6; -fx-background-insets: 0 8 0 8; -fx-background-radius: 10; }
+.page-v3 .dialog-card .table-view { -fx-background-radius: 18; -fx-border-radius: 18; }
+.page-v3 .dialog-card .table-view .column-header-background { -fx-background-radius: 18 18 0 0; }
+.low-table .table-row-cell { -fx-border-insets: 0 14 0 14; }
+.low-table .table-row-cell:filled:hover, .low-table .table-row-cell:filled:selected { -fx-background-color: #FDF2F6; -fx-background-insets: 0 4 0 4; -fx-background-radius: 10; }
+
+/* ---- dashboard: "View all" pill + year button = same corner / border, every state ---- */
+.dash-v2 .view-all-pill, .dash-v2 .view-all-pill:visited, .dash-v2 .view-all-pill:hover, .dash-v2 .view-all-pill:focused,
+.dash-v2 .view-all-pill:armed, .dash-v2 .view-all-pill:pressed {
+    -fx-background-insets: 0; -fx-border-insets: 0; -fx-background-radius: 14; -fx-border-radius: 14; -fx-border-width: 1.5;
+    -fx-border-color: #C22A62; -fx-text-fill: #C22A62; -fx-underline: false; -fx-padding: 6 16 6 16; }
+.dash-v2 .view-all-pill:hover, .dash-v2 .view-all-pill:pressed { -fx-background-color: #FDF2F6; }
+.combo-box.year-combo, .combo-box.year-combo:hover, .combo-box.year-combo:focused, .combo-box.year-combo:showing {
+    -fx-background-color: white; -fx-background-insets: 0; -fx-background-radius: 14;
+    -fx-border-color: #E8BFD0; -fx-border-width: 1.5; -fx-border-radius: 14; -fx-border-insets: 0; }
+.combo-box.year-combo:hover, .combo-box.year-combo:focused, .combo-box.year-combo:showing { -fx-border-color: #C22A62; }
+.combo-box.year-combo > .list-cell { -fx-background-color: transparent; -fx-text-fill: #1A1418; -fx-font-weight: bold; -fx-padding: 0 0 0 16; }
+.combo-box.year-combo > .arrow-button { -fx-padding: 0 14 0 6; }
+
+/* ---- Inventory: List | Grid switch ---- */
+.ico-list { -fx-shape: "M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"; }
+.ico-grid { -fx-shape: "M3 3v8h8V3H3zm6 6H5V5h4v4zm-6 4v8h8v-8H3zm6 6H5v-4h4v4zm4-16v8h8V3h-8zm6 6h-4V5h4v4zm-6 4v8h8v-8h-8zm6 6h-4v-4h4v4z"; }
+.view-switch { -fx-background-color: white; -fx-background-radius: 14; -fx-border-color: #EBD3DD; -fx-border-radius: 14; -fx-border-width: 1; -fx-padding: 3; }
+.view-seg, .view-seg:hover, .view-seg:focused, .view-seg:armed {
+    -fx-background-color: transparent; -fx-background-insets: 0; -fx-background-radius: 11; -fx-border-color: transparent; -fx-border-radius: 11;
+    -fx-padding: 6 14 6 12; -fx-text-fill: #54454D; -fx-font-size: 13px; -fx-graphic-text-gap: 8; -fx-cursor: hand; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; }
+.view-seg .ico { -fx-background-color: #54454D; -fx-min-width: 15; -fx-pref-width: 15; -fx-max-width: 15; -fx-min-height: 15; -fx-pref-height: 15; -fx-max-height: 15; }
+.view-seg:hover { -fx-background-color: #FDF2F6; }
+.view-seg:selected, .view-seg:selected:hover, .view-seg:selected:focused { -fx-background-color: #C22A62; -fx-text-fill: white; -fx-font-weight: bold; }
+.view-seg:selected .ico { -fx-background-color: white; }
+
+
+/* ===================================================================
+   v17 - inventory corners
+   =================================================================== */
+/* inner shapes follow the INNER curve of the 1px border (24 - 1 = 23) */
+.prod-card { -fx-background-insets: 0; -fx-border-insets: 0; }
+.prod-photo { -fx-background-radius: 23 23 0 0; }
+.prod-btn, .prod-btn:hover, .prod-btn:pressed, .prod-btn:focused { -fx-background-radius: 10; -fx-border-radius: 10; -fx-background-insets: 0; }
+.page-v3 .table-view .column-header-background { -fx-background-radius: 23 23 0 0; }
+.page-v3 .table-view .filler, .page-v3 .table-view .column-header:last-visible { -fx-background-radius: 0 23 0 0; }
+.prod-tile { -fx-background-radius: 12; -fx-background-insets: 0; }
+
+
+/* ===================================================================
+   v18 - filter chips (All / Bouquet / Crochet / Keychain, Pending / Done ...) and Pickup / Meetup:
+   the default ToggleButton paints 3-4 stacked backgrounds with their own insets and radii (and a square focus ring)
+   that peeked out at the corners. Now ONE background, inset 0, radius 14, in every state.
+   =================================================================== */
+.chip, .chip:hover, .chip:focused, .chip:armed, .chip:pressed, .chip:selected, .chip:selected:hover, .chip:selected:focused, .chip:selected:armed,
+.seg, .seg:hover, .seg:focused, .seg:armed, .seg:pressed, .seg:selected, .seg:selected:hover, .seg:selected:focused {
+    -fx-background-insets: 0; -fx-border-insets: 0; -fx-background-radius: 14; -fx-border-radius: 14; -fx-border-width: 1;
+    -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-effect: null; }
+.chip, .chip:focused, .chip:armed, .chip:pressed { -fx-background-color: white; -fx-border-color: #EBD3DD; -fx-text-fill: #1A1418; }
+.chip:hover { -fx-background-color: #FDF2F6; -fx-border-color: #E58FB0; }
+.chip:selected, .chip:selected:focused, .chip:selected:armed { -fx-background-color: #C22A62; -fx-border-color: #C22A62; -fx-text-fill: white; -fx-font-weight: bold; }
+.chip:selected:hover { -fx-background-color: #A8204F; -fx-border-color: #A8204F; -fx-text-fill: white; }
+.seg:selected, .seg:selected:hover, .seg:selected:focused { -fx-background-color: #FDF2F6; -fx-border-color: #C22A62; -fx-text-fill: #A8204F; }
+.page-v3 .chip, .page-v3 .seg, .page-v3 .chip:selected, .page-v3 .seg:selected { -fx-background-radius: 14; -fx-border-radius: 14; }
+
+
+/* ===================================================================
+   v21 - number on a category chip is a small badge, not part of the word
+   =================================================================== */
+.chip-count { -fx-background-color: #FDE8EF; -fx-background-radius: 8; -fx-text-fill: #C22A62; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 1 8 1 8; -fx-min-width: 26; -fx-alignment: CENTER; }
+.chip:selected .chip-count { -fx-background-color: rgba(255,255,255,0.28); -fx-text-fill: white; }
+
+/* ===== v23: inventory grid photos (CSS only - no bindings, works in Scene Builder) ===== */
+.prod-photo { -fx-min-width: 0; -fx-pref-width: 10; -fx-background-repeat: no-repeat; -fx-background-position: center center; -fx-background-size: cover; }
+.pic-big-rose-bouquet { -fx-background-image: url("images/big-rose-bouquet.jpg"); }
+.pic-blooming-grace-bouquet { -fx-background-image: url("images/blooming-grace-bouquet.jpg"); }
+.pic-coffee-bouquet { -fx-background-image: url("images/coffee-bouquet.jpg"); }
+.pic-crochet-cactus-pot { -fx-background-image: url("images/crochet-cactus-pot.jpg"); }
+.pic-crochet-pot-set { -fx-background-image: url("images/crochet-pot-set.jpg"); }
+.pic-crochet-single-tulip { -fx-background-image: url("images/crochet-single-tulip.jpg"); }
+.pic-crochet-sunflower-pot { -fx-background-image: url("images/crochet-sunflower-pot.jpg"); }
+.pic-crochet-tulip-bouquet { -fx-background-image: url("images/crochet-tulip-bouquet.jpg"); }
+.pic-crochet-tulip-pot { -fx-background-image: url("images/crochet-tulip-pot.jpg"); }
+.pic-diamond-top { -fx-background-image: url("images/diamond-top.jpg"); }
+.pic-florea-bouquet { -fx-background-image: url("images/florea-bouquet.jpg"); }
+.pic-florea-bouquet-v2 { -fx-background-image: url("images/florea-bouquet-v2.jpg"); }
+.pic-florea-bouquet-v3 { -fx-background-image: url("images/florea-bouquet-v3.jpg"); }
+.pic-frog-headband { -fx-background-image: url("images/frog-headband.jpg"); }
+.pic-jelly-first-keychain { -fx-background-image: url("images/jelly-first-keychain.jpg"); }
+.pic-little-blossom-serenade { -fx-background-image: url("images/little-blossom-serenade.jpg"); }
+.pic-mini-bouquet-fuzzy-wire { -fx-background-image: url("images/mini-bouquet-fuzzy-wire.jpg"); }
+.pic-mini-bouquet-keychain { -fx-background-image: url("images/mini-bouquet-keychain.jpg"); }
+.pic-mini-flower-pouch { -fx-background-image: url("images/mini-flower-pouch.jpg"); }
+.pic-mini-labubu { -fx-background-image: url("images/mini-labubu.jpg"); }
+.pic-mini-sunflower-35 { -fx-background-image: url("images/mini-sunflower-35.jpg"); }
+.pic-mini-sunflower-50 { -fx-background-image: url("images/mini-sunflower-50.jpg"); }
+.pic-mini-tulip-in-card { -fx-background-image: url("images/mini-tulip-in-card.jpg"); }
+.pic-moana-inspired-keychain { -fx-background-image: url("images/moana-inspired-keychain.jpg"); }
+.pic-puff-flower-pouch { -fx-background-image: url("images/puff-flower-pouch.jpg"); }
+.pic-red-tulip-bouquet { -fx-background-image: url("images/red-tulip-bouquet.jpg"); }
+.pic-rosa-bouquet { -fx-background-image: url("images/rosa-bouquet.jpg"); }
+.pic-rose-serenade { -fx-background-image: url("images/rose-serenade.jpg"); }
+.pic-rosette-charm { -fx-background-image: url("images/rosette-charm.jpg"); }
+.pic-satin-single-tulip { -fx-background-image: url("images/satin-single-tulip.jpg"); }
+.pic-set-gift { -fx-background-image: url("images/set-gift.jpg"); }
+.pic-single-lily-tulip { -fx-background-image: url("images/single-lily-tulip.jpg"); }
+.pic-single-stargazer-bouquet { -fx-background-image: url("images/single-stargazer-bouquet.jpg"); }
+.pic-single-stargazer-v2 { -fx-background-image: url("images/single-stargazer-v2.jpg"); }
+.pic-sophia-bouquet { -fx-background-image: url("images/sophia-bouquet.jpg"); }
+.pic-stargazer-embrace-bouquet { -fx-background-image: url("images/stargazer-embrace-bouquet.jpg"); }
+.pic-sunblush-bouquet { -fx-background-image: url("images/sunblush-bouquet.jpg"); }
+.pic-sunflower-bouquet { -fx-background-image: url("images/sunflower-bouquet.jpg"); }
+.pic-swim-bra { -fx-background-image: url("images/swim-bra.jpg"); }
+.pic-tangled { -fx-background-image: url("images/tangled.jpg"); }
+.pic-tangled-grand { -fx-background-image: url("images/tangled-grand.jpg"); }
+.pic-thumbelina-cone-bouquet { -fx-background-image: url("images/thumbelina-cone-bouquet.jpg"); }
+.pic-thumbler-holder { -fx-background-image: url("images/thumbler-holder.jpg"); }
+
+/* ===== v25: photos are pre-cropped (subject centred) with rounded top corners baked in, in images/card/ ===== */
+.prod-photo { -fx-background-size: 100% 100%; -fx-background-position: center center; -fx-background-color: transparent; }
+.pic-big-rose-bouquet { -fx-background-image: url("images/card/big-rose-bouquet.png"); }
+.pic-blooming-grace-bouquet { -fx-background-image: url("images/card/blooming-grace-bouquet.png"); }
+.pic-coffee-bouquet { -fx-background-image: url("images/card/coffee-bouquet.png"); }
+.pic-crochet-cactus-pot { -fx-background-image: url("images/card/crochet-cactus-pot.png"); }
+.pic-crochet-pot-set { -fx-background-image: url("images/card/crochet-pot-set.png"); }
+.pic-crochet-single-tulip { -fx-background-image: url("images/card/crochet-single-tulip.png"); }
+.pic-crochet-sunflower-pot { -fx-background-image: url("images/card/crochet-sunflower-pot.png"); }
+.pic-crochet-tulip-bouquet { -fx-background-image: url("images/card/crochet-tulip-bouquet.png"); }
+.pic-crochet-tulip-pot { -fx-background-image: url("images/card/crochet-tulip-pot.png"); }
+.pic-diamond-top { -fx-background-image: url("images/card/diamond-top.png"); }
+.pic-florea-bouquet-v2 { -fx-background-image: url("images/card/florea-bouquet-v2.png"); }
+.pic-florea-bouquet-v3 { -fx-background-image: url("images/card/florea-bouquet-v3.png"); }
+.pic-florea-bouquet { -fx-background-image: url("images/card/florea-bouquet.png"); }
+.pic-frog-headband { -fx-background-image: url("images/card/frog-headband.png"); }
+.pic-jelly-first-keychain { -fx-background-image: url("images/card/jelly-first-keychain.png"); }
+.pic-little-blossom-serenade { -fx-background-image: url("images/card/little-blossom-serenade.png"); }
+.pic-mini-bouquet-fuzzy-wire { -fx-background-image: url("images/card/mini-bouquet-fuzzy-wire.png"); }
+.pic-mini-bouquet-keychain { -fx-background-image: url("images/card/mini-bouquet-keychain.png"); }
+.pic-mini-flower-pouch { -fx-background-image: url("images/card/mini-flower-pouch.png"); }
+.pic-mini-labubu { -fx-background-image: url("images/card/mini-labubu.png"); }
+.pic-mini-sunflower-35 { -fx-background-image: url("images/card/mini-sunflower-35.png"); }
+.pic-mini-sunflower-50 { -fx-background-image: url("images/card/mini-sunflower-50.png"); }
+.pic-mini-tulip-in-card { -fx-background-image: url("images/card/mini-tulip-in-card.png"); }
+.pic-moana-inspired-keychain { -fx-background-image: url("images/card/moana-inspired-keychain.png"); }
+.pic-puff-flower-pouch { -fx-background-image: url("images/card/puff-flower-pouch.png"); }
+.pic-red-tulip-bouquet { -fx-background-image: url("images/card/red-tulip-bouquet.png"); }
+.pic-rosa-bouquet { -fx-background-image: url("images/card/rosa-bouquet.png"); }
+.pic-rose-serenade { -fx-background-image: url("images/card/rose-serenade.png"); }
+.pic-rosette-charm { -fx-background-image: url("images/card/rosette-charm.png"); }
+.pic-satin-single-tulip { -fx-background-image: url("images/card/satin-single-tulip.png"); }
+.pic-set-gift { -fx-background-image: url("images/card/set-gift.png"); }
+.pic-single-lily-tulip { -fx-background-image: url("images/card/single-lily-tulip.png"); }
+.pic-single-stargazer-bouquet { -fx-background-image: url("images/card/single-stargazer-bouquet.png"); }
+.pic-single-stargazer-v2 { -fx-background-image: url("images/card/single-stargazer-v2.png"); }
+.pic-sophia-bouquet { -fx-background-image: url("images/card/sophia-bouquet.png"); }
+.pic-stargazer-embrace-bouquet { -fx-background-image: url("images/card/stargazer-embrace-bouquet.png"); }
+.pic-sunblush-bouquet { -fx-background-image: url("images/card/sunblush-bouquet.png"); }
+.pic-sunflower-bouquet { -fx-background-image: url("images/card/sunflower-bouquet.png"); }
+.pic-swim-bra { -fx-background-image: url("images/card/swim-bra.png"); }
+.pic-tangled-grand { -fx-background-image: url("images/card/tangled-grand.png"); }
+.pic-tangled { -fx-background-image: url("images/card/tangled.png"); }
+.pic-thumbelina-cone-bouquet { -fx-background-image: url("images/card/thumbelina-cone-bouquet.png"); }
+.pic-thumbler-holder { -fx-background-image: url("images/card/thumbler-holder.png"); }
+
+/* card shadow */
+.prod-card { -fx-effect: dropshadow(gaussian, rgba(194,42,98,0.20), 16, 0.05, 0, 5); }
+
+/* ===== 3D cards (paste at the END of styles.css) ===== */
+
+/* ===== 3D cards (REPLACE the old 3D block at the END of styles.css with this) ===== */
+
+.dash-v2 .card {
+    -fx-background-color: #EBC6D6, white;            /* raised bottom edge, then card face */
+    -fx-background-insets: 0 0 -4 0, 0;
+    -fx-background-radius: 24, 24;                   /* change to match your card radius */
+}
+
+.dash-v2 .card:hover {
+    -fx-translate-y: -2;
+}
+
+/* Quick actions card keeps its crimson look (must come AFTER .card) */
+.dash-v2 .card.quick-card {
+    -fx-background-color: #8F1D49, #C22A62;          /* dark bottom edge, crimson face */
+    -fx-background-insets: 0 0 -4 0, 0;
+    -fx-background-radius: 24, 24;
+}
+
+/* Good Morning banner */
+.dash-v2 .banner {
+    -fx-background-color: #8F1D49, #C22A62;
+    -fx-background-insets: 0 0 -4 0, 0;
+    -fx-background-radius: 24, 24;
 }

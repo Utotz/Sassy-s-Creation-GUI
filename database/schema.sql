@@ -14,6 +14,7 @@ CREATE TABLE products (
                           stock_quantity      INT NOT NULL DEFAULT 0,
                           low_stock_threshold INT NOT NULL DEFAULT 3,
                           is_customizable BOOLEAN NOT NULL DEFAULT FALSE,
+                          image_path VARCHAR(255) NULL,
                           CONSTRAINT chk_price CHECK (price >= 0),
                           CONSTRAINT chk_stock CHECK (stock_quantity >= 0)
 );

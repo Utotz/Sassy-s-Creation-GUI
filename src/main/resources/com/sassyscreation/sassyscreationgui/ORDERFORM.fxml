@@ -27,8 +27,8 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.shape.Rectangle?>
 
-<HBox minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
-   <stylesheets><URL value="@styles.css" /></stylesheets>
+<HBox minHeight="680.0" minWidth="1000.0" prefHeight="760.0" prefWidth="1180.0" styleClass="root-pane, dash-v2, page-v3" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets><URL value="@styles.css" /><URL value="@text-large.css" /></stylesheets>
    <children>
       <!-- ================= SIDEBAR ================= -->
       <VBox minWidth="248.0" prefWidth="248.0" styleClass="sidebar">
@@ -51,7 +51,7 @@
                            </children>
                         </Pane>
                         <VBox><children>
-                           <Label styleClass="brand-title" text="Sassy's" />
+                           <Label styleClass="brand-title" text="Sassy’s" />
                            <Label styleClass="brand-sub" text="Creation" />
                         </children></VBox>
                      </children>
@@ -77,15 +77,28 @@
                   <Button fx:id="btnLogout" focusTraversable="false" managed="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-logout" text="Log out" visible="false"><graphic><Region styleClass="ico, ico-logout" /></graphic>
                      <VBox.margin><Insets bottom="8.0" /></VBox.margin>
                   </Button>
-                  <VBox spacing="2.0" styleClass="side-footer">
-                     <children>
-                        <Label styleClass="side-footer-sub" text="Handmade Crochet" />
-                        <Label styleClass="side-footer-title" text="and Bouquets" />
-                        <Label maxWidth="1.7976931348623157E308" styleClass="side-footer-pill" text="Sassy's">
-                           <VBox.margin><Insets top="10.0" /></VBox.margin>
-                        </Label>
-                     </children>
-                  </VBox>
+                  <!-- Admin Officer card (moved here from the top bar) -->
+                  <MenuButton fx:id="mbAccount" contentDisplay="GRAPHIC_ONLY" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="TOP" styleClass="side-user">
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <children>
+                              <Label styleClass="side-user-avatar" text="A" />
+                              <VBox alignment="CENTER_LEFT" spacing="1.0">
+                                 <children>
+                                    <Label styleClass="side-user-name" text="Admin Officer" />
+                                    <Label styleClass="side-user-role" text="Sassy’s Creation" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </graphic>
+                     <items>
+                        <MenuItem fx:id="miChangePassword" mnemonicParsing="false" onAction="#handleOpenChangePassword" styleClass="account-item" text="Change password"><graphic><Region styleClass="ico, ico-key" /></graphic></MenuItem>
+                        <MenuItem fx:id="miAbout" mnemonicParsing="false" onAction="#handleOpenAbout" styleClass="account-item" text="About"><graphic><Region styleClass="ico, ico-info" /></graphic></MenuItem>
+                        <SeparatorMenuItem />
+                        <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#handleLogout" styleClass="account-item" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
+                     </items>
+                  </MenuButton>
                </children>
             </VBox>
          </children>
@@ -149,22 +162,8 @@
             </Pane>
       <VBox>
          <children>
-            <HBox alignment="CENTER_RIGHT" spacing="8.0" styleClass="topbar">
-               <padding><Insets left="28.0" right="28.0" /></padding>
-               <children>
-                  <Label styleClass="avatar" text="A" />
-                  <MenuButton fx:id="mbAccount" mnemonicParsing="false" styleClass="account-menu" text="Admin Officer">
-                     <items>
-                        <MenuItem fx:id="miChangePassword" mnemonicParsing="false" onAction="#handleOpenChangePassword" text="Change password"><graphic><Region styleClass="ico, ico-key" /></graphic></MenuItem>
-                        <MenuItem fx:id="miAbout" mnemonicParsing="false" onAction="#handleOpenAbout" text="About"><graphic><Region styleClass="ico, ico-info" /></graphic></MenuItem>
-                        <SeparatorMenuItem />
-                        <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#handleLogout" text="Log out"><graphic><Region styleClass="ico, ico-logout" /></graphic></MenuItem>
-                     </items>
-                  </MenuButton>
-               </children>
-            </HBox>
             <VBox spacing="24.0" VBox.vgrow="ALWAYS">
-               <padding><Insets bottom="24.0" left="28.0" right="28.0" top="22.0" /></padding>
+               <padding><Insets bottom="24.0" left="28.0" right="28.0" top="56.0" /></padding>
                <children>
                   <HBox alignment="TOP_LEFT">
                      <children>
@@ -187,7 +186,7 @@
 <VBox spacing="8.0" GridPane.columnIndex="0" GridPane.rowIndex="0"><children><Label styleClass="form-label" text="Customer Name" /><TextField fx:id="tfFbName" maxWidth="1.7976931348623157E308" minHeight="44.0" minWidth="0.0" prefHeight="44.0" promptText="e.g. juana.santos" text="juana.santos" /></children></VBox>
 <VBox spacing="8.0" GridPane.columnIndex="1" GridPane.rowIndex="0"><children><Label styleClass="form-label" text="Product" /><ComboBox fx:id="cbOrderProduct" maxWidth="1.7976931348623157E308" minHeight="44.0" minWidth="0.0" prefHeight="44.0" promptText="Select product" value="Rose - Crochet" /></children></VBox>
 <VBox spacing="8.0" GridPane.columnIndex="0" GridPane.rowIndex="1"><children><Label styleClass="form-label" text="Color Preference" /><TextField fx:id="tfColor" maxWidth="1.7976931348623157E308" minHeight="44.0" minWidth="0.0" prefHeight="44.0" promptText="e.g. Pink and White" text="Red" /></children></VBox>
-<VBox spacing="8.0" GridPane.columnIndex="1" GridPane.rowIndex="1"><children><Label styleClass="form-label" text="Quantity" /><Spinner fx:id="spOrderQty" editable="true" initialValue="1" max="999" min="1" maxWidth="1.7976931348623157E308" minHeight="44.0" minWidth="0.0" prefHeight="44.0" /></children></VBox>
+<VBox spacing="8.0" GridPane.columnIndex="1" GridPane.rowIndex="1"><children><Label styleClass="form-label" text="Quantity" /><Spinner styleClass="split-arrows-horizontal" fx:id="spOrderQty" editable="true" initialValue="1" max="999" min="1" maxWidth="1.7976931348623157E308" minHeight="44.0" minWidth="0.0" prefHeight="44.0" /></children></VBox>
 <VBox spacing="8.0" GridPane.columnIndex="0" GridPane.rowIndex="2"><children><Label styleClass="form-label" text="Agreed Price (PHP)" /><TextField fx:id="tfPrice" maxWidth="1.7976931348623157E308" minHeight="44.0" minWidth="0.0" prefHeight="44.0" promptText="Defaults to catalog price" text="100.00" /></children></VBox>
 <VBox spacing="8.0" GridPane.columnIndex="1" GridPane.rowIndex="2"><children><Label styleClass="form-label" text="Date" /><DatePicker fx:id="dpDate" maxWidth="1.7976931348623157E308" minHeight="44.0" minWidth="0.0" prefHeight="44.0" /></children></VBox>
 <VBox spacing="8.0" GridPane.columnIndex="0" GridPane.rowIndex="3"><children><Label styleClass="form-label" text="Arrangement" /><HBox spacing="8.0"><children><ToggleButton fx:id="tbPickup" minHeight="44.0" prefHeight="44.0" selected="true" styleClass="seg" text="Pickup"><toggleGroup><ToggleGroup fx:id="tgArr" /></toggleGroup></ToggleButton><ToggleButton fx:id="tbMeetup" minHeight="44.0" prefHeight="44.0" styleClass="seg" text="Meetup" toggleGroup="$tgArr" /></children></HBox></children></VBox>
@@ -198,6 +197,8 @@
                         <HBox spacing="12.0"><children>
                            <Button fx:id="btnCancelOrder" onAction="#goOrders" prefHeight="44.0" style="-fx-padding: 0 28;" styleClass="btn-ghost" text="Cancel" />
                            <Button fx:id="btnSaveOrder" onAction="#handleSaveOrder" prefHeight="44.0" style="-fx-padding: 0 28;" styleClass="btn-primary" text="Save order" />
+                           <Region HBox.hgrow="ALWAYS" />
+                           <Button fx:id="btnDeleteOrder" mnemonicParsing="false" onAction="#handleDeleteOrder" prefHeight="44.0" style="-fx-padding: 0 24;" styleClass="btn-danger" text="Delete order"><graphic><Region styleClass="ico, ico-delete" /></graphic></Button>
                         </children></HBox>
                      </children>
                   </VBox>

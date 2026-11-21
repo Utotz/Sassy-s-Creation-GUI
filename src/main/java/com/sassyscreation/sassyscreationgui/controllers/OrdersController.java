@@ -9,17 +9,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
-import javafx.stage.Modality;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -29,31 +33,39 @@ public class OrdersController implements Initializable {
     /** Folder (inside resources) where all the FXML files live. */
     private static final String FXML_PATH = "/com/sassyscreation/sassyscreationgui/";
 
-    // ---- sidebar ----
-    @FXML private Button navDashboard;
-    @FXML private Button navOrders;
-    @FXML private Label lblNavOrdersBadge;
-    @FXML private Button navStandSale;
-    @FXML private Button navInventory;
-    @FXML private Button btnLogout;
+    private static final DateTimeFormatter CARD_DATE = DateTimeFormatter.ofPattern("MMM d", Locale.ENGLISH);
 
-    // ---- top bar ----
-    @FXML private MenuButton mbAccount;
-    @FXML private MenuItem miChangePassword;
-    @FXML private MenuItem miAbout;
-    @FXML private MenuItem miLogout;
+    // ---- sidebar (set by <fx:include fx:id="sidebar"> in ORDERS.fxml) ----
+    @FXML private SidebarController sidebarController;
 
-    // ---- search / filter / buttons ----
-    @FXML private TextField tfOrderSearch;
-    @FXML private ComboBox<String> cbStatusFilter;
+    // ---- header buttons ----
     @FXML private Button btnExportOrders;
     @FXML private Button btnAddOrder;
 
-    // ---- summary bar ----
+    // ---- status chips ----
+    @FXML private ToggleGroup tgOrderStatus;
+    @FXML private ToggleButton chipOrdAll;
+    @FXML private ToggleButton chipOrdPending;
+    @FXML private ToggleButton chipOrdDone;
+    @FXML private ToggleButton chipOrdCancelled;
+    @FXML private Label lblChipAllCount;
+    @FXML private Label lblChipPendingCount;
+    @FXML private Label lblChipDoneCount;
+    @FXML private Label lblChipCancelledCount;
+
+    // ---- search (old combo box is hidden in the FXML but kept so the id still resolves) ----
+    @FXML private TextField tfOrderSearch;
+    @FXML private ComboBox<String> cbStatusFilter;
+
+    // ---- summary bar (hidden in the FXML, still updated) ----
     @FXML private Label lblOrderTotal;
     @FXML private Label lblStatusCounts;
 
-    // ---- table ----
+    // ---- order cards ----
+    @FXML private ScrollPane spOrderCards;
+    @FXML private GridPane gpOrderCards;
+
+    // ---- hidden table (kept for compatibility) ----
     @FXML private TableView<Map<String, Object>> tvOrders;
     @FXML private TableColumn<Map<String, Object>, Object> colOrderId;
     @FXML private TableColumn<Map<String, Object>, Object> colFb;
@@ -70,9 +82,12 @@ public class OrdersController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        sidebarController.setActive("orders");
+
         loadOrders();
-        setUpTable();
+        setUpTable();      // creates filteredOrders
         setUpFilters();
+        refreshCards();
         updateSummary();
     }
 
@@ -105,29 +120,23 @@ public class OrdersController implements Initializable {
         m.put("type", type);
         m.put("date", date);
         m.put("status", status);
-        m.put("actions", "actions");   // placeholder so the Actions column has a value
+        m.put("actions", "actions");
         return m;
     }
 
     // =====================================================================
-    //  Table setup
+    //  Hidden table setup (kept so the pipeline and fx:ids still work)
     // =====================================================================
 
     private void setUpTable() {
-        // Price shown as pesos
         colPrice.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(Object item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(String.format("\u20B1%,.2f", ((Number) item).doubleValue()));
-                }
+                setText(empty || item == null ? null : peso(item));
             }
         });
 
-        // Status shown as a coloured badge
         colStatus.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(Object item, boolean empty) {
@@ -144,7 +153,6 @@ public class OrdersController implements Initializable {
             }
         });
 
-        // Actions: view / edit / delete buttons
         colActions.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(Object item, boolean empty) {
@@ -154,7 +162,6 @@ public class OrdersController implements Initializable {
                     setGraphic(null);
                     return;
                 }
-
                 Button view = iconButton("ico-view", "View details", "btn-icon");
                 view.setOnAction(e -> showOrderDetails(row));
 
@@ -171,15 +178,145 @@ public class OrdersController implements Initializable {
             }
         });
 
-        // Filtering + sorting pipeline
         filteredOrders = new FilteredList<>(allOrders, o -> true);
         SortedList<Map<String, Object>> sorted = new SortedList<>(filteredOrders);
         sorted.comparatorProperty().bind(tvOrders.comparatorProperty());
         tvOrders.setItems(sorted);
     }
 
-    private Button iconButton(String icon, String tooltip, String... styleClasses) {
+    // =====================================================================
+    //  Filters (chips + search)
+    // =====================================================================
+
+    private void setUpFilters() {
+        // Never allow "no chip selected" - clicking the active chip keeps it selected.
+        tgOrderStatus.selectedToggleProperty().addListener((obs, oldT, newT) -> {
+            if (newT == null) {
+                if (oldT != null) {
+                    oldT.setSelected(true);
+                }
+                return;
+            }
+            applyFilters();
+        });
+
+        tfOrderSearch.textProperty().addListener((obs, o, n) -> applyFilters());
+    }
+
+    /** Status of the selected chip, or null for "All". */
+    private String selectedStatus() {
+        Toggle t = tgOrderStatus.getSelectedToggle();
+        if (t == chipOrdPending) return "Pending";
+        if (t == chipOrdDone) return "Done";
+        if (t == chipOrdCancelled) return "Cancelled";
+        return null;
+    }
+
+    private void applyFilters() {
+        String text = tfOrderSearch.getText() == null ? "" : tfOrderSearch.getText().trim().toLowerCase();
+        String status = selectedStatus();
+
+        filteredOrders.setPredicate(o -> {
+            boolean matchesStatus = status == null || status.equals(o.get("status"));
+            boolean matchesText = text.isEmpty()
+                    || String.valueOf(o.get("fb")).toLowerCase().contains(text)
+                    || String.valueOf(o.get("product")).toLowerCase().contains(text);
+            return matchesStatus && matchesText;
+        });
+
+        refreshCards();
+    }
+
+    // =====================================================================
+    //  Order cards
+    // =====================================================================
+
+    /** Rebuilds the card grid from the currently filtered orders. */
+    private void refreshCards() {
+        gpOrderCards.getChildren().clear();
+
+        if (filteredOrders.isEmpty()) {
+            Label empty = new Label("No orders found");
+            empty.getStyleClass().add("page-sub");
+            GridPane.setColumnSpan(empty, 2);
+            gpOrderCards.add(empty, 0, 0);
+            return;
+        }
+
+        int i = 0;
+        for (Map<String, Object> o : filteredOrders) {
+            VBox card = buildCard(o);
+            GridPane.setHgrow(card, Priority.ALWAYS);
+            gpOrderCards.add(card, i % 2, i / 2);
+            i++;
+        }
+    }
+
+    private VBox buildCard(Map<String, Object> o) {
+        String customer = String.valueOf(o.get("fb"));
+        String status = String.valueOf(o.get("status"));
+
+        // header: avatar, customer + order no, status badge
+        Label avatar = new Label(initials(customer));
+        avatar.getStyleClass().add("order-avatar");
+
+        Label cust = new Label(customer);
+        cust.getStyleClass().add("order-cust");
+        Label orderNo = new Label("Order #" + o.get("id"));
+        orderNo.getStyleClass().add("page-sub");
+        VBox names = new VBox(cust, orderNo);
+        HBox.setHgrow(names, Priority.ALWAYS);
+
+        Label badge = new Label(status);
+        badge.getStyleClass().add("badge-" + status.toLowerCase());
+
+        HBox header = new HBox(12, avatar, names, badge);
+        header.setAlignment(Pos.CENTER_LEFT);
+
+        Region line = new Region();
+        line.getStyleClass().add("dash-line");
+
+        // product + colour
+        Label product = new Label(String.valueOf(o.get("product")));
+        product.getStyleClass().add("order-product");
+        product.setWrapText(true);
+        Label color = new Label(String.valueOf(o.get("color")));
+        color.getStyleClass().add("page-sub");
+        VBox productBox = new VBox(2, product, color);
+
+        // type / date and price
+        Label typeDate = new Label(o.get("type") + " \u00B7 " + prettyDate(String.valueOf(o.get("date"))));
+        typeDate.getStyleClass().add("page-sub");
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        Label price = new Label(peso(o.get("price")));
+        price.getStyleClass().add("order-price");
+        HBox meta = new HBox(typeDate, spacer, price);
+        meta.setAlignment(Pos.CENTER_LEFT);
+
+        // actions
+        Button view = cardButton("ico-view", "View", "View details", "btn-ghost", "order-btn");
+        view.setOnAction(e -> showOrderDetails(o));
+
+        Button edit = cardButton("ico-edit", "Edit", "Edit", "btn-ghost", "order-btn", "order-btn-edit");
+        edit.setOnAction(e -> openAddOrder(o));
+
+        Button delete = cardButton("ico-delete", null, "Delete", "btn-ghost", "order-btn", "order-btn-del");
+        delete.setOnAction(e -> deleteOrder(o));
+
+        HBox actions = new HBox(8, view, edit, delete);
+        actions.setAlignment(Pos.CENTER_LEFT);
+
+        VBox card = new VBox(10, header, line, productBox, meta, actions);
+        card.getStyleClass().add("order-card");
+        card.setUserData(status);
+        card.setMaxWidth(Double.MAX_VALUE);
+        return card;
+    }
+
+    private Button cardButton(String icon, String text, String tooltip, String... styleClasses) {
         Button b = new Button();
+        if (text != null) b.setText(text);
         b.setFocusTraversable(false);
         b.setMnemonicParsing(false);
         b.getStyleClass().addAll(styleClasses);
@@ -190,34 +327,52 @@ public class OrdersController implements Initializable {
         return b;
     }
 
-    private void setUpFilters() {
-        cbStatusFilter.valueProperty().addListener((obs, o, n) -> applyFilters());
-        tfOrderSearch.textProperty().addListener((obs, o, n) -> applyFilters());
+    private Button iconButton(String icon, String tooltip, String... styleClasses) {
+        return cardButton(icon, null, tooltip, styleClasses);
     }
 
-    private void applyFilters() {
-        String text = tfOrderSearch.getText() == null ? "" : tfOrderSearch.getText().trim().toLowerCase();
-        String status = cbStatusFilter.getValue();
-        boolean allStatus = status == null || status.equals("All status");
-
-        filteredOrders.setPredicate(o -> {
-            boolean matchesStatus = allStatus || status.equals(o.get("status"));
-            boolean matchesText = text.isEmpty()
-                    || String.valueOf(o.get("fb")).toLowerCase().contains(text)
-                    || String.valueOf(o.get("product")).toLowerCase().contains(text);
-            return matchesStatus && matchesText;
-        });
+    private String initials(String name) {
+        String[] parts = name.trim().split("[._\\s]+");
+        String s;
+        if (parts.length >= 2 && !parts[0].isEmpty() && !parts[1].isEmpty()) {
+            s = "" + parts[0].charAt(0) + parts[1].charAt(0);
+        } else {
+            String p = parts[0];
+            s = p.length() >= 2 ? p.substring(0, 2) : p;
+        }
+        return s.toUpperCase();
     }
+
+    private String prettyDate(String iso) {
+        try {
+            return LocalDate.parse(iso).format(CARD_DATE);
+        } catch (Exception e) {
+            return iso;
+        }
+    }
+
+    private String peso(Object amount) {
+        return String.format("\u20B1%,.2f", ((Number) amount).doubleValue());
+    }
+
+    // =====================================================================
+    //  Summary (chip counts, sidebar badge, hidden footer labels)
+    // =====================================================================
 
     private void updateSummary() {
         long pending = countStatus("Pending");
         long done = countStatus("Done");
         long cancelled = countStatus("Cancelled");
 
+        lblChipAllCount.setText(String.valueOf(allOrders.size()));
+        lblChipPendingCount.setText(String.valueOf(pending));
+        lblChipDoneCount.setText(String.valueOf(done));
+        lblChipCancelledCount.setText(String.valueOf(cancelled));
+
         lblOrderTotal.setText("Total Orders: " + allOrders.size());
         lblStatusCounts.setText("Pending " + pending + "  \u00B7  Done " + done + "  \u00B7  Cancelled " + cancelled);
-        lblNavOrdersBadge.setText(String.valueOf(pending));
-        lblNavOrdersBadge.setVisible(pending > 0);
+
+        sidebarController.setOrdersBadge((int) pending);
     }
 
     private long countStatus(String status) {
@@ -225,18 +380,19 @@ public class OrdersController implements Initializable {
     }
 
     // =====================================================================
-    //  Row actions
+    //  Row / card actions
     // =====================================================================
 
     private void showOrderDetails(Map<String, Object> o) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.initOwner(currentStage());
         alert.setTitle("Order details");
         alert.setHeaderText("Order #" + o.get("id"));
         alert.setContentText(
                 "Customer: " + o.get("fb") + "\n"
                         + "Product: " + o.get("product") + "\n"
                         + "Color: " + o.get("color") + "\n"
-                        + "Price: " + String.format("\u20B1%,.2f", ((Number) o.get("price")).doubleValue()) + "\n"
+                        + "Price: " + peso(o.get("price")) + "\n"
                         + "Type: " + o.get("type") + "\n"
                         + "Date: " + o.get("date") + "\n"
                         + "Status: " + o.get("status"));
@@ -244,22 +400,28 @@ public class OrdersController implements Initializable {
     }
 
     private void openAddOrder(Map<String, Object> o) {
-        // TODO: pass the order into the form's controller once ADDORDER.fxml has one
-        openDialog("ADDORDER.fxml", "Edit order");
+        // ADDORDER.fxml is a full page (with sidebar), so open it as a screen, not a dialog.
+        // TODO: pass the order into AddOrderController so it can pre-fill the form for editing.
+        switchScreen("ADDORDER.fxml", "Edit order");
     }
 
     private void deleteOrder(Map<String, Object> o) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Delete order");
-        confirm.setHeaderText("Delete order #" + o.get("id") + "?");
-        confirm.setContentText(o.get("fb") + " - " + o.get("product") + "\nThis cannot be undone.");
+        boolean confirmed = DeleteOrderController.show(
+                currentStage(),
+                o.get("id"),
+                String.valueOf(o.get("fb")),
+                String.valueOf(o.get("product")),
+                peso(o.get("price")),
+                String.valueOf(o.get("status")));
 
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            // TODO: also delete the row from the database
-            allOrders.remove(o);
-            updateSummary();
+        if (!confirmed) {
+            return;
         }
+
+        // TODO: in ONE transaction, delete the order from the database and restore the stock
+        allOrders.remove(o);
+        refreshCards();
+        updateSummary();
     }
 
     // =====================================================================
@@ -267,72 +429,39 @@ public class OrdersController implements Initializable {
     // =====================================================================
 
     @FXML
-    private void handleOpenAddOrder() {   // keep your existing method name
-        try {
-            URL url = getClass().getResource("/com/sassyscreation/sassyscreationgui/ADDORDER.fxml");
-            Parent root = new FXMLLoader(url).load();
-            navOrders.getScene().setRoot(root);   // use any node field the controller already has
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void handleOpenAddOrder() {
+        switchScreen("ADDORDER.fxml", "New order");
     }
 
     @FXML
     private void handleOpenExport() {
-        openDialog("EXPORTDIALOG.fxml", "Export orders");
-    }
-
-    // =====================================================================
-    //  Navigation (sidebar)
-    // =====================================================================
-
-    @FXML
-    private void goDashboard() {
-        switchScreen("DASHBOARD.fxml", "Dashboard");
-    }
-
-    @FXML
-    private void goOrders() {
-        // Already on the orders screen
-    }
-
-    @FXML
-    private void goStandSale() {
-        switchScreen("STANDSALE.fxml", "Stand Sale");
-    }
-
-    @FXML
-    private void goInventory() {
-        switchScreen("INVENTORY_LIST.fxml", "Inventory");
-    }
-
-    // =====================================================================
-    //  Account menu
-    // =====================================================================
-
-    @FXML
-    private void handleOpenChangePassword() {
-        openDialog("CHANGEPASSWORD.fxml", "Change password");
-    }
-
-    @FXML
-    private void handleOpenAbout() {
-        // borderless = true -> no Windows title bar, rounded transparent window
-        openDialog("ABOUT.fxml", "About", true);
-    }
-
-    @FXML
-    private void handleLogout() {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Log out");
-        confirm.setHeaderText(null);
-        confirm.setContentText("Are you sure you want to log out?");
-
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            currentStage().setMaximized(false);
-            switchScreen("LOGIN.fxml", "Login");
+        Optional<ExportDialogController.ExportOptions> choice =
+                ExportDialogController.show(currentStage(), "Orders", true);
+        if (choice.isEmpty()) {
+            return;
         }
+        ExportDialogController.ExportOptions opts = choice.get();
+
+        List<List<String>> rows = new ArrayList<>();
+        for (Map<String, Object> o : allOrders) {
+            String status = String.valueOf(o.get("status"));
+            if (!opts.includeCancelled && "Cancelled".equals(status)) continue;
+            if (!opts.inRange(String.valueOf(o.get("date")))) continue;
+
+            rows.add(List.of(
+                    String.valueOf(o.get("id")),
+                    String.valueOf(o.get("fb")),
+                    String.valueOf(o.get("product")),
+                    String.valueOf(o.get("color")),
+                    String.format("%.2f", ((Number) o.get("price")).doubleValue()),
+                    String.valueOf(o.get("type")),
+                    String.valueOf(o.get("date")),
+                    status));
+        }
+
+        ExportDialogController.export(currentStage(), opts, "orders",
+                List.of("Order #", "Customer", "Product", "Color", "Price (PHP)", "Type", "Date", "Status"),
+                rows);
     }
 
     // =====================================================================
@@ -340,7 +469,7 @@ public class OrdersController implements Initializable {
     // =====================================================================
 
     private Stage currentStage() {
-        return (Stage) navOrders.getScene().getWindow();
+        return (Stage) tfOrderSearch.getScene().getWindow();
     }
 
     /** Replaces the content of the current window with another FXML screen. */
@@ -353,52 +482,24 @@ public class OrdersController implements Initializable {
             }
             Parent root = new FXMLLoader(resource).load();
             Stage stage = currentStage();
-            stage.getScene().setRoot(root);
+            ScreenTransition.show(stage.getScene(), root);
             stage.setTitle("Sassy's Creation - " + title);
         } catch (Exception e) {
             e.printStackTrace();
-            showError("Could not open " + title, e.getMessage());
+            showError("Could not open " + title, rootCause(e));
         }
     }
 
-    /** Opens an FXML screen in a normal pop-up window (with title bar). */
-    private void openDialog(String fxmlName, String title) {
-        openDialog(fxmlName, title, false);
-    }
-
-    /**
-     * Opens an FXML screen in a pop-up window on top of this screen.
-     *
-     * @param borderless true = no title bar, transparent background (for rounded dialogs like About)
-     */
-    private void openDialog(String fxmlName, String title, boolean borderless) {
-        try {
-            URL resource = getClass().getResource(FXML_PATH + fxmlName);
-            if (resource == null) {
-                showError("Screen not found", fxmlName + " could not be found in the resources folder.");
-                return;
-            }
-            Parent root = new FXMLLoader(resource).load();
-
-            Stage dialog = new Stage(borderless ? StageStyle.TRANSPARENT : StageStyle.DECORATED);
-            dialog.initOwner(currentStage());
-            dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.setTitle("Sassy's Creation - " + title);
-
-            Scene scene = new Scene(root);
-            if (borderless) {
-                scene.setFill(Color.TRANSPARENT);
-            }
-            dialog.setScene(scene);
-            dialog.showAndWait();
-        } catch (Exception e) {
-            e.printStackTrace();
-            showError("Could not open " + title, e.getMessage());
+    private String rootCause(Throwable t) {
+        while (t.getCause() != null) {
+            t = t.getCause();
         }
+        return t.toString();
     }
 
     private void showError(String header, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initOwner(currentStage());
         alert.setTitle("Error");
         alert.setHeaderText(header);
         alert.setContentText(message == null ? "Unknown error. Check the console for details." : message);

@@ -9,10 +9,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
-import java.io.IOException;
-
 /**
- * Controller for the "Delete this product?" confirmation dialog.
+ * Controller for the "Delete this product?" confirmation dialog (DELETEPRODUCT.fxml).
  *
  * The FXML root declares
  *   fx:controller="com.sassyscreation.sassyscreationgui.controllers.DeleteProductController"
@@ -22,19 +20,17 @@ import java.io.IOException;
  *   boolean confirmed = DeleteProductController.show(
  *           btnDelete.getScene().getWindow(),
  *           product.getId(), product.getName(), product.getCategory(),
- *           product.getPrice(), product.getStock());
+ *           "₱" + product.getPrice(), product.getStock());
  *   if (confirmed) {
  *       // delete the product from the database, then refresh the table
  *   }
  */
 public class DeleteProductController {
 
-    // CHANGE THIS to match the actual file name of your delete-product FXML
-    // (it must sit in src/main/resources/com/sassyscreation/sassyscreationgui/)
+    // Must sit in src/main/resources/com/sassyscreation/sassyscreationgui/
     private static final String FXML_PATH =
             "/com/sassyscreation/sassyscreationgui/DELETEPRODUCT.fxml";
 
-    // ---- fields from the FXML ----
     @FXML private Label dID;
     @FXML private Label dName;
     @FXML private Label dCategory;
@@ -52,7 +48,7 @@ public class DeleteProductController {
     /**
      * Shows the dialog and blocks until it is closed.
      *
-     * @return true if the user clicked "Yes, delete", false otherwise
+     * @return true only if the user clicked "Yes, delete"
      */
     public static boolean show(Window owner, Object id, String name, String category,
                                String price, Object stock) {
@@ -71,10 +67,22 @@ public class DeleteProductController {
             stage.showAndWait();
 
             return controller.confirmed;
-        } catch (IOException e) {
+        } catch (Exception e) {
+            // Any failure means "do not delete"
             e.printStackTrace();
             return false;
         }
+    }
+
+    // ---------------------------------------------------------------
+    // Init
+    // ---------------------------------------------------------------
+
+    @FXML
+    private void initialize() {
+        // Esc and Enter both mean "cancel", so a stray keypress can't delete a product
+        btnCancelDelete.setCancelButton(true);
+        btnCancelDelete.setDefaultButton(true);
     }
 
     // ---------------------------------------------------------------
@@ -83,14 +91,18 @@ public class DeleteProductController {
 
     public void setProduct(Object id, String name, String category, String price, Object stock) {
         dID.setText(String.valueOf(id));
-        dName.setText(name);
-        dCategory.setText(category);
-        dPrice.setText(price);
+        dName.setText(nz(name));
+        dCategory.setText(nz(category));
+        dPrice.setText(nz(price));
         dStock.setText(String.valueOf(stock));
     }
 
+    private static String nz(String s) {
+        return s == null ? "" : s;
+    }
+
     // ---------------------------------------------------------------
-    // Button handlers (names match onAction in the FXML)
+    // Button handlers
     // ---------------------------------------------------------------
 
     @FXML

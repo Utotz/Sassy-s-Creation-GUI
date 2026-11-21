@@ -4,23 +4,29 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 public class LoginController implements Initializable {
 
     // ---- fx:ids from LOGIN.fxml ----
+    @FXML private StackPane rootPane;
     @FXML private TextField tfUsername;
     @FXML private PasswordField pfPassword;
     @FXML private TextField tfPasswordVisible;
@@ -45,21 +51,35 @@ public class LoginController implements Initializable {
 
     private final Preferences prefs = Preferences.userNodeForPackage(LoginController.class);
 
+    private final BooleanProperty lockedOut = new SimpleBooleanProperty(false);
     private int failedAttempts = 0;
     private Timeline lockoutTimer;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // set the background image
+        URL bgUrl = getClass().getResource("/drawables/login-bg.jpg");
+        if (bgUrl != null) {
+            rootPane.setStyle("-fx-background-image: url('" + bgUrl.toExternalForm() + "');"
+                    + "-fx-background-size: cover;"
+                    + "-fx-background-position: center center;"
+                    + "-fx-background-repeat: no-repeat;");
+        } else {
+            System.out.println("login-bg.jpg not found in resources/drawables");
+        }
+
         lblError.setText("");
 
         // Keep the visible and hidden password fields in sync
         tfPasswordVisible.textProperty().bindBidirectional(pfPassword.textProperty());
 
-        // Disable the Log in button until both fields are filled
+        // Log in is disabled while a field is empty OR while locked out
         btnLogin.disableProperty().bind(
                 Bindings.createBooleanBinding(
-                        () -> tfUsername.getText().trim().isEmpty() || pfPassword.getText().isEmpty(),
-                        tfUsername.textProperty(), pfPassword.textProperty()));
+                        () -> lockedOut.get()
+                                || tfUsername.getText().trim().isEmpty()
+                                || pfPassword.getText().isEmpty(),
+                        tfUsername.textProperty(), pfPassword.textProperty(), lockedOut));
 
         // Clear the error message once the user starts typing again
         tfUsername.textProperty().addListener((obs, o, n) -> lblError.setText(""));
@@ -78,12 +98,17 @@ public class LoginController implements Initializable {
 
     @FXML
     private void handleLogin() {
+        if (lockedOut.get()) {
+            return; // ignore Enter key / clicks during lockout
+        }
+
         String username = tfUsername.getText().trim();
         String password = pfPassword.getText();
 
         if (authenticate(username, password)) {
             failedAttempts = 0;
             lblError.setText("");
+            lblAttempts.setText(MAX_ATTEMPTS + " attempts allowed before a " + LOCKOUT_SECONDS + "-second lockout");
 
             if (cbRemember.isSelected()) {
                 prefs.put(PREF_USERNAME, username);
@@ -94,7 +119,7 @@ public class LoginController implements Initializable {
             openMainScreen();
         } else {
             failedAttempts++;
-            pfPassword.clear();
+            pfPassword.clear();   // do this BEFORE setting the error (clearing resets lblError)
 
             if (failedAttempts >= MAX_ATTEMPTS) {
                 startLockout();
@@ -115,16 +140,27 @@ public class LoginController implements Initializable {
         pfPassword.setVisible(!show);
         pfPassword.setManaged(!show);
 
-        (show ? tfPasswordVisible : pfPassword).requestFocus();
+        TextField active = show ? tfPasswordVisible : pfPassword;
+        active.requestFocus();
+        active.positionCaret(active.getText().length()); // keep caret at the end
     }
 
     @FXML
     private void handleForgotPassword() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Forgot password");
-        alert.setHeaderText("Password reset");
-        alert.setContentText("Please contact the system administrator to reset your password.");
-        alert.showAndWait();
+        try {
+            URL resource = getClass().getResource(FXML_PATH + "FORGOTPASSWORD.fxml");
+            if (resource == null) {
+                lblError.setText("FORGOTPASSWORD.fxml was not found in the resources folder.");
+                return;
+            }
+            Parent root = new FXMLLoader(resource).load();
+            Stage stage = (Stage) btnLogin.getScene().getWindow();
+            stage.getScene().setRoot(root);
+            stage.setTitle("Sassy's Creation - Forgot password");
+        } catch (Exception e) {
+            e.printStackTrace();
+            lblError.setText("Could not open the forgot password screen.");
+        }
     }
 
     @FXML
@@ -139,7 +175,16 @@ public class LoginController implements Initializable {
      * Replace this with a real check (database query + hashed passwords).
      */
     private boolean authenticate(String username, String password) {
-        return username.equals("admin") && password.equals("admin123");
+        boolean userOk = safeEquals(username, "admin");
+        boolean passOk = safeEquals(password, "admin123");
+        return userOk && passOk;   // no short-circuit, so both are always compared
+    }
+
+    /** Constant-time string comparison. */
+    private boolean safeEquals(String a, String b) {
+        return MessageDigest.isEqual(
+                a.getBytes(StandardCharsets.UTF_8),
+                b.getBytes(StandardCharsets.UTF_8));
     }
 
     /** Loads DASHBOARD.fxml and swaps it into the current window. */
@@ -165,11 +210,16 @@ public class LoginController implements Initializable {
     }
 
     private void startLockout() {
+        if (lockoutTimer != null) {
+            lockoutTimer.stop();
+        }
+
+        lockedOut.set(true);
         setInputsDisabled(true);
         lblError.setText("");
+        lblAttempts.setText("");
         lockoutBox.setVisible(true);
         lockoutBox.setManaged(true);
-        lblAttempts.setText("");
 
         final int[] remaining = {LOCKOUT_SECONDS};
         updateLockoutUi(remaining[0]);
@@ -196,6 +246,7 @@ public class LoginController implements Initializable {
             lockoutTimer.stop();
         }
         failedAttempts = 0;
+        lockedOut.set(false);
         lockoutBox.setVisible(false);
         lockoutBox.setManaged(false);
         lblAttempts.setText(MAX_ATTEMPTS + " attempts allowed before a " + LOCKOUT_SECONDS + "-second lockout");
@@ -209,6 +260,6 @@ public class LoginController implements Initializable {
         tfPasswordVisible.setDisable(disabled);
         cbRemember.setDisable(disabled);
         cbShowPassword.setDisable(disabled);
-        // btnLogin is already bound to the text fields; clearing the password keeps it disabled during lockout
+        linkForgot.setDisable(disabled);
     }
 }

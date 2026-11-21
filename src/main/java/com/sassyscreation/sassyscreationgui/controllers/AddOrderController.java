@@ -9,16 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
@@ -32,29 +27,14 @@ public class AddOrderController {
     /** Folder (inside resources) where all the FXML files live. */
     private static final String FXML_PATH = "/com/sassyscreation/sassyscreationgui/";
 
-    // ---- FXML file names (adjust to match your resources folder) ----
-    private static final String FXML_DASHBOARD       = "DASHBOARD.fxml";
-    private static final String FXML_ORDERS          = "ORDERS.fxml";
-    private static final String FXML_STAND_SALE      = "STANDSALE.fxml";
-    private static final String FXML_INVENTORY       = "INVENTORY_LIST.fxml";
-    private static final String FXML_LOGIN           = "LOGIN.fxml";
-    private static final String FXML_ABOUT           = "ABOUT.fxml";
-    private static final String FXML_CHANGE_PASSWORD = "CHANGEPASSWORD.fxml";
+    private static final String FXML_ORDERS = "ORDERS.fxml";
     private static final String STOCK_NOTE_DEFAULT = "Stock is deducted when the order is saved";
 
-    // ---- Sidebar ----
-    @FXML private Button navDashboard;
-    @FXML private Button navOrders;
-    @FXML private Button navStandSale;
-    @FXML private Button navInventory;
-    @FXML private Button btnLogout;
-    @FXML private Label lblNavOrdersBadge;
+    private static final int QTY_MIN = 1;
+    private static final int QTY_MAX = 999;
 
-    // ---- Top bar ----
-    @FXML private MenuButton mbAccount;
-    @FXML private MenuItem miChangePassword;
-    @FXML private MenuItem miAbout;
-    @FXML private MenuItem miLogout;
+    // ---- Sidebar (set by <fx:include fx:id="sidebar"> in ADDORDER.fxml) ----
+    @FXML private SidebarController sidebarController;
 
     // ---- Header ----
     @FXML private Label lblStockNote;
@@ -104,6 +84,8 @@ public class AddOrderController {
     // =====================================================================
     @FXML
     private void initialize() {
+        sidebarController.setActive("orders");
+
         dpDate.setValue(LocalDate.now());
         cbStatus.setValue("Pending");
 
@@ -131,7 +113,7 @@ public class AddOrderController {
             }
         });
 
-        // TODO: call setOrdersBadge(<pending order count from DB>)
+        // TODO: call sidebarController.setOrdersBadge(<pending order count from DB>)
     }
 
     private List<Product> loadProducts() {
@@ -151,12 +133,17 @@ public class AddOrderController {
         lblStockNote.setText("In stock: " + p.getStock() + "  \u2022  " + STOCK_NOTE_DEFAULT);
     }
 
+    /** Parses whatever is typed in the spinner, clamps it, and writes it back. */
     private void commitSpinner() {
+        int value;
         try {
-            spOrderQty.increment(0); // forces the editor text to be parsed and committed
-        } catch (Exception ignored) {
-            spOrderQty.getValueFactory().setValue(1);
+            value = Integer.parseInt(spOrderQty.getEditor().getText().trim());
+        } catch (NumberFormatException e) {
+            value = QTY_MIN;
         }
+        value = Math.max(QTY_MIN, Math.min(QTY_MAX, value));
+        spOrderQty.getValueFactory().setValue(value);
+        spOrderQty.getEditor().setText(String.valueOf(value));
     }
 
     // =====================================================================
@@ -183,7 +170,7 @@ public class AddOrderController {
             cbOrderProduct.requestFocus();
             return;
         }
-        if (qty < 1) {
+        if (qty < QTY_MIN) {
             warn("Quantity must be at least 1.");
             spOrderQty.requestFocus();
             return;
@@ -230,40 +217,16 @@ public class AddOrderController {
         // orderDao.save(customer, product.getId(), color, qty, price, date, arrangement, status);
         // inventoryDao.deductStock(product.getId(), qty);
 
-        info("Order saved for " + customer + ".");
+        success("Order saved", "The order for " + customer + " was saved successfully.");
         goOrders();
     }
 
     // =====================================================================
-    // Navigation
+    // Navigation (Back and Cancel buttons)
     // =====================================================================
-    @FXML private void goDashboard() { navigate(FXML_DASHBOARD); }
-    @FXML private void goOrders()    { navigate(FXML_ORDERS); }
-    @FXML private void goStandSale() { navigate(FXML_STAND_SALE); }
-    @FXML private void goInventory() { navigate(FXML_INVENTORY); }
-
     @FXML
-    private void handleLogout() {
-        // TODO: clear your session / current user here
-        currentStage().setMaximized(false);
-        navigate(FXML_LOGIN);
-    }
-
-    @FXML
-    private void handleOpenAbout() {
-        // borderless = true -> no Windows title bar, rounded transparent window
-        openModal(FXML_ABOUT, "About", true);
-    }
-
-    @FXML
-    private void handleOpenChangePassword() {
-        openModal(FXML_CHANGE_PASSWORD, "Change password", false);
-    }
-
-    /** Updates the sidebar badge on "Orders"; hides it when the count is 0. */
-    public void setOrdersBadge(int count) {
-        lblNavOrdersBadge.setText(String.valueOf(count));
-        lblNavOrdersBadge.setVisible(count > 0);
+    private void goOrders() {
+        navigate(FXML_ORDERS);
     }
 
     private Stage currentStage() {
@@ -279,33 +242,7 @@ public class AddOrderController {
             }
             Parent root = new FXMLLoader(resource).load();
             Scene scene = btnSaveOrder.getScene();
-            scene.setRoot(root);
-        } catch (IOException | RuntimeException e) {
-            e.printStackTrace();
-            error("Could not open " + fxml + ":\n" + rootCause(e));
-        }
-    }
-
-    private void openModal(String fxml, String title, boolean borderless) {
-        try {
-            URL resource = getClass().getResource(FXML_PATH + fxml);
-            if (resource == null) {
-                error(fxml + " was not found in the resources folder.");
-                return;
-            }
-            Parent root = new FXMLLoader(resource).load();
-            Stage dialog = new Stage(borderless ? StageStyle.TRANSPARENT : StageStyle.DECORATED);
-            dialog.setTitle(title);
-            dialog.initOwner(currentStage());
-            dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.setResizable(false);
-
-            Scene scene = new Scene(root);
-            if (borderless) {
-                scene.setFill(Color.TRANSPARENT);
-            }
-            dialog.setScene(scene);
-            dialog.showAndWait();
+            ScreenTransition.show(scene, root);
         } catch (IOException | RuntimeException e) {
             e.printStackTrace();
             error("Could not open " + fxml + ":\n" + rootCause(e));
@@ -320,10 +257,15 @@ public class AddOrderController {
     }
 
     // =====================================================================
-    // Alerts
+    // Dialogs
     // =====================================================================
+
+    /** Custom success popup (SUCCESSDIALOG.fxml). */
+    private void success(String title, String msg) {
+        SuccessDialogController.show(currentStage(), title, msg);
+    }
+
     private void warn(String msg)  { show(Alert.AlertType.WARNING, "Check your input", msg); }
-    private void info(String msg)  { show(Alert.AlertType.INFORMATION, "Success", msg); }
     private void error(String msg) { show(Alert.AlertType.ERROR, "Error", msg); }
 
     private void show(Alert.AlertType type, String title, String msg) {

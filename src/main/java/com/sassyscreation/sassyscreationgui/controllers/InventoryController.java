@@ -1,8 +1,11 @@
 package com.sassyscreation.sassyscreationgui.controllers;
 
+import com.sassyscreation.sassyscreationgui.dao.ProductDAO;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,25 +13,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -37,31 +22,25 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Ellipse;
-import javafx.scene.shape.Line;
+import javafx.scene.shape.SVGPath;
+import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import javafx.application.Platform;
-import com.sassyscreation.sassyscreationgui.dao.ProductDAO;
-import java.sql.SQLException;
 
 /**
  * Controller for the Product & Inventory screens.
@@ -69,24 +48,27 @@ import java.sql.SQLException;
  * Works with BOTH FXML files (the list/table one and the grid/cards one) - fields that
  * only exist in one of them are simply null in the other.
  *
- * "Add product" now opens the ADD_PRODUCT.fxml screen (no more built-in popup).
- * AddProductController calls InventoryController.addProduct(...) when you press Save.
+ * "Add product" opens the ADDPRODUCT.fxml screen. AddProductController calls
+ * InventoryController.addProduct(...) when you press Save.
  */
 public class InventoryController implements Initializable {
 
     // ---------------------------------------------------------------
     // FXML file names (inside resources/com/sassyscreation/sassyscreationgui/)
     // ---------------------------------------------------------------
-    private static final String FXML_PATH           = "/com/sassyscreation/sassyscreationgui/";
-    private static final String FXML_DASHBOARD      = "DASHBOARD.fxml";
-    private static final String FXML_ORDERS         = "ORDERS.fxml";
-    private static final String FXML_STAND_SALE     = "STANDSALE.fxml";
-    private static final String FXML_INVENTORY_LIST = "INVENTORY_LIST.fxml";
-    private static final String FXML_INVENTORY_GRID = "INVENTORY_GRID.fxml";   // <-- CHANGE to your grid file name
-    private static final String FXML_ADD_PRODUCT    = "ADDPRODUCT.fxml";       // <-- CHANGE if yours is named differently
-    private static final String FXML_LOGIN          = "LOGIN.fxml";
-    private static final String FXML_ABOUT          = "ABOUT.fxml";
-    private static final String FXML_CHANGE_PASSWORD = "CHANGEPASSWORD.fxml";
+    private static final String FXML_PATH            = "/com/sassyscreation/sassyscreationgui/";
+    private static final String IMAGE_PATH           = FXML_PATH + "images/";
+    private static final String FXML_INVENTORY_LIST  = "INVENTORY_LIST.fxml";
+    private static final String FXML_INVENTORY_GRID  = "INVENTORY_GRID.fxml";
+    private static final String FXML_ADD_PRODUCT     = "ADDPRODUCT.fxml";
+
+    /** Number of card columns in the grid view (matches the FXML column constraints). */
+    private static final int GRID_COLUMNS = 3;
+
+    /** Stock at or below this shows an orange "N left" badge. */
+    private static final int LOW_STOCK = 5;
+
+    private static final String ACCENT = "#C22A62";
 
     // ---------------------------------------------------------------
     // Product model + shared (static) product list
@@ -97,115 +79,110 @@ public class InventoryController implements Initializable {
         private String category;
         private double price;
         private int stock;
+        /** CSS class that supplies the grid photo (e.g. "pic-diamond-top"); null = use imagePath / icon. */
+        private final String photoClass;
+        /** From the database: image file name or full path; null = no picture. */
+        private final String imagePath;
 
-        public Product(int id, String name, String category, double price, int stock) {
+        public Product(int id, String name, String category, double price, int stock,
+                       String photoClass, String imagePath) {
             this.id = id;
             this.name = name;
             this.category = category;
             this.price = price;
             this.stock = stock;
+            this.photoClass = photoClass;
+            this.imagePath = imagePath;
         }
+
+        public String getImagePath() { return imagePath; }
 
         public int getId() { return id; }
         public String getName() { return name; }
         public String getCategory() { return category; }
         public double getPrice() { return price; }
         public int getStock() { return stock; }
+        public String getPhotoClass() { return photoClass; }
     }
 
     private static final ObservableList<Product> PRODUCTS = FXCollections.observableArrayList();
-    private static int nextId = 1;
+    private static final ProductDAO productDAO = new ProductDAO();
 
-    static {
-        // TEMPORARY seed data - replace with a database / DAO load
-        String[][] seed = {
-                {"Gypsophila", "Bouquet", "30", "12"},
-                {"Light Green Leaf", "Bouquet", "30", "20"},
-                {"Spiral Leaf", "Bouquet", "30", "20"},
-                {"Dark Green Leaf", "Bouquet", "30", "20"},
-                {"Mini Daisy (Filler)", "Bouquet", "30", "20"},
-                {"Tulip - Fuzzy Wire", "Bouquet", "55", "15"},
-                {"Lily - Fuzzy Wire", "Bouquet", "70", "15"},
-                {"Tiger Lily - Fuzzy Wire", "Bouquet", "75", "15"},
-                {"Garbera - Fuzzy Wire", "Bouquet", "55", "15"},
-                {"Sunflower - Fuzzy Wire", "Bouquet", "55", "15"},
-                {"Rose - Fuzzy Wire", "Bouquet", "90", "15"},
-                {"Sundrop/Tangled - Fuzzy Wire", "Bouquet", "145", "10"},
-                {"Stargazer - Fuzzy Wire", "Bouquet", "160", "10"},
-                {"Tulip - Crochet", "Bouquet", "95", "10"},
-                {"Sunflower - Crochet", "Bouquet", "120", "10"},
-                {"Rose - Crochet", "Bouquet", "100", "10"},
-                {"Stargazer - Crochet", "Bouquet", "200", "8"},
-                {"Lily - Crochet", "Bouquet", "150", "8"},
-                {"Rose - Satin Ribbon", "Bouquet", "60", "12"},
-                {"Mixed Bouquet - Fuzzy Wire (Small)", "Bouquet", "250", "5"},
-                {"Mixed Bouquet - Fuzzy Wire (Medium)", "Bouquet", "400", "5"},
-                {"Mixed Bouquet - Crochet (Small)", "Bouquet", "350", "5"},
-                {"Mixed Bouquet - Crochet (Medium)", "Bouquet", "550", "4"},
-                {"Gradient Bouquet - Satin Ribbon", "Bouquet", "300", "4"},
-                {"Octopus Keychain", "Keychain", "110", "10"},
-                {"Jellyfish Keychain", "Keychain", "110", "10"},
-                {"Sunflower Keychain", "Keychain", "50", "15"},
-                {"Rose Keychain", "Keychain", "50", "5"},
-                {"Mini Bouquet Keychain", "Keychain", "110", "10"},
-                {"Baby Tulip Keychain", "Keychain", "40", "15"},
-                {"Baby Mushroom Keychain", "Keychain", "80", "10"},
-                {"Puff Flower Keychain", "Keychain", "45", "10"},
-                {"Baby Dinosaur Keychain", "Keychain", "90", "10"},
-                {"Mini Teddy Bear Keychain", "Keychain", "90", "10"},
-                {"Customized Keychain", "Keychain", "0", "0"},
-                {"Mini Tulip Keychain - Fuzzy Wire", "Keychain", "20", "20"},
-                {"Mini Daisy Keychain - Fuzzy Wire", "Keychain", "20", "20"},
-                {"Ribbon Keychain - Fuzzy Wire", "Keychain", "10", "20"},
-                {"Crochet Bra", "Crochet", "200", "5"},
-                {"Diamond Top", "Crochet", "300", "4"},
-                {"Hair Band", "Crochet", "100", "8"},
-                {"Swimwear - Customize", "Crochet", "0", "0"},
-                {"Hat - Customize", "Crochet", "0", "0"},
-                {"Bag - Customize", "Crochet", "0", "5"},
-        };
-        /*for (String[] r : seed) {
-            addProduct(r[0], r[1], Double.parseDouble(r[2]), Integer.parseInt(r[3]));
-        }*/
-    }
-
-    /** Called by AddProductController when a new product is saved. */
-    public static void addProduct(String name, String category, double price, int stock) {
-        // TODO: also INSERT into the database
-        PRODUCTS.add(new Product(nextId++, name, category, price, stock));
-    }
-
-    /** Replaces the in-memory list with the rows currently stored in MariaDB. */
-    private void loadProductsFromDatabase() {
+    public static void loadProductsFromDB() {
+        PRODUCTS.clear();
         try {
-            PRODUCTS.clear();
-            nextId = 1;
-            for (com.sassyscreation.sassyscreationgui.model.Product row : new ProductDAO().getAllProducts()) {
-                PRODUCTS.add(new Product(row.getProductId(), row.getName(), row.getCategory(),
-                        row.getPrice().doubleValue(), row.getStockQuantity()));
-                nextId = Math.max(nextId, row.getProductId() + 1);
+            for (var dbProd : productDAO.getAllProducts()) {
+                PRODUCTS.add(new Product(
+                        dbProd.getProductId(),
+                        dbProd.getName(),
+                        dbProd.getCategory(),
+                        dbProd.getPrice().doubleValue(),
+                        dbProd.getStockQuantity(),
+                        null,
+                        dbProd.getImagePath()
+                ));
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            Platform.runLater(() -> error("Could not load products", e.getMessage()));
+        }
+    }
+
+    /**
+     * Called by AddProductController when a new product is saved.
+     * Inserts it into the database and reloads the list.
+     *
+     * @return true if it was saved
+     */
+    public static boolean addProduct(String name, String category, double price, int stock, String imagePath) {
+        try {
+            productDAO.insertProduct(name, category, BigDecimal.valueOf(price), stock, imagePath);
+            loadProductsFromDB();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
     // ---------------------------------------------------------------
-    // FXML fields - sidebar
+    // Product pictures (products.image_path)
     // ---------------------------------------------------------------
-    @FXML private Button navDashboard;
-    @FXML private Button navOrders;
-    @FXML private Label lblNavOrdersBadge;
-    @FXML private Button navStandSale;
-    @FXML private Button navInventory;
-    @FXML private Button btnLogout;
 
-    // ---- top bar ----
-    @FXML private MenuButton mbAccount;
-    @FXML private MenuItem miChangePassword;
-    @FXML private MenuItem miAbout;
-    @FXML private MenuItem miLogout;
+    /**
+     * Turns a database image_path into a URL the stylesheet can load, or null if there is
+     * no picture (empty path, or the file is not found).
+     */
+    private static String imageUrl(String path) {
+        if (path == null || path.isBlank()) {
+            return null;
+        }
+        File f = new File(path);
+        if (f.isAbsolute() && f.isFile()) {
+            return f.toURI().toString();                         // photo added by the user
+        }
+        URL res = InventoryController.class.getResource(IMAGE_PATH + path.trim());
+        System.out.println("IMG " + path + " -> " + (res == null ? "NOT FOUND" : res.toExternalForm()));
+        return res == null ? null : res.toExternalForm();        // bundled image
+    }
+
+    /** Inline CSS that fills a node with the picture, cropped to cover. */
+    private static String photoStyle(String url, int radius) {
+        return "-fx-background-image: url('" + url.replace("'", "%27") + "');"
+                + "-fx-background-size: cover;"
+                + "-fx-background-position: center center;"
+                + "-fx-background-repeat: no-repeat;"
+                + "-fx-background-radius: " + radius + ";";
+    }
+
+    /** Filtered view of PRODUCTS used by both the table and the grid. */
+    private final FilteredList<Product> filteredProducts = new FilteredList<>(PRODUCTS, p -> true);
+
+    // ---------------------------------------------------------------
+    // FXML fields
+    // ---------------------------------------------------------------
+
+    /** Set by <fx:include fx:id="sidebar"> in the FXML files. */
+    @FXML private SidebarController sidebarController;
 
     // ---- header / toolbar ----
     @FXML private Button btnExportInventory;
@@ -221,6 +198,8 @@ public class InventoryController implements Initializable {
     @FXML private ToggleButton chipKeychain;
     @FXML private Label lblProductTotal;
     @FXML private Label lblCategoryCounts;
+    /** Optional: add fx:id="lblInventorySub" to the "... · 43 products" subtitle label to keep its count live. */
+    @FXML private Label lblInventorySub;
 
     // ---- list view only ----
     @FXML private TableView<Product> tvProducts;
@@ -241,7 +220,8 @@ public class InventoryController implements Initializable {
     // =====================================================================
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadProductsFromDatabase();
+        sidebarController.setActive("inventory");
+
         if (tvProducts != null) {
             setupTable();
         }
@@ -272,6 +252,7 @@ public class InventoryController implements Initializable {
             }
         });
 
+        loadProductsFromDB();
         refresh();
     }
 
@@ -280,12 +261,22 @@ public class InventoryController implements Initializable {
     // =====================================================================
     private void setupTable() {
         textColumn(colProdId, p -> String.valueOf(p.getId()));
-        graphicColumn(colProdPhoto, p -> photoBox(p, 44, 26, 10));
+        graphicColumn(colProdPhoto, this::listTile);
         textColumn(colProdName, Product::getName);
         textColumn(colProdCat, Product::getCategory);
         textColumn(colProdPrice, p -> peso(p.getPrice()));
-        graphicColumn(colProdStock, this::stockLabel);
-        graphicColumn(colProdActions, p -> actionsBox(p, 10));
+        graphicColumn(colProdStock, p -> stockBadge(p, "stock-plain"));
+        graphicColumn(colProdActions, this::listActions);
+
+        // Cells hold the whole Product, so tell the columns how to sort
+        colProdId.setComparator(Comparator.comparingInt(Product::getId));
+        colProdCat.setComparator(Comparator.comparing(Product::getCategory));
+        colProdPrice.setComparator(Comparator.comparingDouble(Product::getPrice));
+        colProdStock.setComparator(Comparator.comparingInt(Product::getStock));
+
+        SortedList<Product> sorted = new SortedList<>(filteredProducts);
+        sorted.comparatorProperty().bind(tvProducts.comparatorProperty());
+        tvProducts.setItems(sorted);
     }
 
     private void textColumn(TableColumn<Product, Product> col, Function<Product, String> text) {
@@ -312,30 +303,66 @@ public class InventoryController implements Initializable {
         });
     }
 
+    /** 44x44 tile: the product picture, or the category line-icon when there is none. */
+    private Node listTile(Product p) {
+        StackPane tile = new StackPane();
+        tile.getStyleClass().add("prod-tile");
+        String url = imageUrl(p.getImagePath());
+        if (url != null) {
+            tile.setStyle(photoStyle(url, 10));
+        } else {
+            tile.getChildren().add(glyph(p.getCategory(), 1.1));
+        }
+        tile.setMinSize(44, 44);
+        tile.setPrefSize(44, 44);
+        tile.setMaxSize(44, 44);
+        return tile;
+    }
+
+    /** "Edit · Restock · Delete" links (list view actions column). */
+    private Node listActions(Product p) {
+        Button edit = button("Edit", "ico-edit", "Edit", "btn-icon", "btn-edit", "link-pink");
+        edit.setOnAction(e -> editProduct(p));
+
+        Label sep1 = new Label("\u00B7");
+        sep1.getStyleClass().add("link-sep");
+
+        Button restock = button("Restock", null, "Restock", "btn-icon", "link-pink");
+        restock.setOnAction(e -> restockProduct(p));
+
+        Label sep2 = new Label("\u00B7");
+        sep2.getStyleClass().add("link-sep");
+
+        Button delete = button("Delete", "ico-delete", "Delete", "btn-icon", "link-pink");
+        delete.setOnAction(e -> deleteProduct(p));
+
+        HBox box = new HBox(4, edit, sep1, restock, sep2, delete);
+        box.setAlignment(Pos.CENTER_LEFT);
+        return box;
+    }
+
     // =====================================================================
     // Refresh (search + category filter + summary)
     // =====================================================================
     private void refresh() {
-        List<Product> list = filtered();
-        updateSummary();
-        if (tvProducts != null) {
-            tvProducts.setItems(FXCollections.observableArrayList(list));
-        }
-        if (gpProducts != null) {
-            buildGrid(list);
-        }
-    }
-
-    private List<Product> filtered() {
         String q = tfProductSearch.getText() == null ? "" : tfProductSearch.getText().trim().toLowerCase();
         String cat = selectedCategory();
-        return PRODUCTS.stream()
-                .filter(p -> cat.equals("All") || p.getCategory().equals(cat))
-                .filter(p -> q.isEmpty()
+
+        // a new predicate every time forces a re-filter (also needed after in-place edits)
+        filteredProducts.setPredicate(p ->
+                (cat.equals("All") || p.getCategory().equals(cat))
+                        && (q.isEmpty()
                         || p.getName().toLowerCase().contains(q)
                         || p.getCategory().toLowerCase().contains(q)
-                        || String.valueOf(p.getId()).equals(q))
-                .collect(Collectors.toList());
+                        || String.valueOf(p.getId()).equals(q)));
+
+        updateSummary();
+        if (tvProducts != null) {
+            tvProducts.refresh();
+        }
+        if (gpProducts != null) {
+            buildGrid();
+        }
     }
 
     private String selectedCategory() {
@@ -347,135 +374,206 @@ public class InventoryController implements Initializable {
         long bouquet = PRODUCTS.stream().filter(p -> p.getCategory().equals("Bouquet")).count();
         long crochet = PRODUCTS.stream().filter(p -> p.getCategory().equals("Crochet")).count();
         long keychain = PRODUCTS.stream().filter(p -> p.getCategory().equals("Keychain")).count();
+
         lblProductTotal.setText("Total Products: " + PRODUCTS.size());
         lblCategoryCounts.setText("Bouquet " + bouquet + "  \u00B7  Crochet " + crochet
                 + "  \u00B7  Keychain " + keychain);
+
+        // list view chips carry a count label as their graphic (the grid chips don't)
+        setChipCount(chipAll, PRODUCTS.size());
+        setChipCount(chipBouquet, bouquet);
+        setChipCount(chipCrochet, crochet);
+        setChipCount(chipKeychain, keychain);
+
+        // keep the "... · N products" subtitle in step (needs fx:id="lblInventorySub")
+        if (lblInventorySub != null) {
+            String t = lblInventorySub.getText() == null ? "" : lblInventorySub.getText();
+            int i = t.indexOf(" \u00B7 ");
+            String prefix = i < 0 ? t : t.substring(0, i);
+            lblInventorySub.setText(prefix + " \u00B7 " + PRODUCTS.size() + " products");
+        }
+    }
+
+    private void setChipCount(ToggleButton chip, long count) {
+        if (chip != null && chip.getGraphic() instanceof Label l) {
+            l.setText(String.valueOf(count));
+        }
     }
 
     // =====================================================================
     // Grid view
     // =====================================================================
-    private void buildGrid(List<Product> list) {
+    private void buildGrid() {
         gpProducts.getChildren().clear();
+
+        if (filteredProducts.isEmpty()) {
+            Label empty = new Label("No products found");
+            empty.getStyleClass().add("page-sub");
+            GridPane.setColumnSpan(empty, GRID_COLUMNS);
+            gpProducts.add(empty, 0, 0);
+            return;
+        }
+
         int i = 0;
-        for (Product p : list) {
+        for (Product p : filteredProducts) {
             VBox card = buildCard(p);
             GridPane.setHgrow(card, Priority.ALWAYS);
-            gpProducts.add(card, i % 5, i / 5);
+            gpProducts.add(card, i % GRID_COLUMNS, i / GRID_COLUMNS);
             i++;
         }
     }
 
     private VBox buildCard(Product p) {
-        StackPane head = new StackPane();
-        head.setMinHeight(140);
-        head.setPrefHeight(140);
-        head.setMaxHeight(140);
-        head.setMaxWidth(Double.MAX_VALUE);
-        head.setStyle("-fx-background-color: " + bgColor(p.getCategory()) + "; -fx-background-radius: 14 14 0 0;");
-        head.getChildren().add(icon(p.getCategory(), 64));
-
-        Label idBadge = new Label("#" + p.getId());
-        idBadge.setStyle("-fx-background-color: white; -fx-text-fill: #72243E; -fx-background-radius: 10;"
-                + " -fx-padding: 2 8 2 8; -fx-font-size: 11px;");
-        StackPane.setAlignment(idBadge, Pos.TOP_LEFT);
-        StackPane.setMargin(idBadge, new Insets(8, 0, 0, 8));
-        head.getChildren().add(idBadge);
-
-        if (p.getStock() <= 0) {
-            Label low = new Label("Low stock");
-            low.setStyle("-fx-background-color: #FCEBEB; -fx-text-fill: #A32D2D; -fx-background-radius: 10;"
-                    + " -fx-padding: 2 8 2 8; -fx-font-size: 11px;");
-            StackPane.setAlignment(low, Pos.TOP_RIGHT);
-            StackPane.setMargin(low, new Insets(8, 8, 0, 0));
-            head.getChildren().add(low);
+        // photo: CSS class from the design, or a category icon for products without one
+        StackPane photo = new StackPane();
+        photo.getStyleClass().add("prod-photo");
+        photo.setMinHeight(140);
+        photo.setPrefHeight(140);
+        photo.setMaxHeight(140);
+        photo.setMaxWidth(Double.MAX_VALUE);
+        String url = imageUrl(p.getImagePath());
+        if (url != null) {
+            photo.setStyle(photoStyle(url, 0));
+        } else if (p.getPhotoClass() != null) {
+            photo.getStyleClass().add(p.getPhotoClass());
+        } else {
+            photo.setStyle("-fx-background-color: " + bgColor(p.getCategory()) + ";");
+            photo.getChildren().add(glyph(p.getCategory(), 2.6));
         }
 
         Label name = new Label(p.getName());
+        name.getStyleClass().add("prod-name");
         name.setMaxWidth(Double.MAX_VALUE);
-        name.setMinHeight(36);
         name.setWrapText(true);
-        name.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2a0f1c;");
 
-        Label cat = new Label(p.getCategory());
-        cat.getStyleClass().add("hint-label");
+        Label category = new Label(p.getCategory());
+        category.getStyleClass().add("page-sub");
 
         Label price = new Label(peso(p.getPrice()));
-        price.setStyle("-fx-font-weight: bold; -fx-text-fill: #C22A62; -fx-font-size: 15px;");
+        price.getStyleClass().add("prod-price");
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        Label stockHint = new Label("Stock:");
-        stockHint.getStyleClass().add("hint-label");
-        HBox priceRow = new HBox(6, price, spacer, stockHint, stockLabel(p));
+        HBox priceRow = new HBox(6, price, spacer, stockBadge(p, "badge-done"));
         priceRow.setAlignment(Pos.CENTER_LEFT);
+        VBox.setMargin(priceRow, new Insets(2, 0, 0, 0));
 
-        HBox actions = actionsBox(p, 8);
-        VBox.setMargin(actions, new Insets(4, 0, 0, 0));
+        Button edit = button("Edit", "ico-edit", "Edit", "btn-ghost", "prod-btn", "prod-btn-edit");
+        edit.setOnAction(e -> editProduct(p));
+        Button restock = button("Restock", null, "Restock", "btn-ghost", "prod-btn");
+        restock.setOnAction(e -> restockProduct(p));
+        Button delete = button(null, "ico-delete", "Delete", "btn-ghost", "prod-btn", "prod-btn-del");
+        delete.setOnAction(e -> deleteProduct(p));
 
-        VBox body = new VBox(4, name, cat, priceRow, actions);
+        HBox actions = new HBox(6, edit, restock, delete);
+        actions.setAlignment(Pos.CENTER_LEFT);
+        VBox.setMargin(actions, new Insets(6, 0, 0, 0));
+
+        VBox body = new VBox(3, name, category, priceRow, actions);
         body.setPadding(new Insets(10, 12, 12, 12));
 
-        VBox card = new VBox(head, body);
+        VBox card = new VBox(photo, body);
+        card.getStyleClass().add("prod-card");
         card.setMaxWidth(Double.MAX_VALUE);
         card.setUserData(p.getCategory());
-        card.setStyle("-fx-background-color: white; -fx-background-radius: 14;"
-                + " -fx-border-color: #F4C0D1; -fx-border-radius: 14;");
         return card;
     }
 
     // =====================================================================
-    // Shared UI pieces (photo, stock, action buttons)
+    // Shared UI pieces
     // =====================================================================
-    private Node photoBox(Product p, double box, double iconSize, double radius) {
-        StackPane sp = new StackPane(icon(p.getCategory(), iconSize));
-        sp.setMinSize(box, box);
-        sp.setPrefSize(box, box);
-        sp.setMaxSize(box, box);
-        sp.setStyle("-fx-background-color: " + bgColor(p.getCategory()) + "; -fx-background-radius: " + radius + ";");
-        return sp;
-    }
 
-    private Label stockLabel(Product p) {
-        Label l = new Label(String.valueOf(p.getStock()));
+    /** "10 in stock" / "4 left" / "Out of stock" badge. */
+    private Label stockBadge(Product p, String normalClass) {
+        Label l;
         if (p.getStock() <= 0) {
-            l.getStyleClass().add("badge-low");
+            l = new Label("Out of stock");
+            l.getStyleClass().add("badge-cancelled");
+        } else if (p.getStock() <= LOW_STOCK) {
+            l = new Label(p.getStock() + " left");
+            l.getStyleClass().add("badge-pending");
         } else {
-            l.setStyle("-fx-font-weight: bold; -fx-text-fill: #2a0f1c;");
+            l = new Label(p.getStock() + " in stock");
+            l.getStyleClass().add(normalClass);
         }
         return l;
     }
 
-    private HBox actionsBox(Product p, double spacing) {
-        Button restock = new Button();
-        restock.setFocusTraversable(false);
-        restock.getStyleClass().add("btn-icon");
-        restock.setGraphic(ico("ico-add"));
-        restock.setTooltip(new Tooltip("Restock"));
-        restock.setOnAction(e -> restockProduct(p));
-
-        Button edit = new Button("Edit");
-        edit.setFocusTraversable(false);
-        edit.getStyleClass().addAll("btn-icon", "btn-edit");
-        edit.setGraphic(ico("ico-edit"));
-        edit.setTooltip(new Tooltip("Edit"));
-        edit.setOnAction(e -> editProduct(p));
-
-        Button delete = new Button();
-        delete.setFocusTraversable(false);
-        delete.getStyleClass().addAll("btn-icon", "btn-icon-danger");
-        delete.setGraphic(ico("ico-delete"));
-        delete.setTooltip(new Tooltip("Delete"));
-        delete.setOnAction(e -> deleteProduct(p));
-
-        HBox box = new HBox(spacing, restock, edit, delete);
-        box.setAlignment(Pos.CENTER_LEFT);
-        return box;
+    private Button button(String text, String icon, String tooltip, String... styleClasses) {
+        Button b = new Button();
+        if (text != null) {
+            b.setText(text);
+        }
+        b.setFocusTraversable(false);
+        b.setMnemonicParsing(false);
+        b.getStyleClass().addAll(styleClasses);
+        if (icon != null) {
+            b.setGraphic(ico(icon));
+        }
+        b.setTooltip(new Tooltip(tooltip));
+        return b;
     }
 
     private Region ico(String name) {
         Region r = new Region();
         r.getStyleClass().addAll("ico", name);
         return r;
+    }
+
+    private static String bgColor(String category) {
+        return switch (category) {
+            case "Keychain" -> "#E3DDF7";
+            case "Crochet" -> "#FFE3B3";
+            default -> "#F8BBD0";
+        };
+    }
+
+    // =====================================================================
+    // Category line-icons (same shapes as the list design, drawn in code)
+    // =====================================================================
+    private static Pane glyph(String category, double scale) {
+        Pane pane = new Pane();
+        pane.setMinSize(24, 24);
+        pane.setPrefSize(24, 24);
+        pane.setMaxSize(24, 24);
+        pane.setMouseTransparent(true);
+        pane.setScaleX(scale);
+        pane.setScaleY(scale);
+
+        switch (category) {
+            case "Keychain" -> pane.getChildren().addAll(
+                    path("M7 11a5 5 0 0 1 10 0v2"),
+                    path("M7 13v4M10 13v5M14 13v5M17 13v4"));
+            case "Crochet" -> pane.getChildren().addAll(
+                    path("M4 16a8 8 0 0 1 16 0z"),
+                    path("M2 16h20"));
+            default -> pane.getChildren().addAll(
+                    circle(12, 12, 2),
+                    circle(12, 6, 2.5),
+                    circle(17.5, 10, 2.5),
+                    circle(15.5, 16.5, 2.5),
+                    circle(8.5, 16.5, 2.5),
+                    circle(6.5, 10, 2.5));
+        }
+        return pane;
+    }
+
+    private static Shape outlined(Shape s) {
+        s.setFill(Color.TRANSPARENT);
+        s.setStroke(Color.web(ACCENT));
+        s.setStrokeWidth(1.7);
+        s.setStrokeLineCap(StrokeLineCap.ROUND);
+        s.setStrokeLineJoin(StrokeLineJoin.ROUND);
+        return s;
+    }
+
+    private static Shape path(String content) {
+        SVGPath sp = new SVGPath();
+        sp.setContent(content);
+        return outlined(sp);
+    }
+
+    private static Shape circle(double cx, double cy, double r) {
+        return outlined(new Circle(cx, cy, r));
     }
 
     // =====================================================================
@@ -509,7 +607,10 @@ public class InventoryController implements Initializable {
         dialog.setTitle("Edit product");
         dialog.setHeaderText("Edit " + p.getName());
         dialog.initOwner(ownerWindow());
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        // Deleting is also available from inside the edit dialog
+        ButtonType deleteType = new ButtonType("Delete product", ButtonBar.ButtonData.LEFT);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL, deleteType);
 
         TextField name = new TextField(p.getName());
         ComboBox<String> category = new ComboBox<>(
@@ -529,7 +630,14 @@ public class InventoryController implements Initializable {
         dialog.getDialogPane().setContent(g);
 
         Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isEmpty() || result.get() != ButtonType.OK) {
+        if (result.isEmpty()) {
+            return;
+        }
+        if (result.get() == deleteType) {
+            deleteProduct(p);
+            return;
+        }
+        if (result.get() != ButtonType.OK) {
             return;
         }
 
@@ -616,51 +724,14 @@ public class InventoryController implements Initializable {
     }
 
     // =====================================================================
-    // Navigation (sidebar)
-    // =====================================================================
-    @FXML private void goDashboard() { switchScreen(FXML_DASHBOARD, "Dashboard"); }
-    @FXML private void goOrders()    { switchScreen(FXML_ORDERS, "Orders"); }
-    @FXML private void goStandSale() { switchScreen(FXML_STAND_SALE, "Stand Sale"); }
-    @FXML private void goInventory() { switchScreen(FXML_INVENTORY_LIST, "Inventory"); }
-
-    // =====================================================================
-    // Account menu
-    // =====================================================================
-    @FXML
-    private void handleOpenChangePassword() {
-        openDialog(FXML_CHANGE_PASSWORD, "Change password", false);
-    }
-
-    @FXML
-    private void handleOpenAbout() {
-        openDialog(FXML_ABOUT, "About", true);
-    }
-
-    @FXML
-    private void handleLogout() {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Log out");
-        confirm.setHeaderText(null);
-        confirm.setContentText("Are you sure you want to log out?");
-        confirm.initOwner(ownerWindow());
-
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            // TODO: clear your session / current user here
-            currentStage().setMaximized(false);
-            switchScreen(FXML_LOGIN, "Login");
-        }
-    }
-
-    // =====================================================================
     // Helpers
     // =====================================================================
     private Window ownerWindow() {
-        return navInventory.getScene().getWindow();
+        return tfProductSearch.getScene().getWindow();
     }
 
     private Stage currentStage() {
-        return (Stage) navInventory.getScene().getWindow();
+        return (Stage) tfProductSearch.getScene().getWindow();
     }
 
     private void switchScreen(String fxmlName, String title) {
@@ -672,36 +743,8 @@ public class InventoryController implements Initializable {
             }
             Parent root = new FXMLLoader(resource).load();
             Stage stage = currentStage();
-            stage.getScene().setRoot(root);
+            ScreenTransition.show(stage.getScene(), root);
             stage.setTitle("Sassy's Creation - " + title);
-        } catch (Exception e) {
-            e.printStackTrace();
-            error("Could not open " + title, rootCause(e));
-        }
-    }
-
-    /** @param borderless true = no title bar, transparent background (for rounded dialogs like About) */
-    private void openDialog(String fxmlName, String title, boolean borderless) {
-        try {
-            URL resource = getClass().getResource(FXML_PATH + fxmlName);
-            if (resource == null) {
-                error("Screen not found", fxmlName + " could not be found in the resources folder.");
-                return;
-            }
-            Parent root = new FXMLLoader(resource).load();
-
-            Stage dialog = new Stage(borderless ? StageStyle.TRANSPARENT : StageStyle.DECORATED);
-            dialog.initOwner(currentStage());
-            dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.setTitle("Sassy's Creation - " + title);
-            dialog.setResizable(false);
-
-            Scene scene = new Scene(root);
-            if (borderless) {
-                scene.setFill(Color.TRANSPARENT);
-            }
-            dialog.setScene(scene);
-            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
             error("Could not open " + title, rootCause(e));
@@ -717,85 +760,6 @@ public class InventoryController implements Initializable {
 
     private static String peso(double value) {
         return "\u20B1" + String.format(Locale.US, "%,.2f", value);
-    }
-
-    private static String bgColor(String category) {
-        return switch (category) {
-            case "Keychain" -> "#E3DDF7";
-            case "Crochet" -> "#FFE3B3";
-            default -> "#F8BBD0";
-        };
-    }
-
-    // =====================================================================
-    // Category icons (drawn in code so new products look the same as old ones)
-    // =====================================================================
-    private static Pane icon(String category, double s) {
-        double k = s / 26.0;
-        boolean big = s > 30;
-
-        Pane pane = new Pane();
-        pane.setMinSize(s, s);
-        pane.setPrefSize(s, s);
-        pane.setMaxSize(s, s);
-        pane.setMouseTransparent(true);
-
-        switch (category) {
-            case "Keychain" -> {
-                Color c = Color.web("#5B4BB7");
-                double w = big ? 4.8 : 2.5;
-                Circle ring = new Circle(7.3 * k, 13 * k, 4.2 * k);
-                ring.setFill(Color.TRANSPARENT);
-                ring.setStroke(c);
-                ring.setStrokeWidth(w);
-                pane.getChildren().add(ring);
-                double[][] lines = {
-                        {11.4, 13, 23.4, 13}, {18.7, 13, 18.7, 17.7}, {22.1, 13, 22.1, 17.7}};
-                for (double[] l : lines) {
-                    Line ln = new Line(l[0] * k, l[1] * k, l[2] * k, l[3] * k);
-                    ln.setStroke(c);
-                    ln.setStrokeWidth(w);
-                    ln.setStrokeLineCap(StrokeLineCap.ROUND);
-                    pane.getChildren().add(ln);
-                }
-            }
-            case "Crochet" -> {
-                Color c = Color.web("#8A5A00");
-                double w = big ? 3.8 : 2.0;
-                Circle ball = new Circle(13 * k, 13 * k, 8.8 * k);
-                ball.setFill(Color.TRANSPARENT);
-                ball.setStroke(c);
-                ball.setStrokeWidth(w);
-                pane.getChildren().add(ball);
-                for (int i = 0; i < 3; i++) {
-                    Arc arc = new Arc(13 * k, 13 * k, 8.8 * k, 4.2 * k, 0, 180);
-                    arc.setType(ArcType.OPEN);
-                    arc.setFill(Color.TRANSPARENT);
-                    arc.setStroke(c);
-                    arc.setStrokeWidth(w);
-                    arc.setRotate(i * 60);
-                    pane.getChildren().add(arc);
-                }
-                Line needle = new Line(20.3 * k, 19.8 * k, 25.0 * k, 24.2 * k);
-                needle.setStroke(c);
-                needle.setStrokeWidth(w);
-                needle.setStrokeLineCap(StrokeLineCap.ROUND);
-                pane.getChildren().add(needle);
-            }
-            default -> {
-                Color petal = Color.web("#C22A62");
-                for (int i = 0; i < 6; i++) {
-                    double a = Math.toRadians(i * 60);
-                    Ellipse e = new Ellipse(s / 2 + 6.1 * k * Math.cos(a), s / 2 + 6.1 * k * Math.sin(a),
-                            5.7 * k, 3.8 * k);
-                    e.setRotate(i * 60);
-                    e.setFill(petal);
-                    pane.getChildren().add(e);
-                }
-                pane.getChildren().add(new Circle(s / 2, s / 2, 2.9 * k, Color.web("#FFE08A")));
-            }
-        }
-        return pane;
     }
 
     // =====================================================================
