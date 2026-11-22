@@ -3,6 +3,7 @@
 CREATE DATABASE IF NOT EXISTS sassys_creation_db;
 USE sassys_creation_db;
 
+DROP TABLE IF EXISTS stand_sales;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS products;
 
@@ -51,4 +52,16 @@ CREATE TABLE orders (
                             FOREIGN KEY (product_id)
                                 REFERENCES products(product_id)
                                 ON DELETE RESTRICT
+);
+
+CREATE TABLE stand_sales (
+                             sale_id    INT AUTO_INCREMENT PRIMARY KEY,
+                             product_id INT NOT NULL,
+                             quantity   INT NOT NULL,
+                             unit_price DECIMAL(10,2) NOT NULL,
+                             sale_date  DATE NOT NULL,
+                             CONSTRAINT chk_sale_quantity CHECK (quantity > 0),
+                             CONSTRAINT chk_sale_price    CHECK (unit_price >= 0),
+                             CONSTRAINT fk_sales_product  FOREIGN KEY (product_id)
+                                 REFERENCES products(product_id) ON DELETE RESTRICT
 );
