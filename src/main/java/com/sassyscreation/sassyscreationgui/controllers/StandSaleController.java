@@ -2,6 +2,7 @@ package com.sassyscreation.sassyscreationgui.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -48,6 +49,10 @@ public class StandSaleController implements Initializable {
     // ---- top sellers ranking ----
     @FXML private VBox vbTopSellers;
 
+    // ---- sales history filters (dropdowns above the table) ----
+    @FXML private ComboBox<String> cbQtyFilter;
+    @FXML private ComboBox<String> cbPriceFilter;
+
     // ---- sales history table ----
     @FXML private TableView<Map<String, Object>> tvSales;
     @FXML private TableColumn<Map<String, Object>, Object> colSaleDate;
@@ -73,8 +78,16 @@ public class StandSaleController implements Initializable {
     /** How many products the Top sellers list shows. */
     private static final int TOP_COUNT = 7;
 
+    /** Dropdown choices. The position in the list is what the filter logic below checks. */
+    private static final List<String> QTY_FILTERS = List.of(
+            "All quantities", "1", "2 \u2013 5", "6 \u2013 10", "11 or more");
+    private static final List<String> PRICE_FILTERS = List.of(
+            "All prices", "Under \u20B130", "\u20B130 \u2013 \u20B149", "\u20B150 \u2013 \u20B199", "\u20B1100 or more");
+
     private final Map<String, Product> products = new LinkedHashMap<>();
     private final ObservableList<Map<String, Object>> allSales = FXCollections.observableArrayList();
+    /** What the table actually shows (allSales narrowed down by the two dropdowns). */
+    private FilteredList<Map<String, Object>> filteredSales;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -84,6 +97,7 @@ public class StandSaleController implements Initializable {
         loadSales();
         setUpForm();
         setUpTable();
+        setUpFilters();
         updateForm();
         updateSummary();
     }
@@ -269,14 +283,72 @@ public class StandSaleController implements Initializable {
             }
         });
 
-        // Replaces the sample rows hard-coded in the FXML
-        SortedList<Map<String, Object>> sorted = new SortedList<>(allSales);
+        // Replaces the sample rows hard-coded in the FXML.
+        // allSales -> filteredSales (the two dropdowns) -> sorted (column headers) -> table
+        filteredSales = new FilteredList<>(allSales, s -> true);
+        SortedList<Map<String, Object>> sorted = new SortedList<>(filteredSales);
         sorted.comparatorProperty().bind(tvSales.comparatorProperty());
         tvSales.setItems(sorted);
 
         // Newest sales first, like the design
         colSaleDate.setSortType(TableColumn.SortType.DESCENDING);
         tvSales.getSortOrder().setAll(colSaleDate);
+    }
+
+    // =====================================================================
+    //  Filters (Qty + Unit price dropdowns)
+    // =====================================================================
+
+    private void setUpFilters() {
+        if (cbQtyFilter == null || cbPriceFilter == null) {
+            return;   // FXML without the filter row
+        }
+        cbQtyFilter.setItems(FXCollections.observableArrayList(QTY_FILTERS));
+        cbQtyFilter.getSelectionModel().selectFirst();
+        cbPriceFilter.setItems(FXCollections.observableArrayList(PRICE_FILTERS));
+        cbPriceFilter.getSelectionModel().selectFirst();
+
+        cbQtyFilter.valueProperty().addListener((obs, o, n) -> applyFilters());
+        cbPriceFilter.valueProperty().addListener((obs, o, n) -> applyFilters());
+    }
+
+    /**
+     * Re-checks every row against both dropdowns. A brand new predicate is set each time so the
+     * list re-filters even when a row was edited in place (the row maps are not observable).
+     */
+    private void applyFilters() {
+        if (filteredSales == null || cbQtyFilter == null || cbPriceFilter == null) {
+            return;
+        }
+        int qtyChoice = Math.max(0, cbQtyFilter.getSelectionModel().getSelectedIndex());
+        int priceChoice = Math.max(0, cbPriceFilter.getSelectionModel().getSelectedIndex());
+
+        filteredSales.setPredicate(s ->
+                qtyMatches(((Number) s.get("Qty")).intValue(), qtyChoice)
+                        && priceMatches(((Number) s.get("Price")).doubleValue(), priceChoice));
+
+        boolean filtering = qtyChoice != 0 || priceChoice != 0;
+        tvSales.setPlaceholder(new Label(filtering ? "No sales match these filters" : "No sales recorded yet"));
+    }
+
+    private boolean qtyMatches(int qty, int choice) {
+        return switch (choice) {
+            case 1 -> qty == 1;
+            case 2 -> qty >= 2 && qty <= 5;
+            case 3 -> qty >= 6 && qty <= 10;
+            case 4 -> qty >= 11;
+            default -> true;   // 0 = All quantities
+        };
+    }
+
+    private boolean priceMatches(double price, int choice) {
+        return switch (choice) {
+            case 1 -> price < 30;
+            case 2 -> price >= 30 && price < 50;
+            case 3 -> price >= 50 && price < 100;
+            case 4 -> price >= 100;
+            default -> true;   // 0 = All prices
+        };
     }
 
     private Button iconButton(String icon, String tooltip, String... styleClasses) {
@@ -333,6 +405,7 @@ public class StandSaleController implements Initializable {
         row.put("Total", newQty * unitPrice);
         row.put("Date", newDate.toString());
 
+        applyFilters();   // the edited row may now match (or no longer match) the dropdowns
         tvSales.refresh();
         tvSales.sort();
         updateForm();
@@ -364,6 +437,7 @@ public class StandSaleController implements Initializable {
         }
     }
 
+    /** Totals and Top sellers always use ALL sales, whatever the dropdowns are set to. */
     private void updateSummary() {
         double revenue = allSales.stream()
                 .mapToDouble(s -> ((Number) s.get("Total")).doubleValue())

@@ -20,6 +20,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -53,6 +55,10 @@ public class SidebarController implements Initializable {
     private static final String FXML_LOGIN           = "LOGIN.fxml";
     private static final String FXML_ABOUT           = "ABOUT.fxml";
     private static final String FXML_CHANGE_PASSWORD = "CHANGEPASSWORD.fxml";
+
+    // ---- background blur while a dialog is open ----
+    private static final double BLUR_RADIUS = 14;     // higher = stronger blur
+    private static final double BLUR_FADE_MS = 220;   // fade-in time
 
     // ---- sliding pink bar next to the active menu item ----
     private static final double BAR_WIDTH = 4;
@@ -266,6 +272,8 @@ public class SidebarController implements Initializable {
 
     /** @param borderless true = no title bar, transparent background (for rounded dialogs like About) */
     private void openDialog(String fxmlName, String title, boolean borderless) {
+        Node ownerRoot = currentStage().getScene().getRoot();
+        Effect previousEffect = ownerRoot.getEffect();   // remember any existing effect
         try {
             URL resource = getClass().getResource(FXML_PATH + fxmlName);
             if (resource == null) {
@@ -285,10 +293,19 @@ public class SidebarController implements Initializable {
                 scene.setFill(Color.TRANSPARENT);
             }
             dialog.setScene(scene);
+
+            // blur the page behind the dialog (fades in smoothly)
+            GaussianBlur blur = new GaussianBlur(0);
+            ownerRoot.setEffect(blur);
+            new Timeline(new KeyFrame(Duration.millis(BLUR_FADE_MS),
+                    new KeyValue(blur.radiusProperty(), BLUR_RADIUS, Interpolator.EASE_OUT))).play();
+
             dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
             error("Could not open " + title, rootCause(e));
+        } finally {
+            ownerRoot.setEffect(previousEffect);          // remove the blur when the dialog closes
         }
     }
 

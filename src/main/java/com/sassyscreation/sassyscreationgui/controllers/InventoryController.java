@@ -68,6 +68,9 @@ public class InventoryController implements Initializable {
     /** Stock at or below this shows an orange "N left" badge. */
     private static final int LOW_STOCK = 5;
 
+    /** Every stock badge (green / orange / red) uses this same width. */
+    private static final double BADGE_WIDTH = 116;
+
     private static final String ACCENT = "#C22A62";
 
     // ---------------------------------------------------------------
@@ -265,7 +268,7 @@ public class InventoryController implements Initializable {
         textColumn(colProdName, Product::getName);
         textColumn(colProdCat, Product::getCategory);
         textColumn(colProdPrice, p -> peso(p.getPrice()));
-        graphicColumn(colProdStock, p -> stockBadge(p, "stock-plain"));
+        graphicColumn(colProdStock, this::stockBadge);
         graphicColumn(colProdActions, this::listActions);
 
         // Cells hold the whole Product, so tell the columns how to sort
@@ -453,7 +456,7 @@ public class InventoryController implements Initializable {
         price.getStyleClass().add("prod-price");
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        HBox priceRow = new HBox(6, price, spacer, stockBadge(p, "badge-done"));
+        HBox priceRow = new HBox(6, price, spacer, stockBadge(p));
         priceRow.setAlignment(Pos.CENTER_LEFT);
         VBox.setMargin(priceRow, new Insets(2, 0, 0, 0));
 
@@ -482,8 +485,8 @@ public class InventoryController implements Initializable {
     // Shared UI pieces
     // =====================================================================
 
-    /** "10 in stock" / "4 left" / "Out of stock" badge. */
-    private Label stockBadge(Product p, String normalClass) {
+    /** "10 in stock" (green) / "4 left" (orange) / "Out of stock" (red) badge, all the same size. */
+    private Label stockBadge(Product p) {
         Label l;
         if (p.getStock() <= 0) {
             l = new Label("Out of stock");
@@ -493,8 +496,13 @@ public class InventoryController implements Initializable {
             l.getStyleClass().add("badge-pending");
         } else {
             l = new Label(p.getStock() + " in stock");
-            l.getStyleClass().add(normalClass);
+            l.getStyleClass().add("badge-pending");   // same shape and padding as the other badges
+            l.setStyle("-fx-background-color: #DDF3E4; -fx-text-fill: #1F7A3E;");   // turned green
         }
+        l.setAlignment(Pos.CENTER);
+        l.setMinWidth(BADGE_WIDTH);
+        l.setPrefWidth(BADGE_WIDTH);
+        l.setMaxWidth(BADGE_WIDTH);
         return l;
     }
 

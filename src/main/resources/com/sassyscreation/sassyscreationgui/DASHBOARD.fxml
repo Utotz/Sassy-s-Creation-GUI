@@ -20,6 +20,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.control.cell.MapValueFactory?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -181,99 +182,130 @@
                                        <VBox minWidth="0.0" minHeight="150.0" prefHeight="150.0" prefWidth="100.0" spacing="4.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" HBox.hgrow="ALWAYS">
                                           <children>
                                              <HBox alignment="CENTER_LEFT"><children>
-                                                <Label styleClass="stat-label" text="Stand Revenue" />
+                                                <Label styleClass="stat-label" text="Stand Revenue (Monthly)" />
                                                 <Region HBox.hgrow="ALWAYS" />
                                                 <Label styleClass="icon-box, icon-box-sm, icon-gold"><graphic><Region styleClass="ico, ico-trend" /></graphic></Label>
                                              </children></HBox>
-                                             <Label fx:id="lblRevenue" styleClass="stat-value" text="₱1,210.00" />
-                                             <Label styleClass="stat-note" text="9 stand sales recorded" wrapText="true" />
+                                             <Label fx:id="lblRevenue" styleClass="stat-value" text="₱680.00" />
+                                             <Label fx:id="lblRevenueNote" styleClass="stat-note" text="3 stand sales in May 2026" wrapText="true" />
                                           </children>
                                        </VBox>
                                        <VBox minWidth="0.0" minHeight="150.0" prefHeight="150.0" prefWidth="100.0" spacing="4.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" HBox.hgrow="ALWAYS">
                                           <children>
                                              <HBox alignment="CENTER_LEFT"><children>
-                                                <Label styleClass="stat-label" text="Pending Order Value" />
+                                                <Label styleClass="stat-label" text="Orders (Monthly)" />
                                                 <Region HBox.hgrow="ALWAYS" />
-                                                <Label styleClass="icon-box, icon-box-sm, icon-red"><graphic><Region styleClass="ico, ico-warning" /></graphic></Label>
+                                                <Label styleClass="icon-box, icon-box-sm, icon-red"><graphic><Region styleClass="ico, ico-cart" /></graphic></Label>
                                              </children></HBox>
-                                             <Label fx:id="lblPending" styleClass="stat-value" text="₱1,560.00" />
-                                             <Label styleClass="stat-note" text="4 orders awaiting pickup or meetup" wrapText="true" />
+                                             <Label fx:id="lblOrdersMonth" styleClass="stat-value" text="₱1,350.00" />
+                                             <Label fx:id="lblOrdersNote" styleClass="stat-note" text="2 orders in May 2026" wrapText="true" />
                                           </children>
                                        </VBox>
                                     </children></HBox>
 
-                                    <!-- row 1: revenue chart + reminder -->
+                                    <!-- row 1: revenue chart (weekly) + reminder -->
                                     <GridPane hgap="18.0">
                                        <columnConstraints>
-                                          <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="68.0" />
-                                          <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="32.0" />
+                                          <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="60.0" />
+                                          <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="40.0" />
                                        </columnConstraints>
                                        <children>
-                                          <VBox minWidth="0.0" spacing="6.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" GridPane.columnIndex="0">
+                                          <VBox minWidth="0.0" spacing="8.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" GridPane.columnIndex="0">
                                              <children>
-                                                <Label styleClass="card-title" text="Stand Revenue by Day" />
-                                                <StackPane VBox.vgrow="ALWAYS">
+                                                <!-- title + legend -->
+                                                <HBox alignment="CENTER_LEFT" spacing="12.0">
                                                    <children>
-                                                      <BarChart fx:id="revenueChart" animated="false" barGap="0.0" categoryGap="26.0" legendVisible="false" styleClass="revenue-chart">
-                                                         <xAxis><CategoryAxis /></xAxis>
-                                                         <yAxis><NumberAxis minorTickVisible="false" tickLabelsVisible="false" tickMarkVisible="false" /></yAxis>
-                                                      </BarChart>
-                                                      <!-- pill bars: the controller redraws these from real data -->
-                                                      <HBox fx:id="barSample" alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="34.0" style="-fx-background-color: white; -fx-padding: 12 12 6 12;">
+                                                      <Label minWidth="-Infinity" styleClass="card-title" text="Stand Revenue and Order Revenue (Week)" />
+                                                      <Region HBox.hgrow="ALWAYS" />
+                                                      <HBox alignment="CENTER" spacing="16.0">
                                                          <children>
-                                                            <VBox alignment="BOTTOM_CENTER" spacing="5.0"><children>
-                                                               <Rectangle arcHeight="40.0" arcWidth="40.0" height="86.0" styleClass="sample-bar, sample-hatch" width="40.0" />
-                                                               <Label alignment="CENTER" style="-fx-font-size: 11px; -fx-text-fill: #6F6570;" text="Sat&#10;04-25" textAlignment="CENTER" />
-                                                            </children></VBox>
-                                                            <VBox alignment="BOTTOM_CENTER" spacing="5.0"><children>
-                                                               <Rectangle arcHeight="40.0" arcWidth="40.0" height="131.0" styleClass="sample-bar, sample-mid" width="40.0" />
-                                                               <Label alignment="CENTER" style="-fx-font-size: 11px; -fx-text-fill: #6F6570;" text="Sun&#10;04-26" textAlignment="CENTER" />
-                                                            </children></VBox>
-                                                            <VBox alignment="BOTTOM_CENTER" spacing="5.0"><children>
-                                                               <Rectangle arcHeight="40.0" arcWidth="40.0" height="73.0" styleClass="sample-bar, sample-light" width="40.0" />
-                                                               <Label alignment="CENTER" style="-fx-font-size: 11px; -fx-text-fill: #6F6570;" text="Mon&#10;04-27" textAlignment="CENTER" />
-                                                            </children></VBox>
-                                                            <VBox alignment="BOTTOM_CENTER" spacing="5.0"><children>
-                                                               <Rectangle arcHeight="40.0" arcWidth="40.0" height="38.0" styleClass="sample-bar, sample-hatch" width="40.0" />
-                                                               <Label alignment="CENTER" style="-fx-font-size: 11px; -fx-text-fill: #6F6570;" text="Wed&#10;04-29" textAlignment="CENTER" />
-                                                            </children></VBox>
-                                                            <VBox alignment="BOTTOM_CENTER" spacing="5.0"><children>
-                                                               <Rectangle arcHeight="40.0" arcWidth="40.0" height="38.0" styleClass="sample-bar, sample-hatch" width="40.0" />
-                                                               <Label alignment="CENTER" style="-fx-font-size: 11px; -fx-text-fill: #6F6570;" text="Fri&#10;05-01" textAlignment="CENTER" />
-                                                            </children></VBox>
-                                                            <VBox alignment="BOTTOM_CENTER" spacing="5.0"><children>
-                                                               <Rectangle arcHeight="40.0" arcWidth="40.0" height="220.0" styleClass="sample-bar, sample-dark" width="40.0" />
-                                                               <Label alignment="CENTER" style="-fx-font-size: 11px; -fx-text-fill: #6F6570;" text="Sat&#10;05-02" textAlignment="CENTER" />
-                                                            </children></VBox>
-                                                            <VBox alignment="BOTTOM_CENTER" spacing="5.0"><children>
-                                                               <Rectangle arcHeight="40.0" arcWidth="40.0" height="89.0" styleClass="sample-bar, sample-hatch" width="40.0" />
-                                                               <Label alignment="CENTER" style="-fx-font-size: 11px; -fx-text-fill: #6F6570;" text="Sun&#10;05-03" textAlignment="CENTER" />
-                                                            </children></VBox>
-
+                                                            <Label style="-fx-font-size: 14px;" text="Stand revenue" textFill="#5B5159"><graphic><Circle fill="#C22A62" radius="5.0" /></graphic></Label>
+                                                            <Label style="-fx-font-size: 14px;" text="Order revenue" textFill="#5B5159"><graphic><Circle fill="#E8A0BC" radius="5.0" /></graphic></Label>
                                                          </children>
                                                       </HBox>
                                                    </children>
-                                                </StackPane>
+                                                </HBox>
+
+                                                <!-- arrow | chart | arrow -->
+                                                <HBox alignment="CENTER" spacing="8.0" VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <Button fx:id="btnPrevWeek" focusTraversable="false" maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" mnemonicParsing="false" onAction="#handlePrevWeek" prefHeight="44.0" prefWidth="44.0" style="-fx-background-color: #FCE4EC; -fx-background-radius: 22; -fx-padding: 0; -fx-cursor: hand;">
+                                                         <graphic><Region maxHeight="18.0" maxWidth="12.0" minHeight="18.0" minWidth="12.0" prefHeight="18.0" prefWidth="12.0" style="-fx-background-color: #C22A62; -fx-shape: 'M 10 0 L 12 2 L 5 9 L 12 16 L 10 18 L 1 9 Z'; -fx-scale-shape: true;" /></graphic>
+                                                         <tooltip><Tooltip text="Previous week" /></tooltip>
+                                                      </Button>
+                                                      <StackPane HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <BarChart fx:id="revenueChart" animated="false" barGap="0.0" categoryGap="26.0" legendVisible="false" styleClass="revenue-chart">
+                                                               <xAxis><CategoryAxis /></xAxis>
+                                                               <yAxis><NumberAxis minorTickVisible="false" tickLabelsVisible="false" tickMarkVisible="false" /></yAxis>
+                                                            </BarChart>
+                                                            <!-- pill bars: the controller draws these (7 days, 2 bars per day) -->
+                                                            <HBox fx:id="barSample" alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="40.0" style="-fx-background-color: white; -fx-padding: 12 12 6 12;" />
+                                                         </children>
+                                                      </StackPane>
+                                                      <Button fx:id="btnNextWeek" focusTraversable="false" maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" mnemonicParsing="false" onAction="#handleNextWeek" prefHeight="44.0" prefWidth="44.0" style="-fx-background-color: #FCE4EC; -fx-background-radius: 22; -fx-padding: 0; -fx-cursor: hand;">
+                                                         <graphic><Region maxHeight="18.0" maxWidth="12.0" minHeight="18.0" minWidth="12.0" prefHeight="18.0" prefWidth="12.0" style="-fx-background-color: #C22A62; -fx-shape: 'M 2 0 L 0 2 L 7 9 L 0 16 L 2 18 L 11 9 Z'; -fx-scale-shape: true;" /></graphic>
+                                                         <tooltip><Tooltip text="Next week" /></tooltip>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
+
+                                                <!-- which week + the dates it covers -->
+                                                <VBox alignment="CENTER" spacing="2.0">
+                                                   <children>
+                                                      <Label fx:id="lblWeekTitle" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="Week 18 (this week)" />
+                                                      <Label fx:id="lblWeekRange" styleClass="stat-note" text="Apr 27 – May 3, 2026" />
+                                                   </children>
+                                                </VBox>
                                              </children>
                                           </VBox>
+
+                                          <!-- Reminder card: "View all" at the top right, summary + list of pending orders below -->
                                           <VBox minWidth="0.0" spacing="14.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" GridPane.columnIndex="1">
                                              <children>
                                                 <HBox alignment="CENTER_LEFT" spacing="12.0">
                                                    <children>
                                                       <Label styleClass="bell-circle"><graphic><Region styleClass="ico, ico-bell" /></graphic></Label>
                                                       <Label styleClass="card-title" text="Reminder" />
+                                                      <!-- red circle with the number of pending orders -->
+                                                      <Label fx:id="lblReminderCount" alignment="CENTER" maxHeight="26.0" minHeight="26.0" minWidth="26.0" prefHeight="26.0" style="-fx-background-color: #E5383B; -fx-background-radius: 13; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" text="4" />
+                                                      <Region HBox.hgrow="ALWAYS" />
+                                                      <Hyperlink fx:id="linkReminderAll" focusTraversable="false" mnemonicParsing="false" onAction="#goOrders" styleClass="view-all-pill" text="View all" />
                                                    </children>
                                                 </HBox>
-                                                <VBox alignment="CENTER_LEFT" spacing="18.0" styleClass="reminder-panel" VBox.vgrow="ALWAYS">
+                                                <VBox alignment="TOP_LEFT" spacing="12.0" styleClass="reminder-panel" VBox.vgrow="ALWAYS">
                                                    <children>
-                                                      <Label fx:id="lblReminderTitle" styleClass="reminder-big" text="4 orders awaiting pickup" wrapText="true" />
-                                                      <Label styleClass="reminder-note" text="Don’t forget to confirm pickup or meetup times with your customers." wrapText="true" />
+                                                      <!-- two side-by-side tiles: Pickup | Delivery, each with a big number -->
+                                                      <HBox spacing="14.0" VBox.vgrow="ALWAYS">
+                                                         <children>
+                                                            <VBox alignment="TOP_CENTER" minWidth="0.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                                               <children>
+                                                                  <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #3B2F38;" text="Pickup" />
+                                                                  <StackPane maxHeight="1.7976931348623157E308" style="-fx-background-color: white; -fx-background-radius: 18;" VBox.vgrow="ALWAYS">
+                                                                     <children>
+                                                                        <Label fx:id="lblPickupCount" style="-fx-font-size: 80px; -fx-font-weight: bold; -fx-text-fill: #C22A62;" text="3" />
+                                                                     </children>
+                                                                  </StackPane>
+                                                               </children>
+                                                            </VBox>
+                                                            <VBox alignment="TOP_CENTER" minWidth="0.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                                               <children>
+                                                                  <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #3B2F38;" text="Delivery" />
+                                                                  <StackPane maxHeight="1.7976931348623157E308" style="-fx-background-color: white; -fx-background-radius: 18;" VBox.vgrow="ALWAYS">
+                                                                     <children>
+                                                                        <Label fx:id="lblDeliveryCount" style="-fx-font-size: 80px; -fx-font-weight: bold; -fx-text-fill: #2B5C9E;" text="1" />
+                                                                     </children>
+                                                                  </StackPane>
+                                                               </children>
+                                                            </VBox>
+                                                         </children>
+                                                      </HBox>
                                                    </children>
                                                 </VBox>
                                              </children>
                                           </VBox>
                                        </children>
-                                       <rowConstraints><RowConstraints minHeight="360.0" prefHeight="360.0" vgrow="NEVER" /></rowConstraints>
+                                       <rowConstraints><RowConstraints minHeight="500.0" prefHeight="500.0" vgrow="NEVER" /></rowConstraints>
                                     </GridPane>
 
                                     <!-- row 2: low stock + orders by status + quick actions -->
@@ -318,7 +350,13 @@
 
                                           <VBox minWidth="0.0" spacing="6.0" styleClass="card" style="-fx-effect: dropshadow(gaussian, rgba(150, 40, 90, 0.24), 22, 0.12, 0, 9);" GridPane.columnIndex="1">
                                              <children>
-                                                <Label styleClass="card-title" text="Orders by Status" />
+                                                <HBox alignment="CENTER_LEFT">
+                                                   <children>
+                                                      <Label minWidth="-Infinity" styleClass="card-title" text="Orders by Status" />
+                                                      <Region HBox.hgrow="ALWAYS" />
+                                                      <Hyperlink fx:id="linkOrdersAll" focusTraversable="false" mnemonicParsing="false" onAction="#goOrders" styleClass="view-all-pill" text="View all" />
+                                                   </children>
+                                                </HBox>
                                                 <Label fx:id="lblOrdersYear" managed="false" maxWidth="1.7976931348623157E308" styleClass="stat-note" text="Year 2026" visible="false" />
                                                 <StackPane VBox.vgrow="ALWAYS">
                                                    <children>

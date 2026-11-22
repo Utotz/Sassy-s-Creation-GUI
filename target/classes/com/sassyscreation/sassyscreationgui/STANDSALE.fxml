@@ -108,40 +108,51 @@
                            </children>
                         </HBox>
                         <HBox alignment="TOP_LEFT" spacing="18.0" VBox.vgrow="ALWAYS"><children>
-                           <VBox maxHeight="1.7976931348623157E308" maxWidth="330.0" minWidth="330.0" prefWidth="330.0" spacing="18.0">
+
+                           <!-- ===== LEFT COLUMN (wider): totals on top, then Record a sale, then Top sellers ===== -->
+                           <VBox maxHeight="1.7976931348623157E308" maxWidth="440.0" minWidth="440.0" prefWidth="440.0" spacing="18.0">
                            <children>
-                           <VBox maxHeight="-Infinity" maxWidth="330.0" minWidth="330.0" prefWidth="330.0" spacing="12.0" styleClass="card">
-                              <padding><Insets bottom="22.0" left="22.0" right="22.0" top="20.0" /></padding>
+                           <!-- Total Stand Sales + Total Revenue -->
+                           <HBox spacing="10.0"><children>
+                              <HBox alignment="CENTER_LEFT" spacing="6.0" styleClass="stat-chip"><children><Label text="Total Stand Sales:" /><Label fx:id="lblSaleCount" style="-fx-font-weight: bold;" text="9" /></children></HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="6.0" styleClass="stat-chip"><children><Label text="Total Revenue:" /><Label fx:id="lblSaleRevenue" style="-fx-font-weight: bold;" text="₱1,210.00" /></children></HBox>
+                           </children></HBox>
+                           <VBox maxHeight="-Infinity" maxWidth="440.0" minWidth="440.0" prefWidth="440.0" spacing="14.0" styleClass="card">
+                              <padding><Insets bottom="26.0" left="26.0" right="26.0" top="24.0" /></padding>
                               <children>
                                  <Label styleClass="card-title" text="Record a sale" />
-                                 <VBox spacing="6.0"><children><Label styleClass="form-label" text="Product" /><ComboBox fx:id="cbSaleProduct" maxWidth="1.7976931348623157E308" prefHeight="40.0" promptText="Select product" /></children></VBox>
-                                 <HBox spacing="12.0"><children>
-                                    <VBox spacing="6.0" HBox.hgrow="ALWAYS"><children><Label styleClass="form-label" text="Qty Sold" /><Spinner styleClass="split-arrows-horizontal" fx:id="spQty" editable="true" initialValue="3" max="999" maxWidth="1.7976931348623157E308" min="1" prefHeight="40.0" /></children></VBox>
-                                    <VBox spacing="6.0" HBox.hgrow="ALWAYS"><children><Label styleClass="form-label" text="Unit Price" /><TextField fx:id="tfUnitPrice" editable="false" prefHeight="40.0" promptText="Auto" /></children></VBox>
+                                 <VBox spacing="6.0"><children><Label styleClass="form-label" text="Product" /><ComboBox fx:id="cbSaleProduct" maxWidth="1.7976931348623157E308" prefHeight="46.0" promptText="Select product" /></children></VBox>
+                                 <HBox spacing="14.0"><children>
+                                    <VBox spacing="6.0" HBox.hgrow="ALWAYS"><children><Label styleClass="form-label" text="Qty Sold" /><Spinner styleClass="split-arrows-horizontal" fx:id="spQty" editable="true" initialValue="3" max="999" maxWidth="1.7976931348623157E308" min="1" prefHeight="46.0" /></children></VBox>
+                                    <VBox spacing="6.0" HBox.hgrow="ALWAYS"><children><Label styleClass="form-label" text="Unit Price" /><TextField fx:id="tfUnitPrice" editable="false" prefHeight="46.0" promptText="Auto" /></children></VBox>
                                  </children></HBox>
                                  <HBox alignment="CENTER_LEFT"><children>
                                     <Label styleClass="page-sub" text="Total" /><Region HBox.hgrow="ALWAYS" />
-                                    <Label fx:id="lblSaleTotal" style="-fx-font-size: 22px; -fx-text-fill: #C22A62; -fx-font-weight: bold;" styleClass="stat-value" text="₱90.00" />
+                                    <Label fx:id="lblSaleTotal" style="-fx-font-size: 26px; -fx-text-fill: #C22A62; -fx-font-weight: bold;" styleClass="stat-value" text="₱90.00" />
                                  </children></HBox>
                                  <Label fx:id="lblStockInfo" styleClass="stat-note" text="Current stock: 12 (deducted automatically)" wrapText="true" />
-                                 <Button maxWidth="1.7976931348623157E308" fx:id="btnRecordSale" onAction="#handleRecordSale" styleClass="btn-primary" text="Record Sale" ><graphic><Region styleClass="ico, ico-check" /></graphic></Button>
+                                 <Button maxWidth="1.7976931348623157E308" minHeight="50.0" prefHeight="50.0" fx:id="btnRecordSale" onAction="#handleRecordSale" styleClass="btn-primary" text="Record Sale" ><graphic><Region styleClass="ico, ico-check" /></graphic></Button>
                               </children>
                            </VBox>
                            <!-- TOP SELLERS: ranked by units sold (filled in by StandSaleController) -->
-                           <VBox maxHeight="-Infinity" spacing="12.0" styleClass="card">
-                              <padding><Insets bottom="20.0" left="22.0" right="22.0" top="20.0" /></padding>
+                           <VBox maxHeight="-Infinity" spacing="14.0" styleClass="card">
+                              <padding><Insets bottom="24.0" left="26.0" right="26.0" top="24.0" /></padding>
                               <children>
                                  <Label styleClass="card-title" text="Top sellers" />
                                  <Label styleClass="page-sub" text="Most products sold, by units" />
-                                 <VBox fx:id="vbTopSellers" spacing="12.0" />
+                                 <VBox fx:id="vbTopSellers" spacing="14.0" />
                               </children>
                            </VBox>
                            </children>
                            </VBox>
-                           <VBox spacing="12.0" HBox.hgrow="ALWAYS"><children>
-                              <HBox spacing="10.0"><children>
-                                 <HBox alignment="CENTER_LEFT" spacing="6.0" styleClass="stat-chip"><children><Label text="Total Stand Sales:" /><Label fx:id="lblSaleCount" style="-fx-font-weight: bold;" text="9" /></children></HBox>
-                                 <HBox alignment="CENTER_LEFT" spacing="6.0" styleClass="stat-chip"><children><Label text="Total Revenue:" /><Label fx:id="lblSaleRevenue" style="-fx-font-weight: bold;" text="₱1,210.00" /></children></HBox>
+
+                           <!-- ===== RIGHT COLUMN: filters on top, then the sales history table ===== -->
+                           <VBox spacing="18.0" HBox.hgrow="ALWAYS"><children>
+                              <!-- Filter by Qty and by Unit price (dropdowns) -->
+                              <HBox alignment="CENTER_LEFT" spacing="12.0" minHeight="44.0" prefHeight="44.0"><children>
+                                 <Label styleClass="form-label" text="Filter by" />
+                                 <ComboBox fx:id="cbQtyFilter" minHeight="44.0" prefHeight="44.0" prefWidth="200.0" promptText="Qty" />
+                                 <ComboBox fx:id="cbPriceFilter" minHeight="44.0" prefHeight="44.0" prefWidth="200.0" promptText="Unit price" />
                               </children></HBox>
                               <TableView fx:id="tvSales" fixedCellSize="44.0" maxHeight="452.0" minHeight="200.0" VBox.vgrow="ALWAYS">
                                  <items><FXCollections fx:factory="observableArrayList">
