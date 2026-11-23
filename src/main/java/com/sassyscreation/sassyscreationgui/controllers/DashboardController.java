@@ -22,10 +22,16 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.net.URL;
-import java.util.Comparator;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -47,13 +53,24 @@ public class DashboardController implements Initializable {
     // ---- stat cards ----
     @FXML private Label lblOrders;
     @FXML private Label lblProducts;
-    @FXML private Label lblRevenue;
-    @FXML private Label lblPending;
+    @FXML private Label lblRevenue;        // Stand Revenue (Monthly)
+    @FXML private Label lblRevenueNote;
+    @FXML private Label lblOrdersMonth;    // Orders (Monthly)
+    @FXML private Label lblOrdersNote;
 
-    // ---- revenue bars + reminder ----
+    // ---- weekly revenue chart + week navigation ----
     @FXML private BarChart<String, Number> revenueChart;   // plain chart, hidden
     @FXML private HBox barSample;                          // pill bars are drawn into this
-    @FXML private Label lblReminderTitle;
+    @FXML private Button btnPrevWeek;
+    @FXML private Button btnNextWeek;
+    @FXML private Label lblWeekTitle;
+    @FXML private Label lblWeekRange;
+
+    // ---- reminder ----
+    @FXML private Label lblPickupCount;    // "Orders for pickup" number
+    @FXML private Label lblDeliveryCount;  // "Orders for delivery" number
+    @FXML private Label lblReminderCount;  // red circle next to "Reminder"
+    @FXML private Hyperlink linkReminderAll;
 
     // ---- low stock table ----
     @FXML private Hyperlink linkLowStockAll;
@@ -64,6 +81,7 @@ public class DashboardController implements Initializable {
     @FXML private VBox lowStockSample;         // design-time preview only
 
     // ---- orders by status (semicircle gauge) ----
+    @FXML private Hyperlink linkOrdersAll;
     @FXML private Label lblOrdersYear;
     @FXML private HBox pieSample;              // holds the gauge
     @FXML private PieChart statusChart;        // plain pie chart, hidden
@@ -80,10 +98,61 @@ public class DashboardController implements Initializable {
     @FXML private Button btnQuickSale;
     @FXML private Button btnQuickProduct;
 
-    // bar sizes (match the Scene Builder design)
-    private static final double BAR_WIDTH = 40.0;
-    private static final double BAR_MAX_HEIGHT = 220.0;
-    private static final double BAR_MIN_HEIGHT = 38.0;
+    // bar sizes
+    private static final double BAR_WIDTH = 26.0;
+    private static final double BAR_MAX_HEIGHT = 200.0;
+    private static final double BAR_PAIR_GAP = 4.0;
+
+    private static final String PESO = "\u20B1";
+    private static final String TIER_STAND = "sample-dark";   // dark pink bar  = stand revenue
+    private static final String TIER_ORDER = "sample-light";  // light pink bar = order revenue
+    private static final String TIER_EMPTY = "sample-hatch";  // hatched dot    = nothing that day
+
+    private static final DateTimeFormatter MONTH_FMT = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.ENGLISH);
+    private static final DateTimeFormatter MD_FMT = DateTimeFormatter.ofPattern("MMM d", Locale.ENGLISH);
+    private static final DateTimeFormatter MDY_FMT = DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.ENGLISH);
+    private static final DateTimeFormatter DAY_NAME_FMT = DateTimeFormatter.ofPattern("EEE", Locale.ENGLISH);
+    private static final DateTimeFormatter DAY_NUM_FMT = DateTimeFormatter.ofPattern("MM-dd", Locale.ENGLISH);
+
+    // ---- week currently shown in the chart (always a Monday) ----
+    private LocalDate weekStart;
+    private LocalDate maxWeekStart;   // the newest week you can navigate to
+
+    // =====================================================================
+    //  TEMPORARY sample data (same rows as the Stand Sale and Orders screens).
+    //  Replace the two lists + today() with real database queries later.
+    // =====================================================================
+    private record StandSale(LocalDate date, int total) { }
+
+    /** method is "Pickup" or "Delivery". The ids and customer names are placeholders. */
+    private record OrderSale(String id, String customer, LocalDate date, int price, String status, String method) { }
+
+    private static final List<StandSale> SAMPLE_STAND_SALES = List.of(
+            new StandSale(LocalDate.of(2026, 5, 3), 150),
+            new StandSale(LocalDate.of(2026, 5, 2), 500),
+            new StandSale(LocalDate.of(2026, 5, 1), 30),
+            new StandSale(LocalDate.of(2026, 4, 29), 30),
+            new StandSale(LocalDate.of(2026, 4, 27), 110),
+            new StandSale(LocalDate.of(2026, 4, 26), 150),
+            new StandSale(LocalDate.of(2026, 4, 26), 80),
+            new StandSale(LocalDate.of(2026, 4, 25), 100),
+            new StandSale(LocalDate.of(2026, 4, 25), 60));
+
+    private static final List<OrderSale> SAMPLE_ORDERS = List.of(
+            new OrderSale("ORD-001", "Customer A", LocalDate.of(2026, 4, 28), 400, "Cancelled", "Pickup"),
+            new OrderSale("ORD-002", "Customer B", LocalDate.of(2026, 4, 29), 100, "Pending", "Pickup"),
+            new OrderSale("ORD-003", "Customer C", LocalDate.of(2026, 4, 30), 110, "Pending", "Delivery"),
+            new OrderSale("ORD-004", "Customer D", LocalDate.of(2026, 5, 1), 350, "Pending", "Pickup"),
+            new OrderSale("ORD-005", "Customer E", LocalDate.of(2026, 4, 28), 40, "Done", "Pickup"),
+            new OrderSale("ORD-006", "Customer F", LocalDate.of(2026, 5, 10), 1000, "Pending", "Pickup"));
+
+    /** The sample data is from late April / early May 2026, so "today" is fixed there for now. */
+    private static final LocalDate DEMO_TODAY = LocalDate.of(2026, 5, 3);
+
+    /** TODO: when the real database is connected, return LocalDate.now() here. */
+    private LocalDate today() {
+        return DEMO_TODAY;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -123,28 +192,105 @@ public class DashboardController implements Initializable {
 
         lblOrders.setText(String.valueOf(totalOrders));
         lblProducts.setText("44");
-        lblRevenue.setText("\u20B11,210.00");
-        lblPending.setText("\u20B11,560.00");
         sidebarController.setOrdersBadge(pendingOrders);
-        lblReminderTitle.setText(pendingOrders + (pendingOrders == 1 ? " order" : " orders") + " awaiting pickup");
+        loadReminder();
+        updateReminderCount(pendingOrders);
         lblOrdersYear.setText("Year " + year);
 
-        // Stand revenue by day (label -> pesos)
-        Map<String, Integer> revenueByDay = new LinkedHashMap<>();
-        revenueByDay.put("Sat\n04-25", 150);
-        revenueByDay.put("Sun\n04-26", 230);
-        revenueByDay.put("Mon\n04-27", 130);
-        revenueByDay.put("Wed\n04-29", 60);
-        revenueByDay.put("Fri\n05-01", 60);
-        revenueByDay.put("Sat\n05-02", 380);
-        revenueByDay.put("Sun\n05-03", 200);
-        renderRevenueBars(revenueByDay);
+        // The monthly cards and the weekly chart follow the selected year:
+        // same month / same week of that year as "today".
+        LocalDate anchor = today().withYear(parseYear(year));
+        loadMonthlyCards(YearMonth.from(anchor));
+
+        maxWeekStart = mondayOf(anchor);
+        weekStart = maxWeekStart;
+        renderWeek();
 
         // Orders by status
         renderStatusGauge(pendingOrders, doneOrders, cancelledOrders);
 
         // Low stock list
         loadLowStock();
+    }
+
+    private int parseYear(String year) {
+        try {
+            return Integer.parseInt(year.trim());
+        } catch (NumberFormatException e) {
+            return today().getYear();
+        }
+    }
+
+    private LocalDate mondayOf(LocalDate date) {
+        return date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+    }
+
+    private String money(int pesos) {
+        return String.format(Locale.US, PESO + "%,.2f", (double) pesos);
+    }
+
+    private boolean countsAsOrderRevenue(OrderSale order) {
+        return !"Cancelled".equalsIgnoreCase(order.status());   // cancelled orders earn nothing
+    }
+
+    // =====================================================================
+    //  Monthly stat cards
+    // =====================================================================
+
+    /** Stand Revenue (Monthly) and Orders (Monthly). */
+    private void loadMonthlyCards(YearMonth month) {
+        int standTotal = 0;
+        int standCount = 0;
+        for (StandSale s : SAMPLE_STAND_SALES) {
+            if (YearMonth.from(s.date()).equals(month)) {
+                standTotal += s.total();
+                standCount++;
+            }
+        }
+
+        int orderTotal = 0;
+        int orderCount = 0;
+        for (OrderSale o : SAMPLE_ORDERS) {
+            if (YearMonth.from(o.date()).equals(month) && countsAsOrderRevenue(o)) {
+                orderTotal += o.price();
+                orderCount++;
+            }
+        }
+
+        String monthName = month.format(MONTH_FMT);
+        lblRevenue.setText(money(standTotal));
+        lblRevenueNote.setText(standCount + (standCount == 1 ? " stand sale" : " stand sales") + " in " + monthName);
+        lblOrdersMonth.setText(money(orderTotal));
+        lblOrdersNote.setText(orderCount + (orderCount == 1 ? " order" : " orders") + " in " + monthName);
+    }
+
+    // =====================================================================
+    //  Reminder card
+    // =====================================================================
+
+    /** The red circle with the number next to "Reminder" (hidden when 0). */
+    private void updateReminderCount(int pending) {
+        lblReminderCount.setText(String.valueOf(pending));
+        boolean show = pending > 0;
+        lblReminderCount.setVisible(show);
+        lblReminderCount.setManaged(show);
+    }
+
+    /** Fills "Orders for pickup" and "Orders for delivery" from the pending orders. */
+    private void loadReminder() {
+        int pickup = 0;
+        int delivery = 0;
+        for (OrderSale o : SAMPLE_ORDERS) {
+            if ("Pending".equalsIgnoreCase(o.status())) {
+                if ("Delivery".equalsIgnoreCase(o.method())) {
+                    delivery++;
+                } else {
+                    pickup++;
+                }
+            }
+        }
+        lblPickupCount.setText(String.valueOf(pickup));
+        lblDeliveryCount.setText(String.valueOf(delivery));
     }
 
     // =====================================================================
@@ -202,54 +348,98 @@ public class DashboardController implements Initializable {
     }
 
     // =====================================================================
-    //  Pill bars (Stand Revenue by Day)
+    //  Weekly chart (Stand Revenue and Order Revenue)
     // =====================================================================
 
-    /**
-     * Draws one pill-shaped bar per day. The highest day gets the darkest bar,
-     * then mid, then light, and every other day gets the hatched bar.
-     */
-    private void renderRevenueBars(Map<String, Integer> data) {
-        barSample.getChildren().clear();
+    @FXML
+    private void handlePrevWeek() {
+        weekStart = weekStart.minusWeeks(1);
+        renderWeek();
+    }
 
-        int max = data.values().stream().mapToInt(Integer::intValue).max().orElse(0);
-        if (max <= 0) {
-            return;
+    @FXML
+    private void handleNextWeek() {
+        if (weekStart.isBefore(maxWeekStart)) {
+            weekStart = weekStart.plusWeeks(1);
+            renderWeek();
+        }
+    }
+
+    /** Draws the week starting at weekStart (Mon to Sun) and updates the labels under the chart. */
+    private void renderWeek() {
+        int[] stand = new int[7];
+        int[] orders = new int[7];
+
+        for (StandSale s : SAMPLE_STAND_SALES) {
+            long day = ChronoUnit.DAYS.between(weekStart, s.date());
+            if (day >= 0 && day < 7) {
+                stand[(int) day] += s.total();
+            }
+        }
+        for (OrderSale o : SAMPLE_ORDERS) {
+            long day = ChronoUnit.DAYS.between(weekStart, o.date());
+            if (day >= 0 && day < 7 && countsAsOrderRevenue(o)) {
+                orders[(int) day] += o.price();
+            }
         }
 
-        List<Integer> ranked = data.values().stream()
-                .distinct()
-                .sorted(Comparator.reverseOrder())
-                .toList();
+        renderRevenueBars(stand, orders);
 
-        for (Map.Entry<String, Integer> entry : data.entrySet()) {
-            int value = entry.getValue();
-            double height = Math.max(BAR_MIN_HEIGHT, BAR_MAX_HEIGHT * value / max);
+        // what week + the dates it covers
+        LocalDate weekEnd = weekStart.plusDays(6);
+        int weekNumber = weekStart.get(WeekFields.ISO.weekOfWeekBasedYear());
+        boolean thisWeek = weekStart.equals(mondayOf(today()));
+        lblWeekTitle.setText("Week " + weekNumber + (thisWeek ? " (this week)" : ""));
 
-            Rectangle bar = new Rectangle(BAR_WIDTH, height);
-            bar.setArcWidth(BAR_WIDTH);
-            bar.setArcHeight(BAR_WIDTH);
-            bar.getStyleClass().addAll("sample-bar", tierClass(ranked.indexOf(value)));
-            Tooltip.install(bar, new Tooltip("\u20B1" + value));
+        String from = (weekStart.getYear() == weekEnd.getYear()) ? weekStart.format(MD_FMT) : weekStart.format(MDY_FMT);
+        lblWeekRange.setText(from + " \u2013 " + weekEnd.format(MDY_FMT));
 
-            Label day = new Label(entry.getKey());
+        // can't go past the newest week
+        btnNextWeek.setDisable(!weekStart.isBefore(maxWeekStart));
+    }
+
+    /**
+     * Draws two pill bars per day: dark = stand revenue, light = order revenue.
+     * Both use the same scale so they can be compared.
+     */
+    private void renderRevenueBars(int[] stand, int[] orders) {
+        barSample.getChildren().clear();
+
+        int max = 0;
+        for (int i = 0; i < 7; i++) {
+            max = Math.max(max, Math.max(stand[i], orders[i]));
+        }
+
+        for (int i = 0; i < 7; i++) {
+            LocalDate date = weekStart.plusDays(i);
+
+            HBox pair = new HBox(BAR_PAIR_GAP,
+                    makeBar(stand[i], max, TIER_STAND, "Stand revenue"),
+                    makeBar(orders[i], max, TIER_ORDER, "Order revenue"));
+            pair.setAlignment(Pos.BOTTOM_CENTER);
+            pair.setFillHeight(false);
+
+            Label day = new Label(date.format(DAY_NAME_FMT) + "\n" + date.format(DAY_NUM_FMT));
             day.setAlignment(Pos.CENTER);
             day.setTextAlignment(TextAlignment.CENTER);
             day.setStyle("-fx-font-size: 13px; -fx-text-fill: #6F6570;");
 
-            VBox column = new VBox(5.0, bar, day);
+            VBox column = new VBox(5.0, pair, day);
             column.setAlignment(Pos.BOTTOM_CENTER);
             barSample.getChildren().add(column);
         }
     }
 
-    private String tierClass(int rank) {
-        return switch (rank) {
-            case 0 -> "sample-dark";
-            case 1 -> "sample-mid";
-            case 2 -> "sample-light";
-            default -> "sample-hatch";
-        };
+    private Rectangle makeBar(int value, int max, String tierClass, String tooltipLabel) {
+        boolean empty = value <= 0 || max <= 0;
+        double height = empty ? BAR_WIDTH : Math.max(BAR_WIDTH, BAR_MAX_HEIGHT * value / max);
+
+        Rectangle bar = new Rectangle(BAR_WIDTH, height);
+        bar.setArcWidth(BAR_WIDTH);
+        bar.setArcHeight(BAR_WIDTH);
+        bar.getStyleClass().addAll("sample-bar", empty ? TIER_EMPTY : tierClass);
+        Tooltip.install(bar, new Tooltip(tooltipLabel + ": " + PESO + Math.max(value, 0)));
+        return bar;
     }
 
     // =====================================================================
@@ -305,7 +495,7 @@ public class DashboardController implements Initializable {
     }
 
     // =====================================================================
-    //  Navigation (banner and quick actions)
+    //  Navigation (banner, quick actions, "View all" links)
     // =====================================================================
 
     @FXML
