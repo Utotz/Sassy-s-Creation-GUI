@@ -1,6 +1,8 @@
 package com.sassyscreation.sassyscreationgui.controllers;
 
-
+import javafx.application.Platform;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import com.sassyscreation.sassyscreationgui.dao.ProductDAO;
 import com.sassyscreation.sassyscreationgui.dao.StandSaleDAO;
 import java.sql.SQLException;
@@ -166,7 +168,7 @@ public class StandSaleController implements Initializable {
     // =====================================================================
 
     private void setUpForm() {
-        cbSaleProduct.setItems(FXCollections.observableArrayList(products.keySet()));
+        setUpProductSearch();
         cbSaleProduct.getSelectionModel().selectFirst();
 
         spQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 999, 1));
@@ -180,6 +182,59 @@ public class StandSaleController implements Initializable {
 
         cbSaleProduct.valueProperty().addListener((obs, o, n) -> updateForm());
         spQty.valueProperty().addListener((obs, o, n) -> updateForm());
+    }
+
+    /** Last product name the user really chose (used to undo half-typed text). */
+    private String lastValidProduct;
+
+    private void setUpProductSearch() {
+        FilteredList<String> shown = new FilteredList<>(
+                FXCollections.observableArrayList(products.keySet()), name -> true);
+        cbSaleProduct.setItems(shown);
+        cbSaleProduct.setEditable(true);
+        TextField editor = cbSaleProduct.getEditor();
+
+        // 1. Narrow the list while typing (matches anywhere in the name, any letter case)
+        editor.textProperty().addListener((obs, oldText, text) -> {
+            if (text == null || products.containsKey(text)) {
+                return;   // an exact product name is a real choice, not a search
+            }
+            String q = text.trim().toLowerCase();
+            shown.setPredicate(name -> q.isEmpty() || name.toLowerCase().contains(q));
+            if (editor.isFocused() && !cbSaleProduct.isShowing()) {
+                cbSaleProduct.show();
+            }
+        });
+
+        // 2. A real choice shows the full list again and is remembered
+        cbSaleProduct.valueProperty().addListener((obs, oldV, newV) -> {
+            if (newV != null && products.containsKey(newV)) {
+                lastValidProduct = newV;
+                shown.setPredicate(name -> true);
+            }
+        });
+
+        // 3. Clicking in selects all text, so typing replaces it.
+        // 4. Leaving the box with half-typed text goes back to the last chosen product.
+        editor.focusedProperty().addListener((obs, was, isNow) -> {
+            if (isNow) {
+                Platform.runLater(editor::selectAll);
+            } else if (!products.containsKey(editor.getText()) && lastValidProduct != null) {
+                cbSaleProduct.setValue(lastValidProduct);
+                editor.setText(lastValidProduct);
+                shown.setPredicate(name -> true);
+            }
+        });
+
+        // 5. Enter picks the first match
+        editor.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+            if (e.getCode() == KeyCode.ENTER && !shown.isEmpty()
+                    && !products.containsKey(editor.getText())) {
+                cbSaleProduct.setValue(shown.get(0));
+                cbSaleProduct.hide();
+                e.consume();
+            }
+        });
     }
 
     private void commitSpinnerText() {
