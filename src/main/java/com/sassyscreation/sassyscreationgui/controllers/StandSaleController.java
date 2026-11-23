@@ -1,5 +1,9 @@
 package com.sassyscreation.sassyscreationgui.controllers;
 
+
+import com.sassyscreation.sassyscreationgui.dao.ProductDAO;
+import com.sassyscreation.sassyscreationgui.dao.StandSaleDAO;
+import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -64,11 +68,13 @@ public class StandSaleController implements Initializable {
 
     /** A sellable product with its price and remaining stock. */
     private static class Product {
+        final int id;
         final String name;
         final double price;
         int stock;
 
-        Product(String name, double price, int stock) {
+        Product(int id, String name, double price, int stock) {
+            this.id = id;
             this.name = name;
             this.price = price;
             this.stock = stock;
@@ -88,6 +94,10 @@ public class StandSaleController implements Initializable {
     private final ObservableList<Map<String, Object>> allSales = FXCollections.observableArrayList();
     /** What the table actually shows (allSales narrowed down by the two dropdowns). */
     private FilteredList<Map<String, Object>> filteredSales;
+
+
+    private static final ProductDAO productDAO = new ProductDAO();
+    private static final StandSaleDAO standSaleDAO = new StandSaleDAO();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -111,15 +121,16 @@ public class StandSaleController implements Initializable {
      * (name, unit price and current stock from your inventory table).
      */
     private void loadProducts() {
-        addProduct("Rose Keychain", 50.00, 20);
-        addProduct("Mini Daisy Keychain - Fuzzy Wire", 20.00, 15);
-        addProduct("Gypsophila", 30.00, 12);
-        addProduct("Baby Mushroom Keychain", 80.00, 8);
-        addProduct("Sunflower - Fuzzy Wire", 55.00, 6);
-    }
-
-    private void addProduct(String name, double price, int stock) {
-        products.put(name, new Product(name, price, stock));
+        products.clear();
+        try {
+            for (var p : productDAO.getAllProducts()) {
+                products.put(p.getName(), new Product(
+                        p.getProductId(), p.getName(),
+                        p.getPrice().doubleValue(), p.getStockQuantity()));
+            }
+        } catch (SQLException e) {
+            showWarning("Could not load products", e.getMessage());
+        }
     }
 
     /**
@@ -127,16 +138,15 @@ public class StandSaleController implements Initializable {
      * Replace with a database query (SELECT from your stand sales table).
      */
     private void loadSales() {
-        allSales.setAll(
-                sale("Rose Keychain", 2, 50.00, "2026-04-25"),
-                sale("Mini Daisy Keychain - Fuzzy Wire", 3, 20.00, "2026-04-25"),
-                sale("Gypsophila", 5, 30.00, "2026-04-26"),
-                sale("Baby Mushroom Keychain", 1, 80.00, "2026-04-26"),
-                sale("Sunflower - Fuzzy Wire", 2, 55.00, "2026-04-27"),
-                sale("Gypsophila", 1, 30.00, "2026-04-29"),
-                sale("Gypsophila", 1, 30.00, "2026-05-01"),
-                sale("Rose Keychain", 10, 50.00, "2026-05-02"),
-                sale("Gypsophila", 5, 30.00, "2026-05-03"));
+        allSales.clear();
+        try {
+            for (var s : standSaleDAO.getAllSales()) {
+                allSales.add(sale(s.getProductName(), s.getQuantity(),
+                        s.getUnitPrice().doubleValue(), s.getSaleDate().toString()));
+            }
+        } catch (SQLException e) {
+            showWarning("Could not load sales", e.getMessage());
+        }
     }
 
     // Keys must match the MapValueFactory keys in the FXML (case-sensitive)
