@@ -173,7 +173,7 @@
                                     <TableColumn fx:id="colSaleQty" prefWidth="50.0" text="Qty"><cellValueFactory><MapValueFactory key="Qty" /></cellValueFactory></TableColumn>
                                     <TableColumn fx:id="colSalePrice" prefWidth="100.0" text="Unit"><cellValueFactory><MapValueFactory key="Price" /></cellValueFactory></TableColumn>
                                     <TableColumn fx:id="colSaleTotal" prefWidth="115.0" text="Total"><cellValueFactory><MapValueFactory key="Total" /></cellValueFactory></TableColumn>
-                                    <TableColumn fx:id="colSaleActions" prefWidth="80.0" sortable="false" text=""><cellValueFactory><MapValueFactory key="actions" /></cellValueFactory></TableColumn>
+                                    <TableColumn fx:id="colSaleActions" minWidth="100.0" prefWidth="100.0" maxWidth="100.0" sortable="false" text=""><cellValueFactory><MapValueFactory key="actions" /></cellValueFactory></TableColumn>
                                  </columns>
                                  <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
                               </TableView>
