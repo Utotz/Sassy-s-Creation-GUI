@@ -289,9 +289,14 @@ public class StandSaleController implements Initializable {
             return;
         }
 
-        // TODO: also INSERT the sale and UPDATE the stock in the database
-        p.stock -= qty;
-        allSales.add(0, sale(p.name, qty, p.price, LocalDate.now().toString()));
+        try {
+            standSaleDAO.insertSale(p.id, qty, LocalDate.now());
+        } catch (SQLException e) {
+            showWarning("Could not record the sale", e.getMessage());
+            return;   // nothing was saved, so leave the screen as it is
+        }
+        loadProducts();   // fresh stock from the database
+        loadSales();      // fresh history from the database
 
         spQty.getValueFactory().setValue(1);
         updateForm();
