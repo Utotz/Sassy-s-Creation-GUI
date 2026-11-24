@@ -31,6 +31,12 @@ public class StandSale {
     public BigDecimal getUnitPrice() { return unitPrice; }
     public LocalDate getSaleDate() { return saleDate; }
 
+    // =====================================================================
+    //  LOGIC: DERIVED VALUE
+    //  The total of a sale is calculated from quantity and unit price, never stored
+    //  (normalization: one source of truth, decision L40).
+    // =====================================================================
+
     /** quantity x unitPrice. Calculated here, not stored in the database. */
     public BigDecimal getTotal() {
         return unitPrice.multiply(BigDecimal.valueOf(quantity));

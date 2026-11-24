@@ -15,7 +15,12 @@ import java.util.List;
 
 public class StandSaleDAO {
 
-    /** All stand sales, newest first. Sales on the same date: highest sale_id first. */
+    // =====================================================================
+    //  LOGIC: READ ALL STAND SALES
+    //  JOINs products to get each product's name. ORDER BY sale_date DESC, sale_id DESC
+    //  so the newest sale is first and same-day sales keep a stable order.
+    // =====================================================================
+
     public List<StandSale> getAllSales() throws SQLException {
         String sql = "SELECT s.sale_id, s.product_id, p.name, s.quantity, "
                 + "s.unit_price, s.sale_date "
@@ -42,7 +47,18 @@ public class StandSaleDAO {
         return sales;
     }   // getAllSales ends here
 
-    /** Records a stand sale and deducts stock in ONE transaction. Returns the new sale_id. */
+    // =====================================================================
+    //  LOGIC RESPONSIBLE FOR RECORDING A SALE AND DEDUCTING STOCK (TRANSACTION)
+    //  Everything below uses ONE connection with autocommit off, so it is all-or-nothing:
+    //    1. UPDATE products SET stock_quantity = stock_quantity - ?  ... AND stock_quantity >= ?
+    //       0 rows updated = not enough stock (or no such product) -> exception
+    //    2. SELECT price FROM products   (the price comes from the database, never from the screen)
+    //    3. INSERT INTO stand_sales      (unit_price = the price read in step 2)
+    //    4. commit()  - or rollback() if a SQLException occurred, so the stock is never lost
+    //  The connection is closed by try-with-resources.
+    // =====================================================================
+
+
     public int insertSale(int productId, int quantity, LocalDate saleDate) throws SQLException {
         String deductSql = "UPDATE products SET stock_quantity = stock_quantity - ? "
                 + "WHERE product_id = ? AND stock_quantity >= ?";

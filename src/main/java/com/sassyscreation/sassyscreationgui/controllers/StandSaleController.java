@@ -98,6 +98,12 @@ public class StandSaleController implements Initializable {
     private FilteredList<Map<String, Object>> filteredSales;
 
 
+    // =====================================================================
+    //  LOGIC: DATABASE ACCESS FOR THIS SCREEN
+    //  This screen never writes SQL. It asks two DAO objects (one per table):
+    //    productDAO   -> getAllProducts()   (names, ids, prices, stock)
+    //    standSaleDAO -> getAllSales(), insertSale(...)
+    // =====================================================================
     private static final ProductDAO productDAO = new ProductDAO();
     private static final StandSaleDAO standSaleDAO = new StandSaleDAO();
 
@@ -115,13 +121,13 @@ public class StandSaleController implements Initializable {
     }
 
     // =====================================================================
-    //  Data
+    //  LOGIC: LOAD PRODUCTS FROM THE DATABASE
+    //  Fills the 'products' map (product name -> Product with id, price, stock).
+    //  Runs at startup AND after every recorded sale, so the stock shown is always
+    //  the database's stock. Product names are unique in the seed, so the name is
+    //  used as the dropdown key; the id is what insertSale needs.
     // =====================================================================
 
-    /**
-     * TEMPORARY: sample products. Replace with a database query
-     * (name, unit price and current stock from your inventory table).
-     */
     private void loadProducts() {
         products.clear();
         try {
@@ -135,10 +141,12 @@ public class StandSaleController implements Initializable {
         }
     }
 
-    /**
-     * TEMPORARY: sample sales history that matches the design.
-     * Replace with a database query (SELECT from your stand sales table).
-     */
+    // =====================================================================
+    //  LOGIC: LOAD SALES HISTORY FROM THE DATABASE
+    //  Fills 'allSales' from StandSaleDAO.getAllSales() (newest first). Each row is
+    //  a Map built by sale(...). Everything on screen (table, chips, top sellers)
+    //  is computed from allSales, so reloading it refreshes the whole screen.
+    // =====================================================================
     private void loadSales() {
         allSales.clear();
         try {
@@ -184,7 +192,11 @@ public class StandSaleController implements Initializable {
         spQty.valueProperty().addListener((obs, o, n) -> updateForm());
     }
 
-    /** Last product name the user really chose (used to undo half-typed text). */
+
+    // =====================================================================
+    //  LOGIC RESPONSIBLE FOR SEARCHING PRODUCTS IN THE STAND SALE DROPDOWN
+    // =====================================================================
+    // Last product name the user really chose (used to undo half-typed text).
     private String lastValidProduct;
 
     private void setUpProductSearch() {
@@ -237,6 +249,12 @@ public class StandSaleController implements Initializable {
         });
     }
 
+    // =====================================================================
+    //  LOGIC: QUANTITY INPUT (1 to 999)
+    //  Called when the quantity box loses focus and before recording a sale.
+    //  Keeps a typed number inside 1..999; if the text is not a number it goes
+    //  back to the last valid value.
+    // =====================================================================
     private void commitSpinnerText() {
         try {
             int typed = Integer.parseInt(spQty.getEditor().getText().trim());
@@ -247,6 +265,11 @@ public class StandSaleController implements Initializable {
         }
     }
 
+    // =====================================================================
+    //  LOGIC: LIVE PREVIEW IN THE RECORD-A-SALE CARD
+    //  Recalculates unit price, total and the stock note whenever the product or
+    //  the quantity changes. Display only: nothing is saved here.
+    // =====================================================================
     /** Refreshes unit price, total and the stock note for the selected product and quantity. */
     private void updateForm() {
         Product p = products.get(cbSaleProduct.getValue());
@@ -268,6 +291,16 @@ public class StandSaleController implements Initializable {
         }
     }
 
+    // =====================================================================
+    //  LOGIC RESPONSIBLE FOR RECORDING A SALE (the Record Sale button)
+    //    1. validate: a product is chosen, quantity >= 1, quantity <= stock shown
+    //       (friendly warning first; the database still protects itself)
+    //    2. StandSaleDAO.insertSale(productId, qty, today): ONE transaction that
+    //       deducts the stock, reads the price from products, inserts the sale
+    //    3. on SQLException: warning, nothing saved, screen unchanged
+    //    4. reload products and sales from the database, then refresh the form,
+    //       the chips and Top sellers (the screen always shows what was saved)
+    // =====================================================================
     @FXML
     private void handleRecordSale() {
         commitSpinnerText();
@@ -310,7 +343,15 @@ public class StandSaleController implements Initializable {
     }
 
     // =====================================================================
-    //  Sales table
+                            // SALES TABLE
+    // =====================================================================
+
+
+    // =====================================================================
+    //  LOGIC: SALES HISTORY TABLE
+    //  1) formats Unit and Total as pesos, 2) builds the Edit / Delete icon buttons,
+    //  3) wires the data pipeline: allSales -> filteredSales (the two dropdowns)
+    //     -> sorted (column headers) -> table, 4) default order: newest date first.
     // =====================================================================
 
     private void setUpTable() {
@@ -366,7 +407,15 @@ public class StandSaleController implements Initializable {
     }
 
     // =====================================================================
-    //  Filters (Qty + Unit price dropdowns)
+                        //  Filters (Qty + Unit price dropdowns)
+    // =====================================================================
+
+
+    // =====================================================================
+    //  LOGIC RESPONSIBLE FOR FILTERING THE SALES HISTORY (Qty and Unit price dropdowns)
+    //  The choice is checked by its POSITION in QTY_FILTERS / PRICE_FILTERS, and
+    //  qtyMatches / priceMatches switch on that same position. If you reorder or add
+    //  a dropdown item you MUST change the matching 'case' number too.
     // =====================================================================
 
     private void setUpFilters() {
@@ -432,6 +481,10 @@ public class StandSaleController implements Initializable {
         b.setTooltip(new Tooltip(tooltip));
         return b;
     }
+    // =====================================================================
+    //  LOGIC: EDIT A SALE - SCREEN ONLY, NOT SAVED
+    //  ONGOING CONNECTION TO DB
+    // =====================================================================
 
     private void editSale(Map<String, Object> row) {
         LocalDate date;
@@ -481,8 +534,11 @@ public class StandSaleController implements Initializable {
         updateForm();
         updateSummary();
     }
+    // =====================================================================
+    //  LOGIC: DELETE A SALE - SCREEN ONLY, NOT SAVED
+    //  ONGOING
+    // =====================================================================
 
-    /** Shows the custom "Delete this sale?" dialog (DeleteSaleController / DELETESALE.fxml). */
     private void deleteSale(Map<String, Object> row) {
         int qty = (Integer) row.get("Qty");
         String productName = String.valueOf(row.get("Product"));
@@ -507,7 +563,13 @@ public class StandSaleController implements Initializable {
         }
     }
 
-    /** Totals and Top sellers always use ALL sales, whatever the dropdowns are set to. */
+    // =====================================================================
+    //  LOGIC: SUMMARY CHIPS (Total Stand Sales / Total Revenue)
+    //  Counts and adds up ALL loaded sales, then rebuilds Top sellers.
+    //  Revenue is the sum of each row's Total (quantity x the price saved at sale time).
+    // =====================================================================
+
+
     private void updateSummary() {
         double revenue = allSales.stream()
                 .mapToDouble(s -> ((Number) s.get("Total")).doubleValue())
@@ -524,7 +586,14 @@ public class StandSaleController implements Initializable {
     //  Top sellers (ranked by units sold)
     // =====================================================================
 
-    /** Rebuilds the ranking from all sales: most units first, then most revenue. */
+
+    // =====================================================================
+    //  LOGIC: TOP SELLERS RANKING
+    //  Adds up units and money per product name, sorts by units (highest first),
+    //  then by revenue, and shows the first TOP_COUNT products. The bar length is
+    //  each product's units divided by the best seller's units.
+    // =====================================================================
+
     private void updateTopSellers() {
         Map<String, Integer> units = new HashMap<>();
         Map<String, Double> money = new HashMap<>();
@@ -612,6 +681,13 @@ public class StandSaleController implements Initializable {
 
     // =====================================================================
     //  Header
+    // =====================================================================
+
+    // =====================================================================
+    //  LOGIC: EXPORT STAND SALES
+    //  Opens the export dialog, keeps only the sales inside the chosen date range,
+    //  and passes them as rows (Date, Product, Qty, Unit price, Total) to
+    //  ExportDialogController.export(...). Reads allSales, so it exports what was loaded.
     // =====================================================================
 
     @FXML

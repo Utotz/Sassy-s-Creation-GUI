@@ -5,7 +5,13 @@ import com.sassyscreation.sassyscreationgui.dao.StandSaleDAO;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-// WARNING: this test writes a real sale and deducts stock. Run once, then clean up.
+
+// =====================================================================
+//  WARNING: THIS TEST WRITES REAL DATA
+//  Test 1 inserts one sale and deducts 1 from the chosen product's stock.
+//  Test 2 asks for far more than the stock and must fail without changing anything.
+//  Run it ONCE, then clean up in phpMyAdmin (DELETE the test sale, add the stock back).
+// =====================================================================
 
 
 public class StandSaleDAOTest {

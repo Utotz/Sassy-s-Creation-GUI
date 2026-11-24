@@ -14,6 +14,11 @@ import java.util.List;
 
 public class ProductDAO {
 
+    // =====================================================================
+    //  LOGIC: READ ALL PRODUCTS
+    //  Used by Inventory and Stand Sale. Sorted by name; image_path may be null.
+    // =====================================================================
+
     public List<Product> getAllProducts() throws SQLException {
         String sql = "SELECT product_id, name, category, price, "
                 + "stock_quantity, low_stock_threshold, is_customizable, image_path "
@@ -39,6 +44,13 @@ public class ProductDAO {
         }
         return products;
     }
+
+
+    // =====================================================================
+    //  LOGIC: ADD A PRODUCT
+    //  Parameterized INSERT (never string-concatenated). Returns the generated id,
+    //  or -1 if the database returned none.
+    // =====================================================================
 
     /** Inserts a new product and returns its generated id. imagePath may be null. */
     public int insertProduct(String name, String category, BigDecimal price,
