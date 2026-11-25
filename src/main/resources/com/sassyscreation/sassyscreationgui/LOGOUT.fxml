@@ -1,33 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
+<?import java.net.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Ellipse?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<StackPane prefHeight="340" prefWidth="480" styleClass="dialog-root, page-v3" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
-   <stylesheets><URL value="@styles.css" /><URL value="@text-large.css" /></stylesheets>
-   <children>
-      <VBox alignment="CENTER">
-   <children>
-      <VBox alignment="CENTER" maxWidth="420.0" spacing="6.0" styleClass="dialog-card, dialog-card-pink">
-         <children>
-            <StackPane styleClass="icon-badge-sm"><children><Region styleClass="ico, ico-logout" /></children></StackPane>
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="dialog-title-dark" text="Log out?" />
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="dialog-text" textAlignment="CENTER" text="You will need to sign in again to open Sassy’s Creation." wrapText="true" />
-            <Region prefHeight="6.0" />
-            <VBox alignment="CENTER" spacing="8.0" styleClass="dialog-buttons"><children><Button maxWidth="1.7976931348623157E308" fx:id="btnConfirmLogout" mnemonicParsing="false" onAction="#handleConfirmLogout" styleClass="btn-primary" text="Yes, log out" /><Button maxWidth="1.7976931348623157E308" fx:id="btnCancelLogout" mnemonicParsing="false" onAction="#handleCancelLogout" styleClass="btn-ghost" text="Stay logged in" /></children></VBox>
-         </children>
-      </VBox>
-   </children>
-</VBox>
-   </children>
+<StackPane fx:id="root" style="-fx-background-color: transparent; -fx-padding: 44;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sassyscreation.sassyscreationgui.controllers.LogoutController">
+    <stylesheets><URL value="@styles.css" /><URL value="@text-large.css" /></stylesheets>
+    <children>
+        <VBox alignment="CENTER" maxWidth="420.0" prefWidth="420.0" spacing="6.0" styleClass="dialog-card, dialog-card-pink">
+            <children>
+                <StackPane styleClass="icon-badge-sm"><children><Region styleClass="ico, ico-logout" /></children></StackPane>
+                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="dialog-title-dark" text="Log out?" />
+                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="dialog-text" text="You will need to sign in again to open Sassy’s Creation." textAlignment="CENTER" wrapText="true" />
+                <Region prefHeight="6.0" />
+                <VBox alignment="CENTER" spacing="8.0" styleClass="dialog-buttons">
+                    <children>
+                        <Button fx:id="btnConfirmLogout" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleConfirmLogout" styleClass="btn-primary" text="Yes, log out" />
+                        <Button fx:id="btnCancelLogout" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCancelLogout" styleClass="btn-ghost" text="Stay logged in" />
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
 </StackPane>
