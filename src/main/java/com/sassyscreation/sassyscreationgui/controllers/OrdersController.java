@@ -1,5 +1,10 @@
 package com.sassyscreation.sassyscreationgui.controllers;
 
+
+import com.sassyscreation.sassyscreationgui.dao.OrderDAO;
+import com.sassyscreation.sassyscreationgui.model.Order;
+import javafx.application.Platform;
+import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -79,6 +84,7 @@ public class OrdersController implements Initializable {
 
     private final ObservableList<Map<String, Object>> allOrders = FXCollections.observableArrayList();
     private FilteredList<Map<String, Object>> filteredOrders;
+    private final OrderDAO orderDAO = new OrderDAO();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -95,19 +101,34 @@ public class OrdersController implements Initializable {
     //  Data
     // =====================================================================
 
-    /**
-     * TEMPORARY: sample orders that match the design.
-     * Replace this with a database query (SELECT from your orders table).
-     */
+    // =====================================================================
+    //  LOGIC RESPONSIBLE FOR LOADING THE ORDERS FROM THE DATABASE
+    //  OrderDAO.getAllOrders() gives Order objects (newest first); each one becomes the row
+    //  map the screen already uses. "price" shows the order TOTAL (quantity x unit price),
+    //  because a customizable order can have quantity > 1.
+    //  If the database fails, the screen stays empty and the error appears AFTER the screen
+    //  is attached to its window (Platform.runLater), because showError needs the window.
+    // =====================================================================
+
     private void loadOrders() {
-        allOrders.setAll(
-                order(1, "alyssa.customer1", "Mixed Bouquet - Fuzzy Wire (Medium)", "Pink and White", 400.00, "Pickup", "2026-04-28", "Cancelled"),
-                order(2, "juana.santos", "Rose - Crochet", "Red", 100.00, "Pickup", "2026-04-29", "Pending"),
-                order(3, "maria.reyes", "Octopus Keychain", "Blue", 110.00, "Meetup", "2026-04-30", "Pending"),
-                order(4, "pedro.cruz", "Mixed Bouquet - Crochet (Small)", "Purple", 350.00, "Pickup", "2026-05-01", "Pending"),
-                order(5, "ana.garcia", "Baby Tulip Keychain", "Yellow", 40.00, "Meetup", "2026-04-28", "Done"),
-                order(6, "raven", "Diamond Top", "Pink", 1000.00, "Pickup", "2026-05-10", "Pending"));
-    }
+        allOrders.clear();
+        try {
+            for (Order o : orderDAO.getAllOrders()) {
+                allOrders.add(order(
+                        o.getOrderId(),
+                        o.getCustomerName(),
+                        o.getProductName(),
+                        o.getColor(),
+                        o.getTotal().doubleValue(),
+                        o.getArrangement(),
+                        o.getScheduleDate().toString(),
+                        o.getStatus()));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Platform.runLater(() -> showError("Could not load orders", rootCause(e)));
+        }
+    }   // loadOrders ends here
 
     private Map<String, Object> order(int id, String customer, String product, String color,
                                       double price, String type, String date, String status) {
