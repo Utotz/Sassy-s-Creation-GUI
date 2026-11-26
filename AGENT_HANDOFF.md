@@ -1,22 +1,25 @@
 # AGENT_HANDOFF.md — Sassy's Creation (Java GUI) — living handoff (detailed edition)
 
-**Handoff version: 15**
-**Last updated:** 2026-11-24 (Asia/Manila) — written by a Claude chat session
-**State described:** `origin/submain` = `ed1471d`. **Plus** one change that exists only in the user's working tree and is **not pushed yet**: *Step B* (Record Sale calls `insertSale`). It was shown working on screen on 2026-11-24 (section 0, E.4). Plus this file and the banner comments, once the user commits them.
-**Replaces:** v14 (the compact 299-line edition). v14 itself replaced `SASSYS_CREATION_JAVA_GUI_HANDOFF_v13.md` (about 356 KB, kept by the user **outside** the repo). The session that wrote v15 **could not read v13**; v15 keeps everything v14 contained, adds the history that survives in the assistant's notes of earlier chats (section M) and everything from the 2026-11-24 session. If a detail seems missing, ask the user for the matching v13 section.
+**Handoff version: 16**
+**Last updated:** 2026-11-26 (Asia/Manila) — written by a Claude chat session (the work of 2026-11-25 is recorded here)
+**State described:** `origin/submain` = `746adb3` (pushed; the user's `git status` showed a clean tree, up to date with `origin/submain`). This file (v16) is the only change not in that commit, until the user commits it.
+**Replaces:** v15 (the detailed edition; all of its content is kept below and updated). v15 replaced v14, which replaced `SASSYS_CREATION_JAVA_GUI_HANDOFF_v13.md` (about 356 KB, kept by the user **outside** the repo). The sessions that wrote v14, v15 and v16 **could not read v13**; v15 added the history that survives in the assistant's notes (section M). If a detail seems missing, ask the user for the matching v13 section.
 
 > One file, edited in place, version number goes up every session. Do **not** create a second handoff file. This file lives on `submain` only (`main` is still the initial commit and has no handoff).
 
 ---
 
-## 0. WHERE WE LEFT OFF (read this first, 2026-11-24)
+## 0. WHERE WE LEFT OFF (read this first, 2026-11-26)
 
-- **The defense of the whole system is "next week"** (user, 2026-11-24). What it must show is still unknown (Q1).
-- **Pushed this session:** the teammate's `dfb656b` merged into `submain` (merge `37c10a2`, then `57428b0` with the user's one-line fix that widens the Stand Sale Actions column); `StandSaleDAO.insertSale` (`8ba9563`); Stand Sale loads its products and sales from the database (`81d50de`, "Step A"); searchable product dropdown (`ed1471d`).
-- **Done and working on the user's computer, NOT pushed:** *Step B*. In `StandSaleController.handleRecordSale()` the three old in-memory lines (`// TODO: also INSERT...`, `p.stock -= qty;`, `allSales.add(...)`) were replaced, as the agent instructed, by `standSaleDAO.insertSale(p.id, qty, LocalDate.now())` inside a `try/catch (SQLException)` (warning and `return` on failure), followed by `loadProducts(); loadSales();` (the user's exact local file was not shown to the agent, so ask for it or a screenshot before editing that method). Evidence (screenshots, 2026-11-24): the sale row appears, the chips show 1 sale and ₱30.00, Top sellers shows 1 sold, the stock note shows 19, Inventory shows 19, phpMyAdmin `stand_sales` holds the row, and the "Not enough stock" warning appears. The user said "all goods".
-- **Left in the database on purpose:** one test sale (`sale_id` 2, `product_id` 2, quantity 1, price 30.00, date 2026-11-24) and product 2's stock at 19 instead of 20. The user **paused the cleanup**. Cleanup SQL is in E.2. **Do not ask him to re-run `StandSaleDAOTest`**: it writes real data.
-- **Next, in this order:** (1) commit and push Step B (gate already met, see T8); (2) commit the banner comments as their own commit; (3) commit this file; then Batch 4 (F.3): decide Delete/Edit sale, and the sync with the teammate.
-- **Open since this session:** the user has not said whether the layout message went to the teammate (K.3); the Delete icon is still partly clipped (D55); the Top sellers list does not scroll (D56).
+- **The defense of the whole system is "next week"** (user, 2026-11-24; the date and what it must show are still unknown, Q1). It is close: prefer finishing and verifying small slices over starting large ones.
+- **Pushed and verified (`origin/submain` = `746adb3`):** `6515631` Step B (Record Sale saves through `insertSale`), `7d046f8` banner comments, `00901ff` this file as v15, `746adb3` **Delete sale**. [VERIFIED-USER terminal: `git log --oneline -3`; `git status` clean and up to date with `origin/submain`.]
+- **Delete sale is done and tested (T9).** `StandSaleDAO.deleteSale(int saleId)` is one transaction: read the sale's product and quantity **from the database**, give the stock back to the product, delete the row, `commit()`; `rollback()` on any `SQLException`. `StandSaleController.deleteSale` shows the confirmation dialog, calls the DAO, then `loadProducts(); loadSales(); updateForm(); updateSummary();`. Each table row now carries its `sale_id` under the key `"SaleId"` (added to `sale(...)`, which only `loadSales()` calls). Built on slice branch `standsale-delete`, merged `--ff-only`, branch deleted locally. Evidence: build 0 errors [USER-REPORTED]; a throwaway Baby Dinosaur Keychain sale (stock 10 → 9, chips 1 and ₱90.00, Top sellers "1 sold") [VERIFIED-USER screenshot]; the phpMyAdmin results and the Cancel / Delete / empty-screen checks matched the expected values [USER-REPORTED, not pasted]; one accidental Delete of the Light Green Leaf test sale also gave its stock back (20) [USER-REPORTED].
+- **The test data is gone** (this answers Q10 and makes the E.2 cleanup SQL obsolete): `stand_sales` has 0 rows, Light Green Leaf stock 20, Baby Dinosaur Keychain stock 10 [USER-REPORTED]. **Never run `StandSaleDAOTest`**: it writes real data (D59).
+- **Push incident, 2026-11-25:** the first `git push` of `746adb3` was rejected by GitHub with "Internal Server Error" (a remote problem, not the commit). `git ls-remote` showed the remote still at `00901ff`; the commit was safe on local `submain`. A plain retry of `git push` worked (`00901ff..746adb3`). See C.4 and C48.
+- **Still screen-only (D54, the main open item on Stand Sale): the Edit icon.** `editSale` / `applyEdit` change the row and the in-memory stock only; the next reload undoes them. The user listed Edit as a to-do (2026-11-26). Whether to hide the icon first (A) or wire it straight away (B) is **Q7**, which the user will answer himself. Plan and options: T11.
+- **The user's own reading of his task list (2026-11-26):** of Raven's four items, **only "table for stand sale records only" is accomplished** (F.1 updated). The Stand Sale screen itself now also records and deletes sales in the database.
+- **Next, in this order (F.3, Batch 5):** (1) relay the teammate message K.3 (it now also says Delete saves) and settle who edits what (T10, Q2, Q8); (2) Edit in Stand Sale, after Q7 (T11); (3) start Raven's order-side items: confirm the `orders` table and its rows, then `OrderDAO` read (T12).
+- **Open since v15:** the Delete icon is still partly clipped (D55, confirmed again by the 2026-11-25 screenshots) and the Top sellers list does not scroll (D56): both are in the teammate's `STANDSALE.fxml`. The user has not said whether the layout message reached the teammate (Q8).
 
 ---
 
@@ -85,9 +88,10 @@
 13. **Gate before irreversible steps.** Do not tell the user to commit, merge or push a slice until the checks you listed have been shown (decision L34).
 14. If the user uploads a handoff or master-prompt `.md`, read it fully and continue from its stated state without re-asking details already written there.
 15. **Code comments.** The user wants banner comments that mark specific logic (for example "logic responsible for searching in the Stand Sale"). Follow C.5 whenever you add or change logic, and do not leave comments that describe old behaviour (defect D58).
+16. **Evidence format (user request, 2026-11-25).** Screenshots use many tokens. Ask for **pasted terminal or SQL text** whenever text is enough, and for a screenshot **only when the layout itself matters** (clipping, scrolling, alignment). "Done, no errors" is enough evidence for a build result.
 
 ### C.2 Architecture rules
-- Layers: `controllers` (screens) → `dao` (SQL only) → `db` (connection); `model` holds data classes. **No SQL in controllers or FXML; no business rules in event handlers.** A service layer is planned only when stock rules need transactions across DAOs (ask first). *(Today the stock rule lives inside `StandSaleDAO.insertSale` as one transaction, decision L45.)*
+- Layers: `controllers` (screens) → `dao` (SQL only) → `db` (connection); `model` holds data classes. **No SQL in controllers or FXML; no business rules in event handlers.** A service layer is planned only when stock rules need transactions across DAOs (ask first). *(Today the stock rule lives inside `StandSaleDAO.insertSale` and `StandSaleDAO.deleteSale`, each one transaction: decisions L45 and L51.)*
 - Money is `BigDecimal` in Java and `DECIMAL(10,2)` in SQL. Dates are `LocalDate` / `DATE`. *(The Stand Sale screen still keeps money as `double`: defect D62.)*
 - Database constraints back up the Java validation (`CHECK`, `FOREIGN KEY ... ON DELETE RESTRICT`).
 - `database/schema.sql` **drops tables** (`DROP TABLE IF EXISTS`): **never run it, `seed.sql` or `add_image_path.sql` to "test" something.** Changes to a live database are done with additive SQL (for example only the `CREATE TABLE` block).
@@ -97,11 +101,12 @@
 Parameterized SQL (never concatenate input); try-with-resources for connections; validate in the right layer plus database constraints; keep secrets out of source control; prefer simple code the user can defend over clever abstractions. Avoid features the course has not taught (streams, `super`, etc.) unless there is a reason, and **ask before** using one.
 
 ### C.4 Git rules
-- **One short-lived local slice branch per slice** → check → `git switch submain` → `git merge --ff-only <slice>` → push. *(On 2026-11-24 the slices were committed straight on `submain` after the evidence was shown: see C43 and Q9.)*
+- **One short-lived local slice branch per slice** → check → `git switch submain` → `git merge --ff-only <slice>` → push. *(On 2026-11-24 the slices were committed straight on `submain` after the evidence was shown: see C43 and Q9. On 2026-11-25 the Delete slice used branch `standsale-delete` and an `--ff-only` merge, adopted by action.)*
 - Integration/backup branches stay **local** and are never pushed (`merge-dejjo-2` was one). Never push `main` (it is still the initial commit). Never push or merge into the teammate's branches (`GUI`, `tempniDejjo`).
 - Before merging a teammate branch: `git fetch origin`, then a **trial merge** (`git merge-tree --write-tree --name-only origin/submain origin/<branch>`), then a throwaway local branch. After every merge check `git diff --stat -- pom.xml` (it can silently take the teammate's older versions).
 - When a merge conflicts only in `target/` (compiled output): resolve by **deleting** it (`git rm -r -f target`, `-f` because some files are staged), never by "accept theirs" (decision L47).
 - `git add .` is fine **after** reading `git status` (no stray files such as `target/`, `.idea/`, `product-images/`).
+- **If `git push` fails with a remote error** (for example GitHub's "Internal Server Error", 2026-11-25): the commit is still safe locally. Check what GitHub really has with `git ls-remote origin refs/heads/submain`, then simply run `git push` again (wait a few minutes and look at githubstatus.com if it repeats). **Never `git push --force`, `git reset` or re-commit** because of a remote error. **Delete a slice branch only after the push is confirmed** (C48).
 
 ### C.5 Code comment convention (decision L49)
 - **Banner style = the style already used in `StandSaleController`** (the teammate's section banners):
@@ -119,17 +124,17 @@ Parameterized SQL (never concatenate input); try-with-resources for connections;
 
 ---
 
-## D. STRUCTURE AND CODE STYLE (verified on `ed1471d`)
+## D. STRUCTURE AND CODE STYLE (verified on `746adb3`)
 
 ```
 src/main/java/com/sassyscreation/sassyscreationgui/
   Launcher.java (9 lines), SassyCreation.java (19)   entry points (mainClass = Launcher)
-  ProductDAOTest.java (19), StandSaleDAOTest.java (31)   manual test runners (main + println), root package
+  ProductDAOTest.java (19), StandSaleDAOTest.java (37)   manual test runners (main + println), root package
   db/DBConnection.java (17)                 getConnection(); hardcoded local dev connection
-  model/   Product (58), StandSale (48)     immutable data classes
-  dao/     ProductDAO (63), StandSaleDAO (96)   SQL only, one DAO per table
+  model/   Product (58), StandSale (54)     immutable data classes
+  dao/     ProductDAO (75), StandSaleDAO (164)   SQL only, one DAO per table
   controllers/  22 files                    screen controllers + helpers (plural "controllers" is the teammate's convention)
-                StandSaleController.java is 652 lines
+                StandSaleController.java is 740 lines
 src/main/resources/com/sassyscreation/sassyscreationgui/
   31 flat FXML files, styles.css, text-large.css, images/ (flat product photos + card/), fonts, drawables
 database/  schema.sql (DESTRUCTIVE), seed.sql (44 products), test-seed.sql, add_image_path.sql
@@ -149,14 +154,14 @@ module-info.java: exports root + controllers, opens controllers to javafx.fxml (
 
 ---
 
-## E. CURRENT STATE (as of 2026-11-24)
+## E. CURRENT STATE (as of 2026-11-25, pushed state)
 
 ### E.1 Repository
 | Branch | Head | Notes |
 |---|---|---|
 | `main` | `300d9aa` | Initial commit, untouched (only `README.md`). Has no handoff file. |
-| **`submain`** | **`ed1471d`** | Integration branch, pushed. Since v14 (`651fa59` = the v14 file): `37c10a2` merge of the teammate's `dfb656b` (made on local branch `merge-dejjo-2`), `57428b0` "Widen stand sale actions column", `8ba9563` `insertSale` + test, `81d50de` Stand Sale loads from the database (Step A), `ed1471d` searchable dropdown. `target/` is **not** tracked (0 files). |
-| **Working tree (not pushed)** | — | *Step B* in `StandSaleController.handleRecordSale()` (see section 0). Expected `git status`: only `StandSaleController.java` modified, before the banner comments and this file are added. |
+| **`submain`** | **`746adb3`** | Integration branch, pushed. Since v14 (`651fa59` = the v14 file): `37c10a2` merge of the teammate's `dfb656b` (made on local branch `merge-dejjo-2`), `57428b0` "Widen stand sale actions column", `8ba9563` `insertSale` + test, `81d50de` Stand Sale loads from the database (Step A), `ed1471d` searchable dropdown, `6515631` Step B (Record Sale saves), `7d046f8` banner comments, `00901ff` this file as v15, `746adb3` Delete sale. `target/` is **not** tracked (0 files). |
+| **Working tree** | — | Clean after the push (user's `git status`, 2026-11-25). The slice branch `standsale-delete` existed only locally and was deleted after the fast-forward merge. |
 | `tempniDejjo` | `dfb656b` | The teammate's working branch. **Fully merged into `submain`.** No newer push seen on 2026-11-24. It still tracks compiled `target/` files, so every future merge of it conflicts there (D39). |
 | `merge-dejjo-2` | `57428b0` | **Local only**, identical to `submain` at that point. Optional cleanup: `git branch -d merge-dejjo-2` (refuses if anything were unmerged). |
 | `GUI` `2860443`, `JAVA+DB` `567a3de`, `inventory-read` `3f84784` | | Old/redundant (ancestors of `submain`). |
@@ -168,21 +173,16 @@ module-info.java: exports root + controllers, opens controllers to javafx.fxml (
 - **`orders`**: `order_id`, `customer_name`, `product_id` (FK, RESTRICT), `color`, `custom_description`, `quantity` (>0), `unit_price` (>=0), `arrangement ENUM('Pickup','Meetup')`, `schedule_date`, `status ENUM('Pending','Done','Cancelled')`. **No completed-date or total column.**
 - **`stand_sales`**: `sale_id` AUTO_INCREMENT PK, `product_id` (FK, RESTRICT), `quantity` (>0), `unit_price` (>=0, the price **at the time of sale**), `sale_date` DATE. Total = `quantity * unit_price`, not stored.
 - **`users`: does not exist yet.**
-- **Test data left on purpose (user paused the cleanup, 2026-11-24):** `stand_sales` holds one row (`sale_id` 2, product 2, quantity 1, `unit_price` 30.00, 2026-11-24) and product 2 (Light Green Leaf) has `stock_quantity` 19 (it was 20). `sale_id` 1 was an earlier test row, deleted. To clean up later (check `SELECT * FROM stand_sales;` first, it must show only that row):
-  ```sql
-  DELETE FROM stand_sales WHERE product_id = 2;
-  UPDATE products SET stock_quantity = 20 WHERE product_id = 2;
-  ```
-  Never use `TRUNCATE` (C41) and never run `schema.sql`/`seed.sql`. The next real sale will get `sale_id` 3 or higher (ids are not reused): normal.
+- **Test data: cleaned (2026-11-25).** `stand_sales` has 0 rows; product 2 (Light Green Leaf) has stock 20 and Baby Dinosaur Keychain has stock 10 [USER-REPORTED]. The Light Green Leaf test sale was removed through the app's own Delete (by accident), which also gave its stock back, so it doubled as the first Delete test; the throwaway Baby Dinosaur sale was then recorded and deleted on purpose. Ids are never reused, so the next sale gets an id higher than every id used so far (1 and 2 were test rows): normal. Never use `TRUNCATE` (C41) and never run `schema.sql` / `seed.sql`.
 - **Photos:** the `image_path` column exists in the user's database. The Inventory list view shows a photo for Light Green Leaf [VERIFIED-USER screenshot], so `image_path` is filled at least for product 2. Whether the whole `add_image_path.sql` was run was **not stated**, and many of its mappings are guesses (D41). Image files are flat in `src/main/resources/.../images/`: all 43 filenames named in that script exist there (checked on `submain`); product 35 has no mapping on purpose.
 - **IntelliJ's Database tool** (the "Database" panel on the right) lost its login after the 2026-11-24 merge (errors "Unable to resolve table 'products'", `Access denied for user 'User'@'localhost'`); probable cause (inference): the merge removed the tracked `.idea` data-source files. **Fixed by the user** by setting the data source user in its Properties to the same login `DBConnection` uses, then Test Connection [VERIFIED-USER]. This is per computer; teammates configure their own (D60). It does not affect the running app.
 - A teammate's database gets `stand_sales` by running **only the `CREATE TABLE stand_sales (...)` block** from `schema.sql` in phpMyAdmin, never the whole file. (An additive `database/stand_sales.sql` does not exist yet.)
 
-### E.3 What is real and what is sample (read from the code on `ed1471d`, plus Step B)
+### E.3 What is real and what is sample (read from the code on `746adb3`)
 - **Database-backed:**
   - Inventory read (`ProductDAO.getAllProducts`) and Add product (`insertProduct`).
-  - **Stand Sale**: the product dropdown (44 real products, price and stock from the database, **type-to-search**), the sales history, the two chips, Top sellers, Export (they all compute from the loaded `allSales`), and **Record Sale** (Step B, local only until pushed): validation → `StandSaleDAO.insertSale` (one transaction) → reload.
-- **Memory only:** Inventory Edit / Restock / Delete (TODO in the code); **Stand Sale Edit and Delete icons** (`editSale`, `deleteSale`: TODO "also UPDATE/DELETE ... in the database"; they change the screen and the in-memory stock only and are undone by the next reload, D54).
+  - **Stand Sale**: the product dropdown (44 real products, price and stock from the database, **type-to-search**), the sales history, the two chips, Top sellers, Export (they all compute from the loaded `allSales`), **Record Sale** (validation → `StandSaleDAO.insertSale`, one transaction → reload) and **Delete sale** (confirmation dialog → `StandSaleDAO.deleteSale`, one transaction that gives the stock back and deletes the row → reload). Pushed as `6515631` and `746adb3`.
+- **Memory only:** Inventory Edit / Restock / Delete (TODO in the code); **the Stand Sale Edit icon** (`editSale` / `applyEdit`, TODO "also UPDATE the sale and the stock in the database"): it changes the screen and the in-memory stock only and is undone by the next reload (D54).
 - **Sample data:** Dashboard (hardcoded, "TEMPORARY sample data", also in `dfb656b`), Orders (6 sample rows), AddOrder (3 sample products), Login (hardcoded demo credentials in `LoginController`), Forgot password (hardcoded answer), Change password (accepts any current password, saves nothing).
 - **Forced maximize:** `LoginController` calls `stage.setMaximized(true)` after login (line 204 on the teammate's branch; comment "remove this line if you don't want it maximized"). Kept on purpose: a big window suits the defense. Layouts must therefore fit a maximized window **and** scroll when they do not (D55, D56).
 - Stand Sale in the teammate's `dfb656b`: Qty and Unit-price filter dropdowns (position-based, see the banner in `BANNER_COMMENTS.txt`), a wider left column, the totals chips next to the filters.
@@ -193,30 +193,35 @@ module-info.java: exports root + controllers, opens controllers to javafx.fxml (
 - **`insertSale` test** [VERIFIED-USER console + phpMyAdmin]: "Test 1 OK. New sale id: 1", "Test 2 OK (expected failure): Not enough stock, or the product does not exist.", exit code 0. Product 2 stock 20 → 19 (exactly 1 less), `stand_sales` count 0 → 1, `unit_price` 30.00 equals `products.price`, and the 999999 attempt changed nothing (rollback proven).
 - **Step A** [VERIFIED-USER screenshot]: dropdown lists real products (Baby Dinosaur Keychain 90.00, stock 10), history empty ("No sales recorded yet"), chips 0 / ₱0.00, Top sellers "No sales yet".
 - **Searchable dropdown** [USER-REPORTED "its all goods and working"]: five behaviours were tested by the user (select-all on click, narrowing while typing, full list when opened, revert on leaving with half-typed text, Enter picks the first match); only the overall result was reported.
-- **Step B** [VERIFIED-USER screenshots + phpMyAdmin]: see section 0. Not yet committed.
+- **Step B** [VERIFIED-USER screenshots + phpMyAdmin, 2026-11-24]: pushed as `6515631` [VERIFIED-USER terminal, 2026-11-25].
+- **Banner comments and v15** [VERIFIED-USER terminal, 2026-11-25]: `7d046f8` (6 files changed, 139 insertions, 18 deletions) and `00901ff` (1 file changed); both pushed (`6515631..7d046f8`, `7d046f8..00901ff`).
+- **Delete sale** [VERIFIED-USER terminal and screenshot; the test results are USER-REPORTED]: commit `746adb3` (2 files changed, 69 insertions, 10 deletions); `git merge --ff-only` = Fast-forward `00901ff..746adb3`; push `00901ff..746adb3` on the **second** attempt (the first was rejected by GitHub's "Internal Server Error"); `git status` clean and up to date; `git log --oneline -3` shows `746adb3` on top. The agent also cloned `submain` and read the pushed code: `deleteSale` exists in the DAO and in the controller and the "DATABASE ACCESS" banner lists it [VERIFIED-GIT].
+- **Edit dialog facts** [VERIFIED-GIT, read on `746adb3`]: `EditSaleController` shows a **read-only** unit price (`editable="false"`); the same product keeps the price the sale was made at, a different product uses its catalog price; it calls back `onSave(product, qty, unitPrice, date)`.
 - The app starts, shows Login, and opens Dashboard, Inventory (44 products, grid and list view, search "ligh" finds Light Green Leaf), Stand Sale [VERIFIED-USER screenshots].
 - IntelliJ shows 0 problems in `StandSaleDAO.java` after the brace fix [USER-REPORTED "no errors now"].
 
 ### E.5 Not verified / unknown
-Whether the full `add_image_path.sql` ran (E.2); the Spinner test on Stand Sale / Add order / Add product (pending since 2026-11-16, result not stated); whether the Delete icon is fully visible after the 100 px Actions column (the 2026-11-24 maximized screenshot shows it **partly clipped**, D55); the Dashboard, Orders and AddOrder behaviour in the merged build; which defense is "next week" (Q1); who owns which files (Q2); whether the layout message reached the teammate; the contents of v13 (not readable by the session that wrote v15).
+Whether the full `add_image_path.sql` ran (E.2); the Spinner test on Stand Sale / Add order / Add product (pending since 2026-11-16, result not stated); the phpMyAdmin results of the Delete test (reported as expected, not pasted); the Dashboard, Orders and AddOrder behaviour in the merged build; whether the `orders` table holds any rows in the user's database (the Orders screen shows 6 sample rows); which defense is "next week" (Q1); who owns which files (Q2); whether the layout message reached the teammate (Q8); the contents of v13 (not readable by the sessions that wrote v14 to v16). *(The Delete icon is no longer in this list: the 2026-11-25 screenshots show it still partly clipped, D55.)*
 
 ---
 
 ## F. TASKS
 
-### F.1 The team's task list (from the user, 2026-11-22) and what the code says (updated 2026-11-24)
+### F.1 The team's task list (from the user, 2026-11-22; re-sent 2026-11-26) and what the code says (updated 2026-11-26)
+**The user's own reading (2026-11-26): "as far as I know, the table for stand sale only is the one I accomplished."** The statuses below follow that, and add what the code shows.
+
 | Owner | Item (as written) | Status / notes |
 |---|---|---|
-| Raven | id in inventory and stand sale | **Partial.** `stand_sales.sale_id` exists in the DB and the model. The Inventory table has an ID column but it is hidden (`visible="false"`); the Stand Sale table has no ID column yet. The Stand Sale rows do **not** carry `sale_id` yet (needed for Delete, T9). |
-| Raven | table for stand sale records only | **Done, DB and screen.** `stand_sales` exists and the Stand Sale screen reads it. |
-| Raven | table for completed orders and revenue | **Decided: a query/view on `orders`** (L38): `status = 'Done'`, revenue = `SUM(quantity * unit_price)`. To do. |
-| Raven | table summary done / pending / cancelled | **Decided: a query** (L38): `COUNT(*) ... GROUP BY status`. Feeds the Dashboard gauge and the Orders chips. To do. |
-| Ravs | product dropdown | **Stand Sale: done** (real products, searchable). AddOrder (`cbOrderProduct`) still uses 3 sample products. Which dropdown the item means is still unconfirmed (Q5). |
+| Raven | id in inventory and stand sale | **Not done by the user's count.** In the code: `stand_sales.sale_id` exists in the DB and the model, and (since `746adb3`) each Stand Sale row carries it in memory as `"SaleId"`, but **no ID column is visible** on either screen (the Inventory ID column is `visible="false"`; the Stand Sale table has none). A visible column is an FXML change in the teammate's files: ask first (F.4). |
+| Raven | table for stand sale records only | **Done (the one item the user counts).** `stand_sales` exists; the screen reads it, records sales and deletes sales in the database. |
+| Raven | table for completed orders and revenue | **Decided: a query/view on `orders`** (L38): `status = 'Done'`, revenue = `SUM(quantity * unit_price)`. **To do** (T12 starts it). |
+| Raven | table summary done pending cancel orders | **Decided: a query** (L38): `COUNT(*) ... GROUP BY status`. Feeds the Dashboard gauge and the Orders chips. **To do.** |
+| Ravs | product dropdown | **Stand Sale: done** (real products, searchable; built by the user). AddOrder (`cbOrderProduct`) still uses 3 sample products. Which dropdown the item means is still unconfirmed (Q5). |
 | Ravs | change password | Needs a `users` table first (Raven's side). Today it accepts any current password. |
-| Ravs | standsale button arrow date | **Unclear from the code.** The Record form has no date control (it records today's date); the only `DatePicker` is in Edit Sale. Ask (Q5). |
-| Ravs | standsale newest / oldest | The DAO sorts newest first and the table defaults to Date descending; the Date column header can be clicked to sort. Whether a separate toggle is wanted is unconfirmed. |
+| Ravs | standsale button arrow date | **Unclear from the code.** The Record form has no date control (it records today's date); the only `DatePicker` is in the Edit Sale dialog. Ask (Q5). |
+| Ravs | standsale newest oldest | The DAO sorts newest first and the table defaults to Date descending; the Date column header can be clicked to sort. Whether a separate toggle is wanted is unconfirmed. |
 | Ravs | green stock inventory | In the Inventory **list** view the normal-stock badge uses `stock-plain`; the grid view uses green `badge-done`. In the 2026-11-24 screenshots both views show a green "in stock" badge, so this item **may already be done in `dfb656b`: re-check before assigning.** |
-| Ravs | order revenue on the dashboard; revenue-by-day chart (orders + stand sales); month filter | Depend on Raven's queries (L38, L39). `dfb656b` draws two-tier bars (stand vs order) on sample data. Stand sales can now feed it from the database. |
+| Ravs | order rev dashboard; revenue by day (orders and stand sales) chart; filter by month (dashboard stand rev and order rev) | Depend on Raven's queries (L38, L39). `dfb656b` draws two-tier bars (stand vs order) on sample data. Stand sales can now feed it from the database. |
 | Ange (Coca) | papers | Needs the final ERD after `users` and any later table changes. |
 
 ### F.2 Completed (one line each)
@@ -230,33 +235,31 @@ Whether the full `add_image_path.sql` ran (E.2); the Spinner test on Stand Sale 
 - 2026-11-24 **T7:** `StandSaleDAO.insertSale` and its test: `8ba9563`. **[VERIFIED-USER console + phpMyAdmin]**
 - 2026-11-24 **Stand Sale reads the database** (Step A): `81d50de`. **[VERIFIED-USER screenshot]**
 - 2026-11-24 **Searchable product dropdown:** `ed1471d`. **[USER-REPORTED]**
-- 2026-11-24 **Step B, Record Sale saves to the database:** working in the user's tree, **not pushed**. **[VERIFIED-USER screenshots]**
+- 2026-11-24 **Step B, Record Sale saves to the database:** pushed as `6515631`. **[VERIFIED-USER screenshots + terminal]**
+- 2026-11-25 banner comments `7d046f8` and this file as v15 `00901ff`. **[VERIFIED-USER terminal]**
+- 2026-11-25 **T8:** Step B, banners and v15 pushed. **[VERIFIED-USER terminal]**
+- 2026-11-25 **T9 Delete sale:** `StandSaleDAO.deleteSale`, controller wiring and the `"SaleId"` row key: `746adb3`. **[VERIFIED-USER terminal; test results USER-REPORTED, one screenshot]**
+- 2026-11-25 test data removed through the app (E.2). **[USER-REPORTED]**
 
-### F.3 NEXT BATCH (Batch 4, for Raven): 3 tasks
-1. **T8: push Step B, then the two documentation commits.** Evidence for Step B is in section 0, so the gate (L34) is met.
-   ```powershell
-   git branch --show-current
-   git status
-   ```
-   Expect `submain` and `StandSaleController.java` as the only modified file (if `AGENT_HANDOFF.md` or other files appear, commit Step B first, see below). Then:
-   ```powershell
-   git add .
-   git commit -m "Stand Sale: Record Sale saves to the database (insertSale)"
-   git push
-   ```
-   Then apply `BANNER_COMMENTS.txt` (comments only, rebuild, 0 errors) and commit it as its own commit ("Add banner comments for each logic section"), then replace `AGENT_HANDOFF.md` with this file and commit ("Update AGENT_HANDOFF to v15"). Three commits, three pushes or one push at the end: the user's choice. **Do not** run `StandSaleDAOTest` again.
-2. **T9: Delete sale (and what to do with Edit): decision L48 is pending, present it to the user.**
-   - **Goal:** nothing on the Stand Sale screen should look saved when it is not (D54).
-   - **Options:** A wire **Delete** now and hide the Edit icon until Edit is wired; B wire both; C hide both icons; D leave them (not acceptable for the defense).
-   - **Trade-offs:** Delete is one transaction (mirror of `insertSale`); Edit needs the old and the new product's stock and the date, so it is larger and riskier. Hiding an icon is a Java change in `setUpTable()` (the `HBox` in the Actions cell), not an FXML change.
-   - **Recommendation (assistant, not yet agreed):** A.
-   - **Slice, small steps:** (1) carry `saleId` in each table row (add a `"SaleId"` key in `sale(...)`/`loadSales()`; the keys that the FXML reads stay unchanged); (2) `StandSaleDAO.deleteSale(int saleId)`: on one connection `SELECT product_id, quantity FROM stand_sales WHERE sale_id = ?`, `UPDATE products SET stock_quantity = stock_quantity + ? WHERE product_id = ?`, `DELETE FROM stand_sales WHERE sale_id = ?`, commit, rollback on any `SQLException`; (3) `StandSaleController.deleteSale` calls it after the confirmation dialog, then `loadProducts(); loadSales();`; (4) test with a throwaway sale, check stock and row, clean up. Work on a slice branch (`standsale-delete`) or get his explicit OK to work on `submain` (Q9). Teach: why the restore and the delete must be one transaction.
-3. **T10: sync the screens with the teammate and settle ownership (Q2).** The user relays the message in K.3 (it now also asks for the two `STANDSALE.fxml` fixes, D55 and D56, and for `product_id` to be carried by the dropdown). Ask who edits `StandSaleController` and `DashboardController` **after today's push**, and ask the teammate to pull `submain` before editing either. Then re-check the Delete icon and the Top sellers list on a maximized window and at the default size.
+### F.3 NEXT BATCH (Batch 5, for Raven): 3 tasks
+1. **T10: sync with the teammate and settle ownership (Q2, Q8).** The user relays the message in K.3 (updated 2026-11-26: it now says that Delete saves, that Edit is still screen-only, and asks not to change the Edit/Delete code without telling him). Ask who edits `StandSaleController` and `DashboardController` from now on, ask the teammate to pull `submain` **before** editing either, and ask for the two `STANDSALE.fxml` fixes (D55 clipped Delete icon, D56 Top sellers scroll). Then re-check both on a maximized window and at the default size (a screenshot is justified here: it is a layout check, C.1 #16). **Do not edit the teammate's FXML ourselves.**
+2. **T11: Edit sale in Stand Sale (Q7 is the user's to answer; he listed Edit as a to-do on 2026-11-26).** Work on a slice branch (`standsale-edit`, C.4).
+   - **Goal:** nothing on the Stand Sale screen looks saved when it is not (D54). Delete already saves; Edit is the last screen-only action.
+   - **Facts read from the code on `746adb3`:** `editSale(row)` opens `EditSaleController` with the row's product name, quantity, unit price and date plus the product list; its unit price is **read-only**: the same product keeps the price the sale was made at, a different product uses the catalog price. On save it calls `applyEdit(row, name, qty, unitPrice, date)`, which gives the old quantity back to the old product and takes the new quantity from the new one **in memory only**, then updates the row. No FXML change is needed for either option.
+   - **Options:** **A** hide the Edit icon until Edit is wired. In `setUpTable()` the Actions cell builds `new HBox(10, edit, delete)`; build the HBox with `delete` only, leave `editSale` / `applyEdit` unused, and change their banner to "NOT IN USE (Edit icon hidden until it saves to the database)". **B** wire Edit: add `StandSaleDAO.updateSale(int saleId, int newProductId, int newQty, LocalDate newDate)` as one transaction: (1) read the sale's current product, quantity and `unit_price` **from the database**; (2) give the old quantity back to the old product; (3) take the new quantity from the new product with the guard `... AND stock_quantity >= ?` (0 rows → "Not enough stock" → rollback); (4) price rule that mirrors the dialog, L40 and L45: **same product → keep the stored `unit_price`; different product → read its current price from `products`**; (5) `UPDATE stand_sales SET product_id = ?, quantity = ?, unit_price = ?, sale_date = ? WHERE sale_id = ?`; (6) `commit()`, `rollback()` on any `SQLException`. The controller passes `row.get("SaleId")` and `products.get(name).id`, then reloads like Record and Delete do. **C** hide both icons (superseded now that Delete works).
+   - **Trade-offs:** A takes minutes and cannot corrupt stock, but the user loses a visible feature he wants. B is about 60 lines in the pattern the user has already built twice (`insertSale`, `deleteSale`), but it is the riskiest of the three Stand Sale writes: two products' stock and one row change together. **Give the old quantity back before taking the new one**, otherwise editing the same product from 5 to 6 is refused when only 1 is left.
+   - **Recommendation (assistant, not agreed; updated 2026-11-26): B, with A as the fallback** if B cannot be finished and verified before the defense. v15 recommended A; this changes because Delete took one small slice and went smoothly, Edit reuses the same pieces, and hiding a feature the user listed as a to-do is not what he asked for. The user decides (Q7).
+   - **What to understand first:** why restore-then-deduct is one transaction; why the price comes from the database and not from the dialog; what the stock guard protects.
+   - **How to verify (B):** with a throwaway sale: (a) same product, quantity up and down, (b) change product, (c) quantity above the new product's stock (expect the warning and **no** change), (d) date only. After each, `SELECT * FROM stand_sales;` and the stock of **both** products in phpMyAdmin (paste the text), then delete the throwaway sale and check stock returns to the start values.
+   - **What NOT to do:** do not demo or test Edit on real rows before it is wired; do not edit `EDITSALE.fxml` (teammate's file); do not change the dialog's price rule.
+3. **T12: start Raven's order-side items (L38, L39): confirm the `orders` table, then `OrderDAO` read.** *[RECOMMENDED; confirm scope with the user before starting, C.1 #5.]* Step 1 (read-only): in phpMyAdmin `SELECT COUNT(*) FROM orders;` and `SELECT status, COUNT(*) FROM orders GROUP BY status;` (paste the text), to learn whether `orders` holds rows. Step 2: an immutable `model/Order` and `OrderDAO.getAllOrders()` (JOIN `products` for the name, newest `schedule_date` first), with a **read-only** `OrderDAOTest` (it writes nothing, so it needs no WARNING banner but must say "read-only"). The status-summary and revenue queries are the following steps (F.4). Wiring Orders and the Dashboard to them is Batch 6.
 
-### F.4 Queue after Batch 4 (order follows the team list and the defense; revise after Q1)
-- **Batch 5:** `OrderDAO` read + the revenue and status-summary queries (L38, L39) → real Dashboard numbers; wire AddOrder's product dropdown to `ProductDAO`; then Ravs' order-revenue card, two-series chart and month filter (stand sales can already feed it).
-- **Batch 6:** `users` table + Login + Change password (JDK `PBKDF2`, **no new library without asking**).
+### F.4 Queue after Batch 5 (order follows the team list and the defense; revise after Q1)
+- **Batch 6:** the status-summary query (`COUNT(*) ... GROUP BY status`) and the revenue query (`SUM(quantity * unit_price)` for `Done`, by day and by month) → wire Orders (replace the 6 sample rows; chips from the query) and the Dashboard (real revenue = stand sales + Done orders, pending count); wire AddOrder's product dropdown to `ProductDAO` (Q5); then Ravs' order-revenue card, the two-series revenue-by-day chart and the month filter.
+- **Visible ID columns** (Raven item 1): the Stand Sale row already carries `"SaleId"` and the Inventory ID column exists but is hidden. Showing them is an FXML change in the teammate's files: ask first (Q2).
+- **Batch 7:** `users` table + Login + Change password (JDK `PBKDF2`, **no new library without asking**).
 - **Still open from v13:** W2 product **Delete → database** (D34, recommended by L33; the user followed the team list on 2026-11-22), W3 Edit/Restock → DB, W4–W6 Orders frames and orders to the DB, one shared `Product` class (D49), the guided read-through of teammate-written code (L35, D45), the paper (ERD, test plan, likely defense questions).
+- **Lower priority, still owed:** the Stand Sale money values as `double` instead of `BigDecimal` (D62).
 
 ---
 
@@ -267,10 +270,10 @@ Whether the full `add_image_path.sql` ran (E.2); the Spinner test on Stand Sale 
 - **Q4. `product-images/` policy.** The folder is now tracked with one test photo and `.gitignore` has no line for it. What should the app store in `image_path` for newly added products, and should the test photo be removed from git? (D36, D57)
 - **Q5. Ravs' unclear items:** which product dropdown, and what is "standsale button arrow date"?
 - **Q6. When a product is deleted, keep its photo file?** (Recommended: yes, keep it.)
-- **Q7 (new).** Delete/Edit sale: wire Delete first and hide Edit (recommended), wire both, or hide both? (L48, T9)
-- **Q8 (new).** Did the layout message (K.3) go to the teammate, and did they answer?
-- **Q9 (new).** Slices on a slice branch (rule C.4) or straight on `submain`, as done on 2026-11-24 (C43)?
-- **Q10 (new).** Is the two-line test sale (E.2) still wanted, or may the cleanup run?
+- **Q7. Edit sale (and the icon).** Delete is wired (`746adb3`). For Edit: hide the icon until it is wired (A), wire it now (B), or hide both icons? (L48, T11.) **The user will answer this himself** (2026-11-26) and listed Edit as a to-do. The assistant's recommendation is now B with A as the fallback (see T11).
+- **Q8.** Did the layout message (K.3) go to the teammate, and did they answer? (Still open; the message now also mentions Delete.)
+- **Q9. Answered by action (2026-11-25):** the Delete slice used a slice branch (`standsale-delete`) and `--ff-only`; keep doing that unless the user says otherwise.
+- **Q10. Resolved by events (2026-11-25):** the test sale was removed through the app and the stock is back; nothing left to clean.
 
 ---
 
@@ -297,9 +300,11 @@ Whether the full `add_image_path.sql` ran (E.2); the Spinner test on Stand Sale 
 | L45 | **`insertSale(int productId, int quantity, LocalDate saleDate)` returns the new `sale_id`** and runs in one transaction: guarded `UPDATE products ... AND stock_quantity >= ?` (0 rows → "Not enough stock, or the product does not exist." → rollback), price **read from `products` inside the transaction** (not sent by the screen), `INSERT INTO stand_sales`, `commit`, `rollback` on any `SQLException`. | **[RECOMMENDED, tested by the user]** Option A (the screen sends the price) was rejected: a wrong price from the screen would be saved. Defense line: "stock and sale are saved together or not at all (atomicity)." |
 | L46 | **Searchable product dropdown without a library:** the existing `ComboBox` made editable with a `FilteredList` (names that contain the typed text, ignoring case; exact name = real choice; leaving with half-typed text reverts; Enter picks the first match; click selects all). ControlsFX `SearchableComboBox` rejected for now (new dependency, modular project, version unverified on Java 25). | **[RECOMMENDED, user reported it working]** |
 | L47 | When merging the teammate's branch, `target/` conflicts are resolved by **deleting** `target/` (`git rm -r -f target`), never by accepting theirs. The teammate is to run `git rm -r --cached target` on `tempniDejjo` and push. | **[DECISION by action]** the user did it; the teammate request is part of K.3. |
-| L48 | **Stand Sale Edit and Delete icons:** unwired. Recommendation: wire Delete (restore stock + delete, one transaction) and hide Edit until it is wired. | **Pending the user (Q7).** |
+| L48 | **Stand Sale Edit and Delete icons.** **Delete: wired** (`746adb3`, L51). **Edit: still unwired**; the user listed it as a to-do (2026-11-26). Options and the updated recommendation are in T11 (B with A as the fallback). | **Delete done. Edit pending the user (Q7).** |
 | L49 | **Banner comments** mark specific logic (C.5); scope = backend files + `StandSaleController`; shipped as `BANNER_COMMENTS.txt`. | **[DECISION]** user request 2026-11-24. |
 | L50 | IntelliJ's Database tool uses the same login as `DBConnection` (set in the data source Properties); never committed, and no password is written in this file. | **[DECISION by action]** fixed 2026-11-24. |
+| L51 | **Delete sale design:** `StandSaleDAO.deleteSale(int saleId)` runs in one transaction on one connection: `SELECT product_id, quantity FROM stand_sales WHERE sale_id = ?` (no row → "Sale not found" exception), `UPDATE products SET stock_quantity = stock_quantity + ?`, `DELETE FROM stand_sales WHERE sale_id = ?` (0 rows → exception), `commit()`, `rollback()` on any `SQLException`. The quantity and product come **from the database**, not from the screen row. The controller reloads products and sales afterwards (L44). Table rows carry the id under the key `"SaleId"`. | **[RECOMMENDED, built, tested by the user, pushed `746adb3`]** Alternative: remove the row from memory only (what it did before; the screen and the database disagree). Defense line: "the stock is given back and the sale is removed together or not at all (atomicity); the amount to give back is read from the database, so a stale screen cannot restore the wrong quantity." |
+| L52 | **Evidence by text, not screenshots, when text is enough** (user, 2026-11-25: screenshots use too many tokens). Screenshots only for layout checks. Now rule C.1 #16. | **[DECISION]** user request. |
 
 ---
 
@@ -314,10 +319,11 @@ Whether the full `add_image_path.sql` ran (E.2); the Spinner test on Stand Sale 
 | C45 | The agent told the user to paste `insertSale` "after `getAllSales()`" without showing where that method ends. | It landed inside `getAllSales()` (27 compile errors); a second attempt left it below `return sales;` with the closing brace missing. Fixed by giving the whole file. Rule: when adding a method, show the surrounding lines or the full file, and teach brace matching (click a `{` and IntelliJ highlights its `}`). |
 | C46 | The agent said to check the stored unit price with `SELECT COUNT(*) FROM stand_sales`. | `COUNT(*)` only counts rows. The user was confused, and also looked for a stock value in `stand_sales` (stock lives only in `products`). Use `SELECT * FROM stand_sales;` and say which table holds which column. |
 | C47 | The agent said widening the Actions column to 100 px would make the Delete icon visible. | The maximized screenshot of 2026-11-24 shows it still partly clipped at the right edge (D55). Evidence first, then claims. |
+| C48 | The agent's command block for the Delete slice put `git push` and then `git branch -d standsale-delete` in one run, without saying to stop if the push failed. | The push was rejected by GitHub (remote "Internal Server Error") and the branch was deleted anyway. No harm: `746adb3` was already on local `submain` and the retry of `git push` worked. Rule (C.4): delete a slice branch only **after** the push is confirmed, and do not force-push or reset over a remote error. |
 
 ---
 
-## J. OPEN DEFECTS AND RISKS (v13/v14 items kept; status updated 2026-11-24)
+## J. OPEN DEFECTS AND RISKS (v13/v14 items kept; status updated 2026-11-26)
 | ID | Defect / risk | Status |
 |---|---|---|
 | D34 | Inventory **Delete / Edit / Restock change memory only** (and are wiped on reload). | Open (W2/W3). |
@@ -336,15 +342,16 @@ Whether the full `add_image_path.sql` ran (E.2); the Spinner test on Stand Sale 
 | D51 | Dashboard "Revenue" card shows stand-sale revenue only; order revenue is missing. | Open (Batch 5). |
 | D52 | Login is hardcoded and Change password accepts any current password. | Open (Batch 6). |
 | D53 | Dashboard chart used whole-peso integers (`Map<String,Integer>`), which would drop centavos; re-check on the merged `DashboardController`. | Open. |
-| **D54** | Stand Sale **Edit and Delete change the screen and the in-memory stock only**; the next reload undoes them, and a Delete shows stock the database never got. | Open (T9, L48). Do not demo them on real rows. |
-| **D55** | The **Delete icon is still partly clipped** at the right edge of the sales table, even maximized, after the Actions column was set to 100 px; at the default window size the Date, Qty and filter headers are also squeezed ("Filt...", "2026-..."). | Open (teammate's `STANDSALE.fxml`, T10). |
+| **D54** | Stand Sale **Edit changes the screen and the in-memory stock only**; the next reload undoes it, and an Edit shows stock the database never got. (Delete had the same defect until `746adb3`.) | **Half resolved 2026-11-25:** Delete saves (`746adb3`). **Edit still open** (T11, L48, Q7). Do not demo Edit on real rows. |
+| **D55** | The **Delete icon is still partly clipped** at the right edge of the sales table, even maximized, after the Actions column was set to 100 px (confirmed again by the 2026-11-25 screenshots, which also show the Product name truncated, "Baby Dinosaur Keych..."); at the default window size the Date, Qty and filter headers are also squeezed ("Filt...", "2026-..."). | Open (teammate's `STANDSALE.fxml`, T10). Now that Delete works, this icon matters more. |
 | **D56** | The Stand Sale **left column does not scroll**: with more than a few Top sellers the list is cut off at the bottom (`ScrollPane` is imported in the FXML but unused). It may look fine on a taller screen. | Open (T10). Fix: wrap the left `VBox` in a transparent `ScrollPane`. |
 | **D57** | `product-images/<number>_n.jpg` (about 550 KB, a test photo) came into `submain` with the teammate's commit; `.gitignore` has no `product-images` line. | Open (Q4). |
-| **D58** | Stale comments "TEMPORARY: sample products / sample sales ... Replace with a database query" above `loadProducts()` and `loadSales()` in `StandSaleController`. | Fixed by `BANNER_COMMENTS.txt` (REPLACE 1 and 2) once applied. |
+| **D58** | Stale comments "TEMPORARY: sample products / sample sales ... Replace with a database query" above `loadProducts()` and `loadSales()` in `StandSaleController`. | **Resolved** by the banner comments (`7d046f8`); the pushed code at `746adb3` has no "TEMPORARY" comment left in `StandSaleController` [VERIFIED-GIT]. Keep banners true: the Edit banner must change when Edit changes (T11). |
 | **D59** | `StandSaleDAOTest` writes a real sale and deducts stock each time it runs. | Mitigated by a WARNING banner; never ask the user to re-run it. |
 | **D60** | The IntelliJ Database tool login is per computer and was lost after a merge. | Open for teammates: set the data source user in Properties. |
 | **D61** | The Qty and Unit-price filter dropdowns (teammate's logic) have not been tested by the user against real database rows. | Open. Their boundaries: Qty 1 / 2–5 / 6–10 / 11+; Price under 30 / 30–49 / 50–99 / 100+ (the 49 and 99 edges treat prices such as 49.50 by `>= 30 && < 50`). |
 | **D62** | The Stand Sale screen keeps money as `double` (`Product.price`, row `Price`/`Total`, Top sellers sums) while the database is `DECIMAL` and C.2 says `BigDecimal`. Rounding could differ by a centavo; a likely defense question. | Open (low priority; Batch 5+). |
+| **D63** | A `git push` can fail because of GitHub (2026-11-25: "Internal Server Error"); an agent must not treat it as a problem with the commit. | Mitigated: C.4 "If `git push` fails with a remote error" and C48. |
 
 ---
 
@@ -369,19 +376,20 @@ git branch -vv
 git fetch origin
 git log --oneline -5
 git log --oneline origin/tempniDejjo -3
+git ls-remote origin refs/heads/submain      # what GitHub really has (use it after a failed push)
 git diff --stat -- pom.xml
 git --no-pager diff -U0 --word-diff=porcelain
 ```
 SQL sanity checks (phpMyAdmin SQL tab, read-only):
 ```sql
 SELECT COUNT(*) FROM products;                                   -- expect 44
-SELECT * FROM stand_sales;                                       -- the test row until the cleanup in E.2
+SELECT * FROM stand_sales;                                       -- 0 rows after the 2026-11-25 cleanup, unless sales were recorded since
 SELECT product_id, name, price, stock_quantity FROM products WHERE stock_quantity >= 2 ORDER BY product_id LIMIT 5;
 SELECT product_id, name, image_path FROM products ORDER BY product_id;   -- photo check
 ```
 
 ### K.3 Draft message to the GUI teammate (the user relays it; neutral wording)
-> Quick sync on `submain`. It now has your `dfb656b`, plus the backend: `stand_sales`, `StandSaleDAO.insertSale`, and the Stand Sale screen reading the database (searchable product dropdown, Record Sale saves). Please **pull `submain` before editing `StandSaleController` or `DashboardController`**, and tell me who edits them. Three small things in `STANDSALE.fxml`: (1) the Delete icon is still partly cut off at the right edge of the table, so the Actions column needs more room; (2) the left column needs a transparent `ScrollPane` around it, because Top sellers is cut off at the bottom when there are many products; (3) each product choice must keep its `product_id` (the backend's `insertSale` needs it, and I already carry it in `StandSaleController`). Also: please run `git rm -r --cached target` on your branch and push, so `target/` stops conflicting, and keep `pom.xml` at JavaFX 25.0.5 / MariaDB 3.5.7. Everyone creates the `stand_sales` table by running only its `CREATE TABLE` block from `database/schema.sql`, never the whole file. In IntelliJ's Database tool, set your own data source login in its Properties.
+> Quick sync on `submain`. It now has your `dfb656b`, plus the backend: `stand_sales`, `StandSaleDAO.insertSale` and `deleteSale`, and the Stand Sale screen reading the database (searchable product dropdown; Record Sale and Delete sale save). Please **pull `submain` before editing `StandSaleController` or `DashboardController`**, and tell me who edits them. Three small things in `STANDSALE.fxml`: (1) the Delete icon is still partly cut off at the right edge of the table, so the Actions column needs more room; (2) the left column needs a transparent `ScrollPane` around it, because Top sellers is cut off at the bottom when there are many products; (3) each product choice must keep its `product_id` (the backend's `insertSale` needs it, and I already carry it in `StandSaleController`). Also: please run `git rm -r --cached target` on your branch and push, so `target/` stops conflicting, and keep `pom.xml` at JavaFX 25.0.5 / MariaDB 3.5.7. Everyone creates the `stand_sales` table by running only its `CREATE TABLE` block from `database/schema.sql`, never the whole file. In IntelliJ's Database tool, set your own data source login in its Properties. The Edit icon in Stand Sale is still screen-only, so please do not change the Edit/Delete code in `StandSaleController` without telling me.
 
 ### K.4 Evidence labels
 `[VERIFIED-USER]` pasted output or screenshot · `[VERIFIED-GIT]` read from the remote by an agent (pushed commits only) · `[VERIFIED-BUILD]` compiled or run by an agent (state the JDK) · `[USER-REPORTED]` said by the user, no output shown · `[UNVERIFIED]` cannot be proven from the sandbox · `[DECISION]` agreed · `[RECOMMENDED]` advice, accepted or not yet carried out (say which).
@@ -390,13 +398,14 @@ SELECT product_id, name, image_path FROM products ORDER BY product_id;   -- phot
 Merge guide (Appendix E), the reviewer's fix list (Appendix F), exact pre-merge file listings (Appendix B), seed data from the C system (Appendix A; also `database/seed.sql`), decision log L1–L37, defects D1–D46, session logs. **The agent that wrote v15 had no access to v13.** Ask the user to upload v13 (or one section of it) **only** when a task needs it.
 
 ### K.6 Companion file
-`BANNER_COMMENTS.txt` (22 ready-to-paste banners and 2 comment replacements, anchors verified on `ed1471d`). It is a one-time instruction sheet, not part of the repo; once applied it can be deleted.
+`BANNER_COMMENTS.txt` (22 ready-to-paste banners and 2 comment replacements, anchors verified on `ed1471d`). It was a one-time instruction sheet, not part of the repo. **Applied and committed as `7d046f8` (2026-11-25)**; it can be deleted.
 
 ---
 
 ## L. CHANGELOG (newest first; compress rows older than 5 versions)
 | Version | Date | Change |
 |---|---|---|
+| **16** | 2026-11-26 | State `746adb3`. Recorded: Step B `6515631`, banner comments `7d046f8` and v15 `00901ff` pushed; **Delete sale** (`deleteSale` DAO + controller + `"SaleId"` row key) `746adb3`, tested (throwaway sale; accidental Delete of the Leaf test sale doubled as a test); test data gone; the GitHub push rejection and its handling (C.4, C48, D63); the Edit dialog's price rule read from the code; the user's own task-list reading (only the stand-sale table is his accomplished item); Edit sale added to the to-do (T11, recommendation updated to B with A as the fallback); decisions L51–L52, rule C.1 #16, correction C48, defect D63; Q9 and Q10 closed; D54 half resolved, D58 resolved; next batch T10–T12. |
 | **15** | 2026-11-24 | **Detailed edition** (L43). Added section 0 (where we left off) and M (history); kept all of v14. Recorded: teammate's `dfb656b` merged (`37c10a2`, `57428b0`), `insertSale` (`8ba9563`), Stand Sale reads the database (`81d50de`), searchable dropdown (`ed1471d`), Step B working but unpushed; the IntelliJ data-source fix; the layout findings (D55, D56); decisions L43–L50, corrections C43–C47, defects D54–D62, questions Q7–Q10; code-comment convention C.5; next batch T8–T10. |
 | 14 | 2026-11-22 | Replaced v13 as the working handoff (compact, in the repo). Added: team task list mapped to the code (F.1), `stand_sales` slice (`c3ad3b8`), teammate's `dfb656b` and the trial merge result, decisions L38–L42, corrections C41–C42, defects D47–D53, next batch T5–T7. |
 | 13 | 2026-11-22 | Full-detail edition (about 356 KB, 3,287 lines), state at `427312f`. Kept as an archive outside the repo. |
@@ -420,3 +429,4 @@ Merge guide (Appendix E), the reviewer's fix list (Appendix F), exact pre-merge 
 - **2026-11-20** First real database slice = Inventory READ (`ProductDAO.getAllProducts()`), then the Orders frames. The user said the defense is "next week". Confirmed phpMyAdmin shows the 44 seed products.
 - **2026-11-22** Team task list (Raven / Ravs / Ange) analysed against the code; decisions L38–L40; `stand_sales` slice `c3ad3b8`; v13 (3,287 lines, state `427312f`); this compact handoff v14 (`651fa59`).
 - **2026-11-24** This session: see section 0, E.4, F.2 and L (v15).
+- **2026-11-25/26** Step B, banner comments and v15 pushed; **Delete sale** built, tested and pushed (`746adb3`); a GitHub 500 on the first push was handled by retrying (C48); test data cleaned; Edit sale and the order-side queries are next (section 0, T10–T12, L row 16).
