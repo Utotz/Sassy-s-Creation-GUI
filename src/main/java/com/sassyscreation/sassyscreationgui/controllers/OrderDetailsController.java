@@ -2,10 +2,13 @@ package com.sassyscreation.sassyscreationgui.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -28,6 +31,9 @@ import javafx.stage.Window;
 public class OrderDetailsController {
 
     private static final String FXML_PATH = "/com/sassyscreation/sassyscreationgui/ORDERDETAILS.fxml";
+
+    // Blur strength of the screen behind the dialog
+    private static final double BLUR_RADIUS = 10;
 
     @FXML private Label lblDetailTitle;
     @FXML private Label dCustomer;
@@ -61,7 +67,7 @@ public class OrderDetailsController {
             OrderDetailsController controller = loader.getController();
             controller.setOrder(orderId, customer, product, color, arrangement, price, date, status);
 
-            Stage stage = new Stage(StageStyle.TRANSPARENT);
+            Stage stage = new Stage(StageStyle.TRANSPARENT); // no title bar, no window background
             if (owner != null) {
                 stage.initOwner(owner);
             }
@@ -70,11 +76,23 @@ public class OrderDetailsController {
             stage.setResizable(false);
 
             Scene scene = new Scene(root);
-            scene.setFill(Color.TRANSPARENT);
+            scene.setFill(Color.TRANSPARENT); // only the card is visible
             stage.setScene(scene);
             enableDrag(root, stage);
 
-            stage.showAndWait();
+            // Blur the screen behind the dialog while it is open
+            Node ownerRoot = owner == null || owner.getScene() == null ? null : owner.getScene().getRoot();
+            Effect oldEffect = ownerRoot == null ? null : ownerRoot.getEffect();
+            if (ownerRoot != null) {
+                ownerRoot.setEffect(new GaussianBlur(BLUR_RADIUS));
+            }
+            try {
+                stage.showAndWait();
+            } finally {
+                if (ownerRoot != null) {
+                    ownerRoot.setEffect(oldEffect);
+                }
+            }
 
             return controller.editRequested;
         } catch (Exception e) {

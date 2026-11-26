@@ -1167,3 +1167,64 @@
     -fx-background-insets: 0 0 -4 0, 0;
     -fx-background-radius: 24, 24;
 }
+/* ===== Restock popup: quantity spinner (paste at the very END of styles.css) ===== */
+
+.spinner.restock-spinner {
+    -fx-background-color: #FFF5F8;
+    -fx-background-insets: 0;
+    -fx-background-radius: 12;
+    -fx-border-color: #E3A3BB;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 12;
+    -fx-padding: 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.spinner.restock-spinner:focused {
+    -fx-border-color: #C22A62;
+}
+
+/* the text field in the middle: no box of its own */
+.spinner.restock-spinner > .text-field {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-alignment: CENTER;
+}
+
+/* arrow buttons: flat, same height as the box, rounded only on the outer corners */
+.spinner.restock-spinner.split-arrows-horizontal > .decrement-arrow-button,
+.spinner.restock-spinner.split-arrows-horizontal > .increment-arrow-button {
+    -fx-background-color: #FCE4EC;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0 14 0 14;
+    -fx-cursor: hand;
+}
+
+.spinner.restock-spinner.split-arrows-horizontal > .decrement-arrow-button {
+    -fx-background-radius: 10 0 0 10;
+}
+
+.spinner.restock-spinner.split-arrows-horizontal > .increment-arrow-button {
+    -fx-background-radius: 0 10 10 0;
+}
+
+.spinner.restock-spinner.split-arrows-horizontal > .decrement-arrow-button:hover,
+.spinner.restock-spinner.split-arrows-horizontal > .increment-arrow-button:hover {
+    -fx-background-color: #F8BBD0;
+}
+
+.spinner.restock-spinner.split-arrows-horizontal > .decrement-arrow-button:pressed,
+.spinner.restock-spinner.split-arrows-horizontal > .increment-arrow-button:pressed {
+    -fx-background-color: #F2A3BE;
+}
+
+/* the little triangles */
+.spinner.restock-spinner > .decrement-arrow-button > .decrement-arrow,
+.spinner.restock-spinner > .increment-arrow-button > .increment-arrow {
+    -fx-background-color: #C22A62;
+}

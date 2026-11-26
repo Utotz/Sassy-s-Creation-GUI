@@ -9,19 +9,37 @@
 <StackPane fx:id="root" style="-fx-background-color: transparent; -fx-padding: 44;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sassyscreation.sassyscreationgui.controllers.RestockController">
     <stylesheets><URL value="@styles.css" /><URL value="@text-large.css" /></stylesheets>
     <children>
-        <VBox alignment="CENTER" maxWidth="420.0" prefWidth="420.0" spacing="0.0" styleClass="dialog-card, dialog-card-pink">
+        <VBox alignment="CENTER" maxWidth="420.0" prefWidth="420.0" spacing="0.0" style="-fx-padding: 28 28 24 28;" styleClass="dialog-card, dialog-card-pink">
             <children>
                 <StackPane styleClass="icon-badge-sm"><children><Region styleClass="ico, ico-box" /></children></StackPane>
                 <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="dialog-title-dark" text="Restock product" textAlignment="CENTER">
                     <VBox.margin><Insets bottom="10.0" top="10.0" /></VBox.margin>
                 </Label>
-                <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="Product" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dName" maxWidth="240.0" styleClass="detail-value" text="Rose Keychain" textAlignment="RIGHT" wrapText="true" /></children></HBox>
-                <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="Current stock" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dStock" maxWidth="240.0" styleClass="detail-value" text="5" textAlignment="RIGHT" wrapText="true" /></children></HBox>
-                <Label styleClass="form-label" style="-fx-padding: 16 0 6 0;" text="Quantity to add" />
+
+                <HBox alignment="CENTER_LEFT" styleClass="detail-row"><children>
+                    <Label styleClass="detail-key" text="Product" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="dName" maxWidth="240.0" styleClass="detail-value" text="Rose Keychain" textAlignment="RIGHT" wrapText="true" />
+                </children></HBox>
+
+                <HBox alignment="CENTER_LEFT" styleClass="detail-row"><children>
+                    <Label styleClass="detail-key" text="Current stock" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="dStock" maxWidth="240.0" styleClass="detail-value" text="5" textAlignment="RIGHT" wrapText="true" />
+                </children></HBox>
+
+                <Label alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" style="-fx-padding: 16 0 6 0;" styleClass="form-label" text="Quantity to add" />
                 <!-- value factory (1..9999, start 1) is set in RestockController.initialize() -->
-                <Spinner fx:id="spRestockQty" editable="true" initialValue="1" max="9999" maxWidth="1.7976931348623157E308" min="1" prefHeight="40.0" styleClass="split-arrows-horizontal" />
-                <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="New stock total" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dNewStock" maxWidth="240.0" styleClass="detail-value" text="6" textAlignment="RIGHT" wrapText="true" /></children></HBox>
+                <Spinner fx:id="spRestockQty" editable="true" initialValue="1" max="9999" maxWidth="1.7976931348623157E308" min="1" prefHeight="42.0" styleClass="restock-spinner, split-arrows-horizontal" />
+
+                <HBox alignment="CENTER_LEFT" styleClass="detail-row"><children>
+                    <Label styleClass="detail-key" text="New stock total" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="dNewStock" maxWidth="240.0" styleClass="detail-value" text="6" textAlignment="RIGHT" wrapText="true" />
+                </children></HBox>
+
                 <HBox alignment="CENTER" spacing="14.0" styleClass="dialog-buttons">
+                    <VBox.margin><Insets top="18.0" /></VBox.margin>
                     <children>
                         <Button fx:id="btnCancelRestock" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCancelRestock" styleClass="btn-ghost" text="Cancel" HBox.hgrow="ALWAYS" />
                         <Button fx:id="btnConfirmRestock" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleConfirmRestock" styleClass="btn-primary" text="Add stock" HBox.hgrow="ALWAYS" />

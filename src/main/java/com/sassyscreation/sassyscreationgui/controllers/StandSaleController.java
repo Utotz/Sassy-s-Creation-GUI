@@ -314,6 +314,7 @@ public class StandSaleController implements Initializable {
     //    3. on SQLException: warning, nothing saved, screen unchanged
     //    4. reload products and sales from the database, then refresh the form,
     //       the chips and Top sellers (the screen always shows what was saved)
+    //    5. show the "Sale recorded" dialog
     // =====================================================================
     @FXML
     private void handleRecordSale() {
@@ -349,11 +350,7 @@ public class StandSaleController implements Initializable {
         updateForm();
         updateSummary();
 
-        Alert info = new Alert(Alert.AlertType.INFORMATION);
-        info.setTitle("Sale recorded");
-        info.setHeaderText(null);
-        info.setContentText(qty + " x " + p.name + " recorded: " + peso(qty * p.price));
-        info.showAndWait();
+        SaleRecordedController.show(currentStage(), p.name, qty, peso(qty * p.price));
     }
 
     // =====================================================================

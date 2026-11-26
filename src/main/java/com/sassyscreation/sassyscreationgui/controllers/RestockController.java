@@ -10,6 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -25,10 +27,12 @@ import java.util.OptionalInt;
  *   fx:controller="com.sassyscreation.sassyscreationgui.controllers.RestockController"
  *
  * Usage (e.g. in InventoryController.restockProduct):
- *   OptionalInt qty = RestockController.show(owner, p.getName(), p.getStockQuantity());
+ *   OptionalInt qty = RestockController.show(owner, p.getName(), p.getStock());
  *   if (qty.isPresent()) {
  *       // add qty.getAsInt() to the product's stock in the database, then refresh
  *   }
+ *
+ * While the popup is open, the window behind it is blurred.
  */
 public class RestockController {
 
@@ -36,6 +40,26 @@ public class RestockController {
 
     private static final int QTY_MIN = 1;
     private static final int QTY_MAX = 9999;
+
+    /** Blur strength applied to the window behind the popup. */
+    private static final double BLUR_RADIUS = 10;
+
+    /**
+     * Makes the spinner's text field invisible as a "box": no background, border or focus ring,
+     * so nothing pokes out beside the arrow buttons. The spinner itself keeps its own look.
+     */
+    private static final String EDITOR_STYLE =
+            "-fx-background-color: transparent;"
+                    + "-fx-background-insets: 0;"
+                    + "-fx-background-radius: 0;"
+                    + "-fx-border-color: transparent;"
+                    + "-fx-border-width: 0;"
+                    + "-fx-focus-color: transparent;"
+                    + "-fx-faint-focus-color: transparent;"
+                    + "-fx-padding: 0 10 0 10;";
+
+    private static final String SPINNER_STYLE =
+            "-fx-focus-color: transparent; -fx-faint-focus-color: transparent;";
 
     @FXML private Label dName;
     @FXML private Label dStock;
@@ -53,6 +77,10 @@ public class RestockController {
 
     /** Shows the dialog and blocks until closed. @return the quantity to add, or empty if cancelled. */
     public static OptionalInt show(Window owner, String productName, int currentStock) {
+        // blur whatever is behind the popup (restored when the popup closes)
+        Node ownerRoot = (owner != null && owner.getScene() != null) ? owner.getScene().getRoot() : null;
+        Effect previousEffect = ownerRoot == null ? null : ownerRoot.getEffect();
+
         try {
             FXMLLoader loader = new FXMLLoader(RestockController.class.getResource(FXML_PATH));
             Parent root = loader.load();
@@ -72,12 +100,20 @@ public class RestockController {
             stage.setScene(scene);
             enableDrag(root, stage);
 
+            if (ownerRoot != null) {
+                ownerRoot.setEffect(new GaussianBlur(BLUR_RADIUS));
+            }
+
             stage.showAndWait();
 
             return controller.result;
         } catch (Exception e) {
             e.printStackTrace();
             return OptionalInt.empty();
+        } finally {
+            if (ownerRoot != null) {
+                ownerRoot.setEffect(previousEffect);
+            }
         }
     }
 
@@ -117,10 +153,19 @@ public class RestockController {
         spRestockQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(QTY_MIN, QTY_MAX, 1));
         spRestockQty.setEditable(true);
 
+        // stop the text field from drawing its own box / focus ring beside the arrows
+        spRestockQty.setStyle(SPINNER_STYLE);
+        spRestockQty.getEditor().setStyle(EDITOR_STYLE);
+
         // live "stock after restock" preview
         spRestockQty.valueProperty().addListener((obs, o, n) -> updateNewStock());
         // commit typed text when focus is lost
         spRestockQty.focusedProperty().addListener((obs, was, is) -> {
+            if (!is) {
+                commitSpinner();
+            }
+        });
+        spRestockQty.getEditor().focusedProperty().addListener((obs, was, is) -> {
             if (!is) {
                 commitSpinner();
             }

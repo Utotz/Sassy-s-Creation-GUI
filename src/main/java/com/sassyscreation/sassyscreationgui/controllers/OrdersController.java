@@ -384,19 +384,20 @@ public class OrdersController implements Initializable {
     // =====================================================================
 
     private void showOrderDetails(Map<String, Object> o) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.initOwner(currentStage());
-        alert.setTitle("Order details");
-        alert.setHeaderText("Order #" + o.get("id"));
-        alert.setContentText(
-                "Customer: " + o.get("fb") + "\n"
-                        + "Product: " + o.get("product") + "\n"
-                        + "Color: " + o.get("color") + "\n"
-                        + "Price: " + peso(o.get("price")) + "\n"
-                        + "Type: " + o.get("type") + "\n"
-                        + "Date: " + o.get("date") + "\n"
-                        + "Status: " + o.get("status"));
-        alert.showAndWait();
+        boolean edit = OrderDetailsController.show(
+                currentStage(),
+                o.get("id"),
+                String.valueOf(o.get("fb")),
+                String.valueOf(o.get("product")),
+                String.valueOf(o.get("color")),
+                String.valueOf(o.get("type")),
+                peso(o.get("price")),
+                String.valueOf(o.get("date")),
+                String.valueOf(o.get("status")));
+
+        if (edit) {
+            openAddOrder(o);
+        }
     }
 
     private void openAddOrder(Map<String, Object> o) {

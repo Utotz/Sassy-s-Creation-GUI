@@ -38,7 +38,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.Locale;
-import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.ResourceBundle;
 import java.util.function.Function;
 
@@ -50,6 +50,12 @@ import java.util.function.Function;
  *
  * "Add product" opens the ADDPRODUCT.fxml screen. AddProductController calls
  * InventoryController.addProduct(...) when you press Save.
+ *
+ * "Edit" opens the EDITPRODUCT.fxml screen. EditProductController calls
+ * InventoryController.updateProduct(...) when you press Save.
+ *
+ * "Restock" opens the RESTOCK.fxml popup (RestockController) and saves the added
+ * quantity to the database.
  */
 public class InventoryController implements Initializable {
 
@@ -145,6 +151,25 @@ public class InventoryController implements Initializable {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * Called by EditProductController when an edited product is saved.
+     * Replaces the product in the list (matched by id).
+     *
+     * @return true if the product was found
+     */
+    public static boolean updateProduct(int id, String name, String category, double price,
+                                        int stock, String imagePath) {
+        for (int i = 0; i < PRODUCTS.size(); i++) {
+            Product old = PRODUCTS.get(i);
+            if (old.getId() == id) {
+                // TODO: UPDATE the product in the database
+                PRODUCTS.set(i, new Product(id, name, category, price, stock, old.getPhotoClass(), imagePath));
+                return true;
+            }
+        }
+        return false;
     }
 
     // ---------------------------------------------------------------
@@ -587,100 +612,26 @@ public class InventoryController implements Initializable {
     // =====================================================================
     // Row / card actions
     // =====================================================================
+
+    /** Opens the Restock popup (RESTOCK.fxml) and saves the added quantity to the database. */
     private void restockProduct(Product p) {
-        TextInputDialog d = new TextInputDialog("1");
-        d.setTitle("Restock");
-        d.setHeaderText("Restock " + p.getName());
-        d.setContentText("Quantity to add:");
-        d.initOwner(ownerWindow());
-        Optional<String> r = d.showAndWait();
-        if (r.isEmpty()) {
-            return;
+        OptionalInt qty = RestockController.show(ownerWindow(), p.getName(), p.getStock());
+        if (qty.isEmpty()) {
+            return;                                   // cancelled
         }
         try {
-            int qty = Integer.parseInt(r.get().trim());
-            if (qty < 1) {
-                throw new NumberFormatException();
-            }
-            p.stock += qty;
-            // TODO: UPDATE the stock in the database
+            productDAO.addStock(p.getId(), qty.getAsInt());
+            loadProductsFromDB();                     // reload so the list shows the saved stock
             refresh();
-        } catch (NumberFormatException ex) {
-            warn("Invalid quantity", "Enter a whole number of 1 or more.");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            error("Could not restock", rootCause(ex));
         }
     }
 
+    /** Opens the Edit product screen (EDITPRODUCT.fxml) for this product. */
     private void editProduct(Product p) {
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("Edit product");
-        dialog.setHeaderText("Edit " + p.getName());
-        dialog.initOwner(ownerWindow());
-
-        // Deleting is also available from inside the edit dialog
-        ButtonType deleteType = new ButtonType("Delete product", ButtonBar.ButtonData.LEFT);
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL, deleteType);
-
-        TextField name = new TextField(p.getName());
-        ComboBox<String> category = new ComboBox<>(
-                FXCollections.observableArrayList("Bouquet", "Crochet", "Keychain"));
-        category.setValue(p.getCategory());
-        TextField price = new TextField(String.format(Locale.US, "%.2f", p.getPrice()));
-        TextField stock = new TextField(String.valueOf(p.getStock()));
-
-        GridPane g = new GridPane();
-        g.setHgap(12);
-        g.setVgap(10);
-        g.setPadding(new Insets(16));
-        g.addRow(0, new Label("Name"), name);
-        g.addRow(1, new Label("Category"), category);
-        g.addRow(2, new Label("Price (PHP)"), price);
-        g.addRow(3, new Label("Stock"), stock);
-        dialog.getDialogPane().setContent(g);
-
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isEmpty()) {
-            return;
-        }
-        if (result.get() == deleteType) {
-            deleteProduct(p);
-            return;
-        }
-        if (result.get() != ButtonType.OK) {
-            return;
-        }
-
-        String newName = name.getText() == null ? "" : name.getText().trim();
-        if (newName.isEmpty()) {
-            warn("Missing name", "Please enter a product name.");
-            return;
-        }
-        double newPrice;
-        int newStock;
-        try {
-            newPrice = Double.parseDouble(price.getText().trim().replace(",", ""));
-            if (newPrice < 0) {
-                throw new NumberFormatException();
-            }
-        } catch (NumberFormatException ex) {
-            warn("Invalid price", "Enter a price of 0 or more (e.g. 55.00).");
-            return;
-        }
-        try {
-            newStock = Integer.parseInt(stock.getText().trim());
-            if (newStock < 0) {
-                throw new NumberFormatException();
-            }
-        } catch (NumberFormatException ex) {
-            warn("Invalid stock", "Stock must be a whole number of 0 or more.");
-            return;
-        }
-
-        p.name = newName;
-        p.category = category.getValue() == null ? p.getCategory() : category.getValue();
-        p.price = newPrice;
-        p.stock = newStock;
-        // TODO: UPDATE the product in the database
-        refresh();
+        EditProductController.open(currentStage(), p);
     }
 
     private void deleteProduct(Product p) {
