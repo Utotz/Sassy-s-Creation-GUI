@@ -125,6 +125,7 @@ public class InventoryController implements Initializable {
                         dbProd.getImagePath()
                 ));
             }
+            PRODUCTS.sort(Comparator.comparingInt(Product::getId));
         } catch (Exception e) {
             e.printStackTrace();
         }
