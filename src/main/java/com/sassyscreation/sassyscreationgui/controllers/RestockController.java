@@ -7,11 +7,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -44,26 +45,18 @@ public class RestockController {
     /** Blur strength applied to the window behind the popup. */
     private static final double BLUR_RADIUS = 10;
 
-    /**
-     * Makes the spinner's text field invisible as a "box": no background, border or focus ring,
-     * so nothing pokes out beside the arrow buttons. The spinner itself keeps its own look.
-     */
-    private static final String EDITOR_STYLE =
-            "-fx-background-color: transparent;"
-                    + "-fx-background-insets: 0;"
-                    + "-fx-background-radius: 0;"
-                    + "-fx-border-color: transparent;"
-                    + "-fx-border-width: 0;"
-                    + "-fx-focus-color: transparent;"
-                    + "-fx-faint-focus-color: transparent;"
-                    + "-fx-padding: 0 10 0 10;";
-
-    private static final String SPINNER_STYLE =
-            "-fx-focus-color: transparent; -fx-faint-focus-color: transparent;";
+    // pill look (normal / while the number is being edited)
+    private static final String PILL_BASE =
+            "-fx-background-color: #FDEFF3; -fx-background-radius: 16; -fx-border-radius: 16; -fx-border-width: 1; ";
+    private static final String PILL_NORMAL = PILL_BASE + "-fx-border-color: #F0D3DC;";
+    private static final String PILL_FOCUSED = PILL_BASE + "-fx-border-color: #C22A62;";
 
     @FXML private Label dName;
     @FXML private Label dStock;
-    @FXML private Spinner<Integer> spRestockQty;
+    @FXML private HBox qtyBox;
+    @FXML private TextField tfRestockQty;
+    @FXML private Button btnQtyMinus;
+    @FXML private Button btnQtyPlus;
     @FXML private Label dNewStock;
     @FXML private Button btnCancelRestock;
     @FXML private Button btnConfirmRestock;
@@ -117,7 +110,7 @@ public class RestockController {
         }
     }
 
-    /** Lets the user drag the undecorated window by its background (not while selecting text). */
+    /** Lets the user drag the undecorated window by its background (not on the number or buttons). */
     private static void enableDrag(Parent root, Stage stage) {
         final double[] offset = new double[2];
         root.setOnMousePressed(e -> {
@@ -125,7 +118,7 @@ public class RestockController {
             offset[1] = e.getScreenY() - stage.getY();
         });
         root.setOnMouseDragged(e -> {
-            if (isInTextInput(e.getTarget())) {
+            if (isOnInput(e.getTarget())) {
                 return;
             }
             stage.setX(e.getScreenX() - offset[0]);
@@ -133,10 +126,10 @@ public class RestockController {
         });
     }
 
-    private static boolean isInTextInput(Object target) {
+    private static boolean isOnInput(Object target) {
         Node n = (target instanceof Node) ? (Node) target : null;
         while (n != null) {
-            if (n instanceof TextInputControl || n instanceof Spinner) {
+            if (n instanceof TextInputControl || n instanceof Button) {
                 return true;
             }
             n = n.getParent();
@@ -150,26 +143,36 @@ public class RestockController {
 
     @FXML
     private void initialize() {
-        spRestockQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(QTY_MIN, QTY_MAX, 1));
-        spRestockQty.setEditable(true);
+        tfRestockQty.setText(String.valueOf(QTY_MIN));
 
-        // stop the text field from drawing its own box / focus ring beside the arrows
-        spRestockQty.setStyle(SPINNER_STYLE);
-        spRestockQty.getEditor().setStyle(EDITOR_STYLE);
+        // digits only, max 4
+        tfRestockQty.textProperty().addListener((obs, oldText, newText) -> {
+            if (newText != null && !newText.matches("\\d{0,4}")) {
+                tfRestockQty.setText(oldText);
+                return;
+            }
+            updateNewStock();
+        });
 
-        // live "stock after restock" preview
-        spRestockQty.valueProperty().addListener((obs, o, n) -> updateNewStock());
-        // commit typed text when focus is lost
-        spRestockQty.focusedProperty().addListener((obs, was, is) -> {
+        // clamp the typed number when focus is lost; pink border while editing
+        tfRestockQty.focusedProperty().addListener((obs, was, is) -> {
+            qtyBox.setStyle(is ? PILL_FOCUSED : PILL_NORMAL);
             if (!is) {
-                commitSpinner();
+                setQty(typedQty());
             }
         });
-        spRestockQty.getEditor().focusedProperty().addListener((obs, was, is) -> {
-            if (!is) {
-                commitSpinner();
+
+        // Up / Down arrows act like + and -
+        tfRestockQty.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.UP) {
+                handleQtyPlus();
+                e.consume();
+            } else if (e.getCode() == KeyCode.DOWN) {
+                handleQtyMinus();
+                e.consume();
             }
         });
+
         btnCancelRestock.setCancelButton(true);
     }
 
@@ -180,23 +183,38 @@ public class RestockController {
         updateNewStock();
     }
 
-    private void updateNewStock() {
-        Integer qty = spRestockQty.getValue();
-        dNewStock.setText(String.valueOf(currentStock + (qty == null ? 0 : qty)));
+    // ---------------------------------------------------------------
+    // Quantity
+    // ---------------------------------------------------------------
+
+    /** What is typed right now (0 if empty), not clamped. */
+    private int typedQty() {
+        try {
+            return Integer.parseInt(tfRestockQty.getText().trim());
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 
-    /** Parses what is typed in the spinner, clamps it, and writes it back. */
-    private int commitSpinner() {
-        int value;
-        try {
-            value = Integer.parseInt(spRestockQty.getEditor().getText().trim());
-        } catch (NumberFormatException e) {
-            value = spRestockQty.getValue() == null ? QTY_MIN : spRestockQty.getValue();
-        }
+    /** Clamps to QTY_MIN..QTY_MAX and writes it into the field. */
+    private int setQty(int value) {
         value = Math.max(QTY_MIN, Math.min(QTY_MAX, value));
-        spRestockQty.getValueFactory().setValue(value);
-        spRestockQty.getEditor().setText(String.valueOf(value));
+        tfRestockQty.setText(String.valueOf(value));
         return value;
+    }
+
+    private void updateNewStock() {
+        dNewStock.setText(String.valueOf(currentStock + typedQty()));
+    }
+
+    @FXML
+    private void handleQtyMinus() {
+        setQty(typedQty() - 1);
+    }
+
+    @FXML
+    private void handleQtyPlus() {
+        setQty(typedQty() + 1);
     }
 
     // ---------------------------------------------------------------
@@ -205,7 +223,7 @@ public class RestockController {
 
     @FXML
     private void handleConfirmRestock() {
-        result = OptionalInt.of(commitSpinner());
+        result = OptionalInt.of(setQty(typedQty()));
         close();
     }
 

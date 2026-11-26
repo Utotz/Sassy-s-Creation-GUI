@@ -378,7 +378,12 @@ public class StandSaleController implements Initializable {
         colSalePrice.setCellFactory(col -> textCell(true));
         colSaleTotal.setCellFactory(col -> textCell(true));
 
-        // Actions: icon-only edit + delete buttons, left-aligned in the (wider) Actions column
+        // Actions column width is set here so it does not depend on the FXML value
+        colSaleActions.setMinWidth(ACTION_COL_WIDTH);
+        colSaleActions.setPrefWidth(ACTION_COL_WIDTH);
+        colSaleActions.setMaxWidth(ACTION_COL_WIDTH);
+
+        // Actions: icon-only edit + delete buttons, right-aligned with a fixed gap on the right
         colSaleActions.setCellFactory(col -> new TableCell<>() {
             {
                 setStyle(ACTION_CELL_STYLE);
@@ -401,7 +406,7 @@ public class StandSaleController implements Initializable {
                 delete.setOnAction(e -> deleteSale(row));
 
                 HBox box = new HBox(ACTION_GAP, edit, delete);
-                box.setAlignment(Pos.CENTER_LEFT);
+                box.setAlignment(Pos.CENTER_RIGHT);
                 setGraphic(box);
             }
         });
@@ -432,16 +437,27 @@ public class StandSaleController implements Initializable {
         headerTimer.playFromStart();
     }
 
-    /** Width of each Edit/Delete button and the gap between them (px). Change these to nudge the icons. */
-    private static final double ACTION_BTN_WIDTH = 40;
-    private static final double ACTION_GAP = 6;
+    /** Width of each Edit/Delete button and the gap between them (px). Change these to nudge the icons.
+     *  36 + 4 + 36 = 76px, which fits inside the Actions column (see ACTION_COL_WIDTH). */
+    private static final double ACTION_BTN_WIDTH = 36;
+    private static final double ACTION_GAP = 4;
+
+    /** Width of the Actions column (px). It must be wide enough to hold both icons plus the gap
+     *  you want on the left, otherwise the table clips whatever sticks out of the cell. */
+    private static final double ACTION_COL_WIDTH = 140;
+
+    /** Space between the Delete icon and the right end of the Actions column (px).
+     *  Raise it to move BOTH icons left, lower it to move them right. */
+    private static final double ACTION_RIGHT_PAD = 52;
 
     /** Header labels and cells share this style: text centered in the column, so a header sits
      *  exactly over its values (the "t" of Qty over the number, not the "Q"). */
     private static final String TEXT_CELL_STYLE = "-fx-alignment: CENTER; -fx-padding: 0;";
 
-    /** The Edit/Delete icons stay left-aligned in their wide column. */
-    private static final String ACTION_CELL_STYLE = "-fx-alignment: CENTER_LEFT; -fx-padding: 0 0 0 16;";
+    /** The Edit/Delete icons are right-aligned with ACTION_RIGHT_PAD of space on the right, so both
+     *  stay fully inside the cell (anything outside the cell is clipped by the table). */
+    private static final String ACTION_CELL_STYLE =
+            "-fx-alignment: CENTER_RIGHT; -fx-padding: 0 " + ACTION_RIGHT_PAD + " 0 0;";
 
     /** A plain text cell (or a peso-formatted one) with the shared alignment/padding. */
     private TableCell<Map<String, Object>, Object> textCell(boolean peso) {

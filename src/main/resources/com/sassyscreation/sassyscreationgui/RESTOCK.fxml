@@ -29,8 +29,19 @@
                 </children></HBox>
 
                 <Label alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" style="-fx-padding: 16 0 6 0;" styleClass="form-label" text="Quantity to add" />
-                <!-- value factory (1..9999, start 1) is set in RestockController.initialize() -->
-                <Spinner fx:id="spRestockQty" editable="true" initialValue="1" max="9999" maxWidth="1.7976931348623157E308" min="1" prefHeight="42.0" styleClass="restock-spinner, split-arrows-horizontal" />
+
+                <!-- pill:  [ -   6   + ] -->
+                <HBox fx:id="qtyBox" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="48.0" spacing="0.0"
+                      style="-fx-background-color: #FDEFF3; -fx-background-radius: 16; -fx-border-color: #F0D3DC; -fx-border-radius: 16; -fx-border-width: 1;">
+                    <children>
+                        <Button fx:id="btnQtyMinus" focusTraversable="false" mnemonicParsing="false" onAction="#handleQtyMinus" prefHeight="46.0" prefWidth="56.0" text="&#8722;"
+                                style="-fx-background-color: transparent; -fx-background-radius: 16; -fx-text-fill: #C22A62; -fx-font-size: 22px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;" />
+                        <TextField fx:id="tfRestockQty" alignment="CENTER" focusTraversable="true" HBox.hgrow="ALWAYS" text="1"
+                                   style="-fx-background-color: transparent; -fx-background-insets: 0; -fx-border-color: transparent; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-text-fill: #2B2430; -fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 0;" />
+                        <Button fx:id="btnQtyPlus" focusTraversable="false" mnemonicParsing="false" onAction="#handleQtyPlus" prefHeight="46.0" prefWidth="56.0" text="+"
+                                style="-fx-background-color: transparent; -fx-background-radius: 16; -fx-text-fill: #C22A62; -fx-font-size: 22px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;" />
+                    </children>
+                </HBox>
 
                 <HBox alignment="CENTER_LEFT" styleClass="detail-row"><children>
                     <Label styleClass="detail-key" text="New stock total" />

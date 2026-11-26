@@ -8,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
@@ -17,9 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.net.URL;
 import java.time.DayOfWeek;
@@ -120,7 +117,7 @@ public class DashboardController implements Initializable {
 
     // =====================================================================
     //  TEMPORARY sample data (same rows as the Stand Sale and Orders screens).
-    //  Replace the two lists + today() with real database queries later.
+    //  Replace the lists + today() with real database queries later.
     // =====================================================================
     private record StandSale(LocalDate date, int total) { }
 
@@ -145,6 +142,15 @@ public class DashboardController implements Initializable {
             new OrderSale("ORD-004", "Customer D", LocalDate.of(2026, 5, 1), 350, "Pending", "Pickup"),
             new OrderSale("ORD-005", "Customer E", LocalDate.of(2026, 4, 28), 40, "Done", "Pickup"),
             new OrderSale("ORD-006", "Customer F", LocalDate.of(2026, 5, 10), 1000, "Pending", "Pickup"));
+
+    /**
+     * TEMPORARY: products used by the "Low stock warnings" card AND the "Low stock items" dialog.
+     * Replace with a database query for ALL products (the dialog filters them by its threshold).
+     */
+    private static final List<LowStockController.StockItem> SAMPLE_PRODUCTS = List.of(
+            new LowStockController.StockItem("Sunflower - Fuzzy Wire", "Flowers", 6),
+            new LowStockController.StockItem("Baby Mushroom Keychain", "Keychains", 8),
+            new LowStockController.StockItem("Gypsophila", "Flowers", 12));
 
     /** The sample data is from late April / early May 2026, so "today" is fixed there for now. */
     private static final LocalDate DEMO_TODAY = LocalDate.of(2026, 5, 3);
@@ -326,17 +332,17 @@ public class DashboardController implements Initializable {
     }
 
     /**
-     * TEMPORARY: sample low-stock items.
-     * Replace with a database query (products where stock <= threshold).
+     * Fills the dashboard card from the product list.
+     * TEMPORARY: replace SAMPLE_PRODUCTS with a database query.
      */
     private void loadLowStock() {
         if (tvLowStock == null) {
             return;
         }
         tvLowStock.setItems(FXCollections.observableArrayList(
-                lowStockItem("Sunflower - Fuzzy Wire", "Flowers", 6),
-                lowStockItem("Baby Mushroom Keychain", "Keychains", 8),
-                lowStockItem("Gypsophila", "Flowers", 12)));
+                SAMPLE_PRODUCTS.stream()
+                        .map(p -> lowStockItem(p.name, p.category, p.stock))
+                        .toList()));
     }
 
     private Map<String, Object> lowStockItem(String name, String category, int stock) {
@@ -513,9 +519,13 @@ public class DashboardController implements Initializable {
         switchScreen("INVENTORY_LIST.fxml", "Inventory");
     }
 
+    /** Opens the borderless "Low stock items" dialog (blurred background, same style as About). */
     @FXML
     private void handleOpenLowStock() {
-        openDialog("LOWSTOCK.fxml", "Low stock");
+        boolean openInventory = LowStockController.show(currentStage(), SAMPLE_PRODUCTS);
+        if (openInventory) {
+            goInventory();
+        }
     }
 
     // =====================================================================
@@ -538,30 +548,6 @@ public class DashboardController implements Initializable {
             Stage stage = currentStage();
             ScreenTransition.show(stage.getScene(), root);
             stage.setTitle("Sassy's Creation - " + title);
-        } catch (Exception e) {
-            e.printStackTrace();
-            showError("Could not open " + title, e.getMessage());
-        }
-    }
-
-    /** Opens an FXML screen in a normal pop-up window (with title bar). */
-    private void openDialog(String fxmlName, String title) {
-        try {
-            URL resource = getClass().getResource(FXML_PATH + fxmlName);
-            if (resource == null) {
-                showError("Screen not found", fxmlName + " could not be found in the resources folder.");
-                return;
-            }
-            Parent root = new FXMLLoader(resource).load();
-
-            Stage dialog = new Stage(StageStyle.DECORATED);
-            dialog.initOwner(currentStage());
-            dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.setTitle("Sassy's Creation - " + title);
-
-            Scene scene = new Scene(root);
-            dialog.setScene(scene);
-            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
             showError("Could not open " + title, e.getMessage());
