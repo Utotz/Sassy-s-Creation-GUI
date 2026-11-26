@@ -13,6 +13,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Rectangle;
@@ -99,9 +100,9 @@ public class DashboardController implements Initializable {
     @FXML private Button btnQuickProduct;
 
     // bar sizes
-    private static final double BAR_WIDTH = 26.0;
+    private static final double BAR_WIDTH = 20.0;
     private static final double BAR_MAX_HEIGHT = 200.0;
-    private static final double BAR_PAIR_GAP = 4.0;
+    private static final double BAR_PAIR_GAP = 3.0;
 
     private static final String PESO = "\u20B1";
     private static final String TIER_STAND = "sample-dark";   // dark pink bar  = stand revenue
@@ -426,6 +427,8 @@ public class DashboardController implements Initializable {
 
             VBox column = new VBox(5.0, pair, day);
             column.setAlignment(Pos.BOTTOM_CENTER);
+            HBox.setHgrow(column, Priority.ALWAYS);
+            column.setMaxWidth(Double.MAX_VALUE);
             barSample.getChildren().add(column);
         }
     }

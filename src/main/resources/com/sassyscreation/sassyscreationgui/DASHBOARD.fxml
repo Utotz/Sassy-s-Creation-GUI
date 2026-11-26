@@ -240,7 +240,7 @@
                                                                <yAxis><NumberAxis minorTickVisible="false" tickLabelsVisible="false" tickMarkVisible="false" /></yAxis>
                                                             </BarChart>
                                                             <!-- pill bars: the controller draws these (7 days, 2 bars per day) -->
-                                                            <HBox fx:id="barSample" alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="40.0" style="-fx-background-color: white; -fx-padding: 12 12 6 12;" />
+                                                            <HBox fx:id="barSample" alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="0.0" style="-fx-background-color: white; -fx-padding: 12 12 6 12;" />
                                                          </children>
                                                       </StackPane>
                                                       <Button fx:id="btnNextWeek" focusTraversable="false" maxHeight="44.0" maxWidth="44.0" minHeight="44.0" minWidth="44.0" mnemonicParsing="false" onAction="#handleNextWeek" prefHeight="44.0" prefWidth="44.0" style="-fx-background-color: #FCE4EC; -fx-background-radius: 22; -fx-padding: 0; -fx-cursor: hand;">
