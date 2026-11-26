@@ -1,5 +1,6 @@
 package com.sassyscreation.sassyscreationgui.controllers;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -7,23 +8,30 @@ import com.sassyscreation.sassyscreationgui.dao.ProductDAO;
 import com.sassyscreation.sassyscreationgui.dao.StandSaleDAO;
 import java.sql.SQLException;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.skin.NestedTableColumnHeader;
+import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -92,10 +100,16 @@ public class StandSaleController implements Initializable {
     private static final List<String> PRICE_FILTERS = List.of(
             "All prices", "Under \u20B130", "\u20B130 \u2013 \u20B149", "\u20B150 \u2013 \u20B199", "\u20B1100 or more");
 
+    /** Fixed table order: newest date first (dates are ISO yyyy-MM-dd, so text order = date order). */
+    private static final Comparator<Map<String, Object>> NEWEST_FIRST =
+            (a, b) -> String.valueOf(b.get("Date")).compareTo(String.valueOf(a.get("Date")));
+
     private final Map<String, Product> products = new LinkedHashMap<>();
     private final ObservableList<Map<String, Object>> allSales = FXCollections.observableArrayList();
     /** What the table actually shows (allSales narrowed down by the two dropdowns). */
     private FilteredList<Map<String, Object>> filteredSales;
+    /** filteredSales in fixed newest-first order; this is what the table is bound to. */
+    private SortedList<Map<String, Object>> sortedSales;
 
 
     // =====================================================================
@@ -343,7 +357,7 @@ public class StandSaleController implements Initializable {
     }
 
     // =====================================================================
-                            // SALES TABLE
+    // SALES TABLE
     // =====================================================================
 
 
@@ -351,28 +365,28 @@ public class StandSaleController implements Initializable {
     //  LOGIC: SALES HISTORY TABLE
     //  1) formats Unit and Total as pesos, 2) builds the Edit / Delete icon buttons,
     //  3) wires the data pipeline: allSales -> filteredSales (the two dropdowns)
-    //     -> sorted (column headers) -> table, 4) default order: newest date first.
+    //     -> sortedSales (fixed newest-first order) -> table,
+    //  4) the column headers are NOT clickable (sortable=false in the FXML), so there
+    //     is no sort arrow; the order is decided only by NEWEST_FIRST.
+    //  Header/cell alignment and the actions column are styled inline (see lockTableHeader).
     // =====================================================================
 
     private void setUpTable() {
-        colSalePrice.setCellFactory(col -> new TableCell<>() {
-            @Override
-            protected void updateItem(Object item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty || item == null ? null : peso(((Number) item).doubleValue()));
-            }
-        });
+        // Every text column uses the same centered cell look (same style as the header labels,
+        // see lockTableHeader), so each header sits exactly over its values.
+        colSaleDate.setCellFactory(col -> textCell(false));
+        colSaleProduct.setCellFactory(col -> textCell(false));
+        colSaleQty.setCellFactory(col -> textCell(false));
+        colSalePrice.setCellFactory(col -> textCell(true));
+        colSaleTotal.setCellFactory(col -> textCell(true));
 
-        colSaleTotal.setCellFactory(col -> new TableCell<>() {
-            @Override
-            protected void updateItem(Object item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty || item == null ? null : peso(((Number) item).doubleValue()));
-            }
-        });
-
-        // Actions: icon-only edit + delete buttons (matches the design)
+        // Actions: icon-only edit + delete buttons, left-aligned in the (wider) Actions column
         colSaleActions.setCellFactory(col -> new TableCell<>() {
+            {
+                setStyle(ACTION_CELL_STYLE);
+                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            }
+
             @Override
             protected void updateItem(Object item, boolean empty) {
                 super.updateItem(item, empty);
@@ -388,26 +402,148 @@ public class StandSaleController implements Initializable {
                 Button delete = iconButton("ico-delete-o", "Delete", "btn-icon", "btn-icon-danger");
                 delete.setOnAction(e -> deleteSale(row));
 
-                HBox box = new HBox(10, edit, delete);
+                HBox box = new HBox(ACTION_GAP, edit, delete);
                 box.setAlignment(Pos.CENTER_LEFT);
                 setGraphic(box);
             }
         });
 
-        // Replaces the sample rows hard-coded in the FXML.
-        // allSales -> filteredSales (the two dropdowns) -> sorted (column headers) -> table
+        // allSales -> filteredSales (the two dropdowns) -> sortedSales (newest first) -> table
         filteredSales = new FilteredList<>(allSales, s -> true);
-        SortedList<Map<String, Object>> sorted = new SortedList<>(filteredSales);
-        sorted.comparatorProperty().bind(tvSales.comparatorProperty());
-        tvSales.setItems(sorted);
+        sortedSales = new SortedList<>(filteredSales, NEWEST_FIRST);
+        tvSales.setItems(sortedSales);
 
-        // Newest sales first, like the design
-        colSaleDate.setSortType(TableColumn.SortType.DESCENDING);
-        tvSales.getSortOrder().setAll(colSaleDate);
+        // Header: not draggable, not clickable, text aligned with the cells.
+        // The header only exists once the table's skin is created, so do it then.
+        tvSales.skinProperty().addListener((obs, o, n) -> Platform.runLater(this::lockTableHeader));
+        Platform.runLater(this::lockTableHeader);
+
+        // Re-align the header text whenever the table is resized or its rows change.
+        tvSales.widthProperty().addListener((obs, o, n) -> scheduleCenterHeaders());
+        sortedSales.addListener((ListChangeListener<Map<String, Object>>) c -> scheduleCenterHeaders());
+    }
+
+    private PauseTransition headerTimer;
+
+    /** Runs centerHeaderText a moment later, once JavaFX has laid out the header and the rows. */
+    private void scheduleCenterHeaders() {
+        if (headerTimer == null) {
+            headerTimer = new PauseTransition(Duration.millis(80));
+            headerTimer.setOnFinished(e -> centerHeaderText());
+        }
+        headerTimer.playFromStart();
+    }
+
+    /** Width of each Edit/Delete button and the gap between them (px). Change these to nudge the icons. */
+    private static final double ACTION_BTN_WIDTH = 40;
+    private static final double ACTION_GAP = 6;
+
+    /** Header labels and cells share this style: text centered in the column, so a header sits
+     *  exactly over its values (the "t" of Qty over the number, not the "Q"). */
+    private static final String TEXT_CELL_STYLE = "-fx-alignment: CENTER; -fx-padding: 0;";
+
+    /** The Edit/Delete icons stay left-aligned in their wide column. */
+    private static final String ACTION_CELL_STYLE = "-fx-alignment: CENTER_LEFT; -fx-padding: 0 0 0 16;";
+
+    /** A plain text cell (or a peso-formatted one) with the shared alignment/padding. */
+    private TableCell<Map<String, Object>, Object> textCell(boolean peso) {
+        TableCell<Map<String, Object>, Object> cell = new TableCell<>() {
+            @Override
+            protected void updateItem(Object item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else if (peso) {
+                    setText(peso(((Number) item).doubleValue()));
+                } else {
+                    setText(String.valueOf(item));
+                }
+            }
+        };
+        cell.setStyle(TEXT_CELL_STYLE);
+        return cell;
+    }
+
+    /**
+     * Makes the column header fixed: the whole header row ignores the mouse (no dragging to
+     * reorder or resize, no clicking to sort, no resize cursor) and its labels get the same
+     * centered style as the cells. Uses inline styles on purpose, so it does not depend on any
+     * stylesheet being loaded or winning over styles.css.
+     */
+    private void lockTableHeader() {
+        Node headerRow = tvSales.lookup(".column-header-background");
+        if (headerRow != null) {
+            headerRow.setMouseTransparent(true);
+        }
+        for (Node header : tvSales.lookupAll(".column-header")) {
+            header.setStyle("-fx-padding: 0;");
+        }
+        for (Node label : tvSales.lookupAll(".column-header .label")) {
+            label.setStyle(TEXT_CELL_STYLE);
+        }
+
+        // JavaFX leaves the header text slightly off the column's middle, while the cells are
+        // exactly centered. Measure and correct it (also whenever a header changes width).
+        for (Node n : tvSales.lookupAll(".column-header")) {
+            if (n instanceof TableColumnHeader h && !(n instanceof NestedTableColumnHeader)
+                    && h.getProperties().putIfAbsent("centerHook", Boolean.TRUE) == null) {
+                h.widthProperty().addListener((o, a, b) -> scheduleCenterHeaders());
+            }
+        }
+        scheduleCenterHeaders();
+    }
+
+    /**
+     * Moves each header's text so its middle is exactly over the middle of the cells below it.
+     * The rows start a little to the right of the header row, so the header text is measured
+     * and shifted to the real position of that column's cells (the header's own box is not used).
+     */
+    private void centerHeaderText() {
+        for (Node n : tvSales.lookupAll(".column-header")) {
+            if (!(n instanceof TableColumnHeader h) || n instanceof NestedTableColumnHeader
+                    || h.getWidth() <= 0) {
+                continue;
+            }
+            Node label = h.lookup(".label");
+            if (!(label instanceof Labeled labeled) || labeled.getText() == null
+                    || labeled.getText().isBlank()) {
+                continue;   // e.g. the empty Actions header
+            }
+            Node text = label.lookup(".text");
+            if (text == null) {
+                continue;
+            }
+
+            // where this column's cells really are
+            Bounds cellBox = null;
+            for (Node c : tvSales.lookupAll(".table-cell")) {
+                if (c instanceof TableCell<?, ?> tc && tc.getTableColumn() == h.getTableColumn()
+                        && tc.getWidth() > 0) {
+                    cellBox = tc.localToScene(tc.getLayoutBounds());
+                    break;
+                }
+            }
+            double target = cellBox != null
+                    ? cellBox.getCenterX()
+                    : h.localToScene(h.getLayoutBounds()).getCenterX();
+
+            label.setTranslateX(0);
+            Bounds shown = text.localToScene(text.getBoundsInLocal());
+            label.setTranslateX(target - shown.getCenterX());
+        }
+    }
+
+    /**
+     * Re-applies the newest-first order. Needed after an in-place edit, because the row maps are
+     * not observable, so the SortedList cannot notice that a row's date changed.
+     */
+    private void resortSales() {
+        sortedSales.setComparator(null);
+        sortedSales.setComparator(NEWEST_FIRST);
     }
 
     // =====================================================================
-                        //  Filters (Qty + Unit price dropdowns)
+    //  Filters (Qty + Unit price dropdowns)
     // =====================================================================
 
 
@@ -475,6 +611,10 @@ public class StandSaleController implements Initializable {
         b.setFocusTraversable(false);
         b.setMnemonicParsing(false);
         b.getStyleClass().addAll(styleClasses);
+        // The default icon buttons are much wider than the icon, which pushed the pair against the
+        // right edge. A fixed compact size keeps them next to each other (inline = always wins).
+        b.setStyle("-fx-min-width: " + ACTION_BTN_WIDTH + "; -fx-pref-width: " + ACTION_BTN_WIDTH
+                + "; -fx-max-width: " + ACTION_BTN_WIDTH + "; -fx-padding: 0;");
         Region graphic = new Region();
         graphic.getStyleClass().addAll("ico", icon);
         b.setGraphic(graphic);
@@ -529,8 +669,8 @@ public class StandSaleController implements Initializable {
         row.put("Date", newDate.toString());
 
         applyFilters();   // the edited row may now match (or no longer match) the dropdowns
+        resortSales();    // the date may have changed, keep newest first
         tvSales.refresh();
-        tvSales.sort();
         updateForm();
         updateSummary();
     }
