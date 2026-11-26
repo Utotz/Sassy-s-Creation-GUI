@@ -168,6 +168,7 @@
                                  </FXCollections></items>
                                  <placeholder><Label text="No sales recorded yet" /></placeholder>
                                  <columns>
+                                    <TableColumn fx:id="colSaleId" prefWidth="50.0" text="ID"><cellValueFactory><MapValueFactory key="SaleId" /></cellValueFactory></TableColumn>
                                     <TableColumn fx:id="colSaleDate" prefWidth="120.0" text="Date"><cellValueFactory><MapValueFactory key="Date" /></cellValueFactory></TableColumn>
                                     <TableColumn fx:id="colSaleProduct" prefWidth="190.0" text="Product"><cellValueFactory><MapValueFactory key="Product" /></cellValueFactory></TableColumn>
                                     <TableColumn fx:id="colSaleQty" prefWidth="50.0" text="Qty"><cellValueFactory><MapValueFactory key="Qty" /></cellValueFactory></TableColumn>
