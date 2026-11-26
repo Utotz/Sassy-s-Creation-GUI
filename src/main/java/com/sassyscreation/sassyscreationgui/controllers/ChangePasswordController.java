@@ -1,11 +1,18 @@
 package com.sassyscreation.sassyscreationgui.controllers;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 
 /**
  * Controller for the "Change password" dialog (CHANGEPASSWORD.fxml).
@@ -16,12 +23,20 @@ public class ChangePasswordController {
 
     private static final int MIN_LENGTH = 8;
 
+    private final EventHandler<KeyEvent> escHandler = e -> {
+        if (e.getCode() == KeyCode.ESCAPE) handleCancelPassword();
+    };
+
+    @FXML private StackPane root;
     @FXML private PasswordField pfCurrentPassword;
     @FXML private PasswordField pfChangeNew;
     @FXML private PasswordField pfChangeConfirm;
     @FXML private Label lblChangeError;
     @FXML private Button btnCancelPassword;
     @FXML private Button btnSavePassword;
+
+    private double dragX;
+    private double dragY;
 
     @FXML
     private void initialize() {
@@ -40,6 +55,52 @@ public class ChangePasswordController {
                 handleSavePassword();
             }
         });
+
+        setupWindow();
+    }
+
+    // Makes the window show only the card (no title bar, no white background)
+    private void setupWindow() {
+        // Drag the window
+        root.setOnMousePressed(e -> {
+            Stage stage = (Stage) root.getScene().getWindow();
+            dragX = e.getScreenX() - stage.getX();
+            dragY = e.getScreenY() - stage.getY();
+        });
+        root.setOnMouseDragged(e -> {
+            Stage stage = (Stage) root.getScene().getWindow();
+            stage.setX(e.getScreenX() - dragX);
+            stage.setY(e.getScreenY() - dragY);
+        });
+
+        root.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (oldScene != null) {
+                oldScene.removeEventHandler(KeyEvent.KEY_PRESSED, escHandler);
+            }
+            if (newScene == null) return;
+
+            newScene.setFill(Color.TRANSPARENT);
+            newScene.addEventHandler(KeyEvent.KEY_PRESSED, escHandler);
+
+            // The stage style can only be set before the window is shown
+            makeTransparent(newScene.getWindow());
+            newScene.windowProperty().addListener((o, oldWin, win) -> makeTransparent(win));
+        });
+    }
+
+    private void makeTransparent(Window window) {
+        if (window instanceof Stage stage && !stage.isShowing()) {
+            try {
+                stage.initStyle(StageStyle.TRANSPARENT);
+            } catch (IllegalStateException ex) {
+                // already shown, keep the current style
+            }
+            // Set the fill again when shown, in case the opener changed it
+            stage.addEventHandler(WindowEvent.WINDOW_SHOWN, e -> {
+                stage.getScene().setFill(Color.TRANSPARENT);
+                root.setStyle("-fx-background-color: transparent; -fx-padding: 44;");
+            });
+        }
     }
 
     @FXML
