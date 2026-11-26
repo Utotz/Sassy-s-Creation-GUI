@@ -116,7 +116,7 @@ public class StandSaleController implements Initializable {
     //  LOGIC: DATABASE ACCESS FOR THIS SCREEN
     //  This screen never writes SQL. It asks two DAO objects (one per table):
     //    productDAO   -> getAllProducts()   (names, ids, prices, stock)
-    //    standSaleDAO -> getAllSales(), insertSale(...)
+    //    standSaleDAO -> getAllSales(), insertSale(...), deleteSale(...).
     // =====================================================================
     private static final ProductDAO productDAO = new ProductDAO();
     private static final StandSaleDAO standSaleDAO = new StandSaleDAO();
@@ -165,7 +165,7 @@ public class StandSaleController implements Initializable {
         allSales.clear();
         try {
             for (var s : standSaleDAO.getAllSales()) {
-                allSales.add(sale(s.getProductName(), s.getQuantity(),
+                allSales.add(sale(s.getSaleId(), s.getProductName(), s.getQuantity(),
                         s.getUnitPrice().doubleValue(), s.getSaleDate().toString()));
             }
         } catch (SQLException e) {
@@ -174,8 +174,9 @@ public class StandSaleController implements Initializable {
     }
 
     // Keys must match the MapValueFactory keys in the FXML (case-sensitive)
-    private Map<String, Object> sale(String product, int qty, double price, String date) {
+    private Map<String, Object> sale(int saleId, String product, int qty, double price, String date) {
         Map<String, Object> m = new HashMap<>();
+        m.put("SaleId", saleId);      // not shown in the table; Delete (and later Edit) use it to find the database row
         m.put("Product", product);
         m.put("Qty", qty);
         m.put("Price", price);
@@ -672,8 +673,12 @@ public class StandSaleController implements Initializable {
         updateSummary();
     }
     // =====================================================================
-    //  LOGIC: DELETE A SALE - SCREEN ONLY, NOT SAVED
-    //  ONGOING
+    //  LOGIC: DELETE A SALE (SAVED TO THE DATABASE)
+    //  1. the confirmation dialog (DeleteSaleController) asks first
+    //  2. standSaleDAO.deleteSale(saleId) restores the stock and deletes the row (one transaction)
+    //  3. on SQLException: warning, nothing changed, screen unchanged
+    //  4. reload products and sales, so the screen shows what the database holds
+    //  The sale_id comes from the row's "SaleId" key (set in sale(...)).
     // =====================================================================
 
     private void deleteSale(Map<String, Object> row) {
@@ -689,12 +694,14 @@ public class StandSaleController implements Initializable {
                 peso(((Number) row.get("Total")).doubleValue()));
 
         if (confirmed) {
-            // TODO: also DELETE the sale and restore the stock in the database
-            Product p = products.get(productName);
-            if (p != null) {
-                p.stock += qty;
+            try {
+                standSaleDAO.deleteSale((Integer) row.get("SaleId"));
+            } catch (SQLException e) {
+                showWarning("Could not delete the sale", e.getMessage());
+                return;   // nothing was changed, so leave the screen as it is
             }
-            allSales.remove(row);
+            loadProducts();   // fresh stock from the database
+            loadSales();      // fresh history from the database
             updateForm();
             updateSummary();
         }

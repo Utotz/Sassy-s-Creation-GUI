@@ -110,4 +110,56 @@ public class StandSaleDAO {
             }
         }
     }   // insertSale ends here
+    // =====================================================================
+    //  LOGIC RESPONSIBLE FOR DELETING A SALE AND GIVING THE STOCK BACK (TRANSACTION)
+    //  Mirror of insertSale: ONE connection, autocommit off, all-or-nothing.
+    //    1. SELECT product_id, quantity FROM stand_sales  (what to give back, read from the database)
+    //       no row = the sale is already gone -> exception
+    //    2. UPDATE products SET stock_quantity = stock_quantity + ?
+    //    3. DELETE FROM stand_sales WHERE sale_id = ?
+    //    4. commit() - or rollback() on any SQLException, so stock and sales never disagree
+    // =====================================================================
+
+    public void deleteSale(int saleId) throws SQLException {
+        String findSql = "SELECT product_id, quantity FROM stand_sales WHERE sale_id = ?";
+        String restoreSql = "UPDATE products SET stock_quantity = stock_quantity + ? "
+                + "WHERE product_id = ?";
+        String deleteSql = "DELETE FROM stand_sales WHERE sale_id = ?";
+
+        try (Connection conn = DBConnection.getConnection()) {
+            conn.setAutoCommit(false);          // start the transaction
+            try {
+                int productId;
+                int quantity;
+                try (PreparedStatement ps = conn.prepareStatement(findSql)) {
+                    ps.setInt(1, saleId);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (!rs.next()) {
+                            throw new SQLException("Sale not found. It may already have been deleted.");
+                        }
+                        productId = rs.getInt("product_id");
+                        quantity = rs.getInt("quantity");
+                    }
+                }
+
+                try (PreparedStatement ps = conn.prepareStatement(restoreSql)) {
+                    ps.setInt(1, quantity);
+                    ps.setInt(2, productId);
+                    ps.executeUpdate();
+                }
+
+                try (PreparedStatement ps = conn.prepareStatement(deleteSql)) {
+                    ps.setInt(1, saleId);
+                    if (ps.executeUpdate() == 0) {
+                        throw new SQLException("Sale not found. It may already have been deleted.");
+                    }
+                }
+
+                conn.commit();                  // stock back AND row gone, together
+            } catch (SQLException e) {
+                conn.rollback();                // undo the stock change if anything failed
+                throw e;
+            }
+        }
+    }   // deleteSale ends here
 }
