@@ -55,21 +55,46 @@ public class ProductDAO {
     /** Inserts a new product and returns its generated id. imagePath may be null. */
     public int insertProduct(String name, String category, BigDecimal price,
                              int stock, String imagePath) throws SQLException {
-        String sql = "INSERT INTO products (name, category, price, stock_quantity, image_path) "
+        String findHidden = "SELECT product_id FROM products WHERE name = ? AND is_active = 0";
+        String restore = "UPDATE products SET name = ?, category = ?, price = ?, "
+                + "stock_quantity = ?, image_path = ?, is_active = 1 WHERE product_id = ?";
+        String insert = "INSERT INTO products (name, category, price, stock_quantity, image_path) "
                 + "VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = DBConnection.getConnection()) {
 
-            ps.setString(1, name);
-            ps.setString(2, category);
-            ps.setBigDecimal(3, price);
-            ps.setInt(4, stock);
-            ps.setString(5, imagePath);
-            ps.executeUpdate();
+            // 1) Is there a hidden product with this name? Bring it back.
+            try (PreparedStatement find = conn.prepareStatement(findHidden)) {
+                find.setString(1, name);
+                try (ResultSet rs = find.executeQuery()) {
+                    if (rs.next()) {
+                        int oldId = rs.getInt("product_id");
+                        try (PreparedStatement ps = conn.prepareStatement(restore)) {
+                            ps.setString(1, name);
+                            ps.setString(2, category);
+                            ps.setBigDecimal(3, price);
+                            ps.setInt(4, stock);
+                            ps.setString(5, imagePath);
+                            ps.setInt(6, oldId);
+                            ps.executeUpdate();
+                        }
+                        return oldId;
+                    }
+                }
+            }
 
-            try (ResultSet keys = ps.getGeneratedKeys()) {
-                return keys.next() ? keys.getInt(1) : -1;
+            // 2) No hidden product: normal insert
+            try (PreparedStatement ps = conn.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS)) {
+                ps.setString(1, name);
+                ps.setString(2, category);
+                ps.setBigDecimal(3, price);
+                ps.setInt(4, stock);
+                ps.setString(5, imagePath);
+                ps.executeUpdate();
+
+                try (ResultSet keys = ps.getGeneratedKeys()) {
+                    return keys.next() ? keys.getInt(1) : -1;
+                }
             }
         }
     }
@@ -90,6 +115,24 @@ public class ProductDAO {
 
             ps.setInt(1, quantity);
             ps.setInt(2, productId);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    // =====================================================================
+    //  LOGIC: SOFT DELETE A PRODUCT
+    //  Hides the product (is_active = 0) instead of removing the row, so old
+    //  orders and sales that point to it stay valid. Returns true if a
+    //  product was hidden.
+    // =====================================================================
+
+    public boolean softDeleteProduct(int productId) throws SQLException {
+        String sql = "UPDATE products SET is_active = 0 WHERE product_id = ? AND is_active = 1";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, productId);
             return ps.executeUpdate() > 0;
         }
     }

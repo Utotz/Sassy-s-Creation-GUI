@@ -641,9 +641,12 @@ public class InventoryController implements Initializable {
                     ownerWindow(), p.getId(), p.getName(), p.getCategory(),
                     peso(p.getPrice()), p.getStock());
             if (confirmed) {
-                // TODO: DELETE the product from the database
-                PRODUCTS.remove(p);
-                refresh();
+                if (productDAO.softDeleteProduct(p.getId())) {
+                    loadProductsFromDB();     // reload so the list matches the database
+                    refresh();
+                } else {
+                    warn("Not deleted", "This product was already deleted or no longer exists.");
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
