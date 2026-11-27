@@ -2,6 +2,7 @@ package com.sassyscreation.sassyscreationgui.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -11,9 +12,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 import java.io.File;
@@ -39,6 +45,9 @@ public class ExportDialogController {
     // Must sit in src/main/resources/com/sassyscreation/sassyscreationgui/
     private static final String FXML_PATH =
             "/com/sassyscreation/sassyscreationgui/EXPORTDIALOG.fxml";
+
+    // Blur strength of the screen behind the dialog
+    private static final double BLUR_RADIUS = 10;
 
     public enum Format { CSV, PDF }
 
@@ -67,6 +76,7 @@ public class ExportDialogController {
         }
     }
 
+    @FXML private StackPane root;
     @FXML private Label lblExportTarget;
     @FXML private ToggleGroup tgFormat;
     @FXML private ToggleButton tbCsv;
@@ -78,6 +88,8 @@ public class ExportDialogController {
     @FXML private Button btnConfirmExport;
 
     private ExportOptions result;
+    private double dragX;
+    private double dragY;
 
     // ---------------------------------------------------------------
     // Opening the dialog
@@ -94,16 +106,30 @@ public class ExportDialogController {
         try {
             FXMLLoader loader = new FXMLLoader(ExportDialogController.class.getResource(FXML_PATH));
             Scene scene = new Scene(loader.load());
+            scene.setFill(Color.TRANSPARENT); // only the card is visible
             ExportDialogController controller = loader.getController();
             controller.setup(target, showCancelledOption);
 
             Stage stage = new Stage();
-            stage.setTitle("Export data");
+            stage.initStyle(StageStyle.TRANSPARENT); // no title bar, no window background
             stage.initOwner(owner);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
             stage.setScene(scene);
-            stage.showAndWait();
+
+            // Blur the screen behind the dialog while it is open
+            Node ownerRoot = owner == null || owner.getScene() == null ? null : owner.getScene().getRoot();
+            Effect oldEffect = ownerRoot == null ? null : ownerRoot.getEffect();
+            if (ownerRoot != null) {
+                ownerRoot.setEffect(new GaussianBlur(BLUR_RADIUS));
+            }
+            try {
+                stage.showAndWait();
+            } finally {
+                if (ownerRoot != null) {
+                    ownerRoot.setEffect(oldEffect);
+                }
+            }
 
             return Optional.ofNullable(controller.result);
         } catch (Exception e) {
@@ -125,8 +151,21 @@ public class ExportDialogController {
             }
         });
 
+        // Esc = Cancel, Enter = Export
         btnCancelExport.setCancelButton(true);
         btnConfirmExport.setDefaultButton(true);
+
+        // Drag the window
+        root.setOnMousePressed(e -> {
+            Stage stage = (Stage) root.getScene().getWindow();
+            dragX = e.getScreenX() - stage.getX();
+            dragY = e.getScreenY() - stage.getY();
+        });
+        root.setOnMouseDragged(e -> {
+            Stage stage = (Stage) root.getScene().getWindow();
+            stage.setX(e.getScreenX() - dragX);
+            stage.setY(e.getScreenY() - dragY);
+        });
     }
 
     private void setup(String target, boolean showCancelledOption) {

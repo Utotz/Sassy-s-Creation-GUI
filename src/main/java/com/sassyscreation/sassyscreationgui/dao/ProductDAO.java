@@ -73,4 +73,24 @@ public class ProductDAO {
             }
         }
     }
+
+
+    // =====================================================================
+    //  LOGIC: RESTOCK A PRODUCT
+    //  Adds `quantity` to the current stock in one atomic UPDATE, so it is
+    //  always correct even if the stock changed since the list was loaded.
+    //  Returns true if a product row was updated.
+    // =====================================================================
+
+    public boolean addStock(int productId, int quantity) throws SQLException {
+        String sql = "UPDATE products SET stock_quantity = stock_quantity + ? WHERE product_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, quantity);
+            ps.setInt(2, productId);
+            return ps.executeUpdate() > 0;
+        }
+    }
 }

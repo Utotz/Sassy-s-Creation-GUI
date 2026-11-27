@@ -16,7 +16,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -32,7 +31,6 @@ import javafx.stage.Window;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -227,14 +225,8 @@ public class SidebarController implements Initializable {
 
     @FXML
     private void handleLogout() {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Log out");
-        confirm.setHeaderText(null);
-        confirm.setContentText("Are you sure you want to log out?");
-        confirm.initOwner(ownerWindow());
-
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        // custom dialog (LOGOUT.fxml) with blurred background, same style as About
+        if (LogoutController.show(ownerWindow())) {
             // TODO: clear your session / current user here
             currentStage().setMaximized(false);
             switchScreen(FXML_LOGIN, "Login");

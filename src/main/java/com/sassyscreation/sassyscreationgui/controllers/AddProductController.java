@@ -24,6 +24,7 @@ import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -207,12 +208,12 @@ public class AddProductController implements Initializable {
             showError("Could not save product", "The product could not be saved to the database.");
             return;
         }
-        Alert ok = new Alert(Alert.AlertType.INFORMATION);
-        ok.initOwner(currentStage());
-        ok.setTitle("Product saved");
-        ok.setHeaderText(null);
-        ok.setContentText("\"" + name + "\" was added to the inventory.");
-        ok.showAndWait();
+
+        // Styled "Product saved" popup (PRODUCTSAVED.fxml) - blurs this screen while it is open
+        ProductSavedController.show(
+                currentStage(), name, category,
+                "\u20B1" + String.format(Locale.US, "%,.2f", price),
+                stock);
 
         goInventory();
     }

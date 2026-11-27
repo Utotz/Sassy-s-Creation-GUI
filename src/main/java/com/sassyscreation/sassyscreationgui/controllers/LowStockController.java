@@ -1,24 +1,34 @@
 package com.sassyscreation.sassyscreationgui.controllers;
 
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -27,7 +37,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Controller for the "Low stock items" dialog.
+ * Controller for the "Low stock items" dialog (LOWSTOCK.fxml).
+ * Same look as About, and it blurs the page behind it.
  *
  * Usage:
  *   List<LowStockController.StockItem> items = List.of(
@@ -37,13 +48,15 @@ import java.util.Map;
  */
 public class LowStockController {
 
-    // CHANGE THIS to the exact file name of your low-stock FXML
-    // (it must sit in src/main/resources/com/sassyscreation/sassyscreationgui/)
     private static final String FXML_PATH =
             "/com/sassyscreation/sassyscreationgui/LOWSTOCK.fxml";
 
     private static final int DEFAULT_THRESHOLD = 5;
     private static final int THRESHOLD_MAX = 999;
+
+    // ---- background blur while the dialog is open ----
+    private static final double BLUR_RADIUS = 14;
+    private static final double BLUR_FADE_MS = 220;
 
     /** One product to check. Pass ALL products; the dialog filters them. */
     public static class StockItem {
@@ -58,6 +71,7 @@ public class LowStockController {
         }
     }
 
+    @FXML private StackPane root;
     @FXML private ComboBox<String> cbLowCategory;
     @FXML private Spinner<Integer> spThreshold;
     @FXML private TableView<Map<String, Object>> tvLowStock;
@@ -70,17 +84,21 @@ public class LowStockController {
 
     private List<StockItem> items = List.of();
     private boolean goToInventory = false;
+    private double dragOffsetX;
+    private double dragOffsetY;
 
     // ---------------------------------------------------------------
     // Opening the dialog
     // ---------------------------------------------------------------
 
     /**
-     * Shows the dialog and blocks until it is closed.
+     * Shows the dialog (borderless, blurred background) and blocks until it is closed.
      *
      * @return true if the user clicked "Go to Inventory"
      */
     public static boolean show(Window owner, List<StockItem> items) {
+        Node ownerRoot = (owner != null && owner.getScene() != null) ? owner.getScene().getRoot() : null;
+        Effect previousEffect = ownerRoot != null ? ownerRoot.getEffect() : null;
         try {
             FXMLLoader loader = new FXMLLoader(LowStockController.class.getResource(FXML_PATH));
             Parent root = loader.load();
@@ -91,20 +109,34 @@ public class LowStockController {
             Scene scene = new Scene(root);
             scene.setFill(Color.TRANSPARENT);
 
-            Stage stage = new Stage();
-            stage.initStyle(StageStyle.TRANSPARENT);
+            Stage stage = new Stage(StageStyle.TRANSPARENT);
             stage.initModality(Modality.APPLICATION_MODAL);
             if (owner != null) {
                 stage.initOwner(owner);
             }
+            stage.setTitle("Sassy's Creation - Low stock");
+            stage.setResizable(false);
             stage.setScene(scene);
             stage.sizeToScene();
+
+            // blur the page behind the dialog (fades in smoothly)
+            if (ownerRoot != null) {
+                GaussianBlur blur = new GaussianBlur(0);
+                ownerRoot.setEffect(blur);
+                new Timeline(new KeyFrame(Duration.millis(BLUR_FADE_MS),
+                        new KeyValue(blur.radiusProperty(), BLUR_RADIUS, Interpolator.EASE_OUT))).play();
+            }
+
             stage.showAndWait();
 
             return controller.goToInventory;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        } finally {
+            if (ownerRoot != null) {
+                ownerRoot.setEffect(previousEffect);   // remove blur when the dialog closes
+            }
         }
     }
 
@@ -154,6 +186,36 @@ public class LowStockController {
         spThreshold.valueProperty().addListener((obs, o, n) -> refresh());
 
         btnCloseLowStock.setCancelButton(true);   // Esc closes
+
+        // Drag the undecorated window (only by the card background, not by controls)
+        root.setOnMousePressed(e -> {
+            if (isOnControl(e.getTarget())) {
+                return;
+            }
+            Stage stage = (Stage) root.getScene().getWindow();
+            dragOffsetX = e.getScreenX() - stage.getX();
+            dragOffsetY = e.getScreenY() - stage.getY();
+        });
+        root.setOnMouseDragged(e -> {
+            if (isOnControl(e.getTarget())) {
+                return;
+            }
+            Stage stage = (Stage) root.getScene().getWindow();
+            stage.setX(e.getScreenX() - dragOffsetX);
+            stage.setY(e.getScreenY() - dragOffsetY);
+        });
+    }
+
+    /** True if the mouse is on a button, table, combo box, spinner... (a Label still counts as background). */
+    private boolean isOnControl(Object target) {
+        Node n = target instanceof Node ? (Node) target : null;
+        while (n != null && n != root) {
+            if (n instanceof Control && !(n instanceof Label)) {
+                return true;
+            }
+            n = n.getParent();
+        }
+        return false;
     }
 
     private void setItems(List<StockItem> items) {

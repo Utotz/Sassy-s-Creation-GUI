@@ -9,13 +9,15 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:controller="com.sassyscreation.sassyscreationgui.controllers.DeleteSaleController"
-           prefHeight="590" prefWidth="480"
-           styleClass="dialog-root, page-v3"
+<StackPane fx:id="root" fx:controller="com.sassyscreation.sassyscreationgui.controllers.DeleteSaleController"
+           prefWidth="480"
+           style="-fx-background-color: transparent; -fx-padding: 44;"
            xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets><URL value="@styles.css" /><URL value="@text-large.css" /></stylesheets>
    <children>
-      <VBox alignment="CENTER" maxWidth="420.0" spacing="0.0" styleClass="dialog-card">
+      <VBox alignment="CENTER" maxWidth="420.0" prefWidth="420.0" spacing="0.0"
+            styleClass="dialog-card"
+            style="-fx-background-color: white; -fx-background-radius: 24; -fx-padding: 24; -fx-effect: dropshadow(gaussian, rgba(194, 42, 98, 0.22), 22, 0.1, 0, 6);">
          <children>
             <StackPane styleClass="icon-badge-sm"><children><Region styleClass="ico, ico-warning" /></children></StackPane>
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="dialog-title-dark" text="Delete this sale?">

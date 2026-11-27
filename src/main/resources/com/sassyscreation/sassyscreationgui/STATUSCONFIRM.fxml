@@ -1,37 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
+<?import java.net.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Ellipse?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<StackPane prefHeight="590" prefWidth="480" styleClass="dialog-root, page-v3" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
-   <stylesheets><URL value="@styles.css" /><URL value="@text-large.css" /></stylesheets>
-   <children>
-      <VBox alignment="CENTER">
-   <children>
-      <VBox alignment="CENTER" maxWidth="420.0" spacing="0.0" styleClass="dialog-card, dialog-card-pink">
-         <children>
-            <StackPane styleClass="icon-badge-sm"><children><Region styleClass="ico, ico-sync" /></children></StackPane>
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="dialog-title-dark" text="Change order status?" ><VBox.margin><Insets top="10.0" bottom="10.0" /></VBox.margin></Label>
-            <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="Order ID" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dID" maxWidth="240.0" styleClass="detail-value" text="2" textAlignment="RIGHT" wrapText="true" /></children></HBox>
-            <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="Customer" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dCustomer" maxWidth="240.0" styleClass="detail-value" text="juana.santos" textAlignment="RIGHT" wrapText="true" /></children></HBox>
-            <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="Product" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dProduct" maxWidth="240.0" styleClass="detail-value" text="Rose - Crochet" textAlignment="RIGHT" wrapText="true" /></children></HBox>
-            <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="From" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dOldStatus" maxWidth="240.0" styleClass="detail-value" text="Pending" textAlignment="RIGHT" wrapText="true" /></children></HBox>
-            <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="To" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dNewStatus" maxWidth="240.0" styleClass="detail-value" text="Cancelled" textAlignment="RIGHT" wrapText="true" /></children></HBox>
-            <Label fx:id="lblStatusNote" styleClass="restore-note" text="Cancelling this order restores the stock for Rose - Crochet." wrapText="true" />
-            <VBox alignment="CENTER" spacing="8.0" styleClass="dialog-buttons"><children><Button maxWidth="1.7976931348623157E308" fx:id="btnConfirmStatus" mnemonicParsing="false" onAction="#handleConfirmStatus" styleClass="btn-primary" text="Yes, change" /><Button maxWidth="1.7976931348623157E308" fx:id="btnCancelStatus" mnemonicParsing="false" onAction="#handleCancelStatus" styleClass="btn-ghost" text="No, go back" /></children></VBox>
-         </children>
-      </VBox>
-   </children>
-</VBox>
-   </children>
+<StackPane fx:id="root" style="-fx-background-color: transparent; -fx-padding: 44;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sassyscreation.sassyscreationgui.controllers.StatusConfirmController">
+    <stylesheets><URL value="@styles.css" /><URL value="@text-large.css" /></stylesheets>
+    <children>
+        <VBox alignment="CENTER" maxWidth="420.0" prefWidth="420.0" spacing="0.0" styleClass="dialog-card, dialog-card-pink">
+            <children>
+                <StackPane styleClass="icon-badge-sm"><children><Region styleClass="ico, ico-sync" /></children></StackPane>
+                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="dialog-title-dark" text="Change order status?" textAlignment="CENTER">
+                    <VBox.margin><Insets bottom="10.0" top="10.0" /></VBox.margin>
+                </Label>
+                <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="Order ID" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dID" maxWidth="240.0" styleClass="detail-value" text="#2" textAlignment="RIGHT" wrapText="true" /></children></HBox>
+                <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="Customer" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dCustomer" maxWidth="240.0" styleClass="detail-value" text="juana.santos" textAlignment="RIGHT" wrapText="true" /></children></HBox>
+                <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="Product" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dProduct" maxWidth="240.0" styleClass="detail-value" text="Rose - Crochet" textAlignment="RIGHT" wrapText="true" /></children></HBox>
+                <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="From" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dOldStatus" maxWidth="240.0" styleClass="detail-value" text="Pending" textAlignment="RIGHT" wrapText="true" /></children></HBox>
+                <HBox styleClass="detail-row"><children><Label styleClass="detail-key" text="To" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="dNewStatus" maxWidth="240.0" styleClass="detail-value" text="Cancelled" textAlignment="RIGHT" wrapText="true" /></children></HBox>
+                <!-- text and visibility are set by StatusConfirmController.setOrder() -->
+                <Label fx:id="lblStatusNote" maxWidth="1.7976931348623157E308" styleClass="restore-note" text="The reserved stock will be returned to inventory." wrapText="true" />
+                <VBox alignment="CENTER" spacing="8.0" styleClass="dialog-buttons">
+                    <children>
+                        <Button fx:id="btnConfirmStatus" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleConfirmStatus" styleClass="btn-primary" text="Yes, change" />
+                        <Button fx:id="btnCancelStatus" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCancelStatus" styleClass="btn-ghost" text="No, go back" />
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
 </StackPane>
