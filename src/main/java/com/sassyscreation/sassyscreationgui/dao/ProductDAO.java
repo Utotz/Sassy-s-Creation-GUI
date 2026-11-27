@@ -22,7 +22,7 @@ public class ProductDAO {
     public List<Product> getAllProducts() throws SQLException {
         String sql = "SELECT product_id, name, category, price, "
                 + "stock_quantity, low_stock_threshold, is_customizable, image_path "
-                + "FROM products ORDER BY name";
+                + "FROM products WHERE is_active = 1 ORDER BY name";
         List<Product> products = new ArrayList<>();
 
         try (Connection conn = DBConnection.getConnection();
